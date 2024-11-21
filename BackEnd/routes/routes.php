@@ -37,7 +37,7 @@ if(count(array_filter($arrayRutas)) >= 3){
                         // Responder con 405 Method Not Allowed si no es un GET
                         $json = array(
                             "status" => 405,
-                            "detalle" => "Método no permitido."
+                            "detalle" => "Metodo no permitido."
                         );
                         echo json_encode($json, true);
                         return;
@@ -50,7 +50,7 @@ if(count(array_filter($arrayRutas)) >= 3){
             default:
                 $json = array(
                     "status" => 404,
-                    "detalle" => "Página no encontrada."
+                    "detalle" => "Pagina no encontrada."
                 );
                 echo json_encode($json, true);
                 return;
@@ -63,7 +63,7 @@ if(count(array_filter($arrayRutas)) >= 3){
     if(count(array_filter($arrayRutas)) == 2){
         $json = array(
             "status" => 200,
-            "detalle" => "Dirígete a la página principal"
+            "detalle" => "Dirigete a la pagina principal"
         );
     } else {
         $json = array(
