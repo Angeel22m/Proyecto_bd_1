@@ -2,95 +2,77 @@
 <?php
 require_once("connection.php");
 
-//$arrayRutas = explode("/",$_SERVER['REQUEST_URI']);
-
-// Obtener la URI completa
 $requestUri = $_SERVER['REQUEST_URI'];
-
-// Separar la URI en su componente de ruta y query string
 $parsedUrl = parse_url($requestUri);
 $path = $parsedUrl['path'] ?? '';
 $queryString = $parsedUrl['query'] ?? '';
 
-// Obtener los segmentos de la ruta
 $arrayRutas = explode('/', trim($path, '/'));
-
 $queryParams = [];
-
-//Obtener parámetros de consulta (si es necesario)
 parse_str($queryString, $queryParams);
-
 
 if(count(array_filter($arrayRutas)) >= 3){
 
     if(isset($_SERVER['REQUEST_METHOD'])){
 
         $requestMethod = $_SERVER['REQUEST_METHOD'];
-        $archiveRoute = array_filter($arrayRutas)[2];
+        $arrayRutas = array_values(array_filter($arrayRutas)); // Aseguramos los índices continuos
+        $archiveRoute = $arrayRutas[2] ?? null;
 
         switch ($archiveRoute){
+            case 'hola.com':
 
-            
-            // ESTE SOLO ES PARA PROBAR LA CONEXIÓN.
-            case 'index.php';
-
+                echo 'hola mundo';
+                break;
+            case 'index.php':
                 $pruebaController = new PruebaController();
 
                 $response = match($requestMethod){
 
                     'GET' => function() use ($pruebaController){
-
-                        $pruebaController->metodoControllerPrueba();
+                        $pruebaController->metodoControllerPrueba(); // Asegúrate de que este método existe
                     },
-                    default => function() {
-                        
-                        
-                        /*
-                        $json=array(
-                            "status"=>404,
-                            "detalle"=>"Página no encontrada."
-                        );
 
+                    default => function() {
+                        // Responder con 405 Method Not Allowed si no es un GET
+                        $json = array(
+                            "status" => 405,
+                            "detalle" => "Método no permitido."
+                        );
                         echo json_encode($json, true);
                         return;
-                        */
                     }, 
                 };
 
                 $response();
-            break;
-        
+                break;
 
             default:
-
-                $json=array(
-                    "status"=>404,
-                    "detalle"=>"Página no encontrada."
+                $json = array(
+                    "status" => 404,
+                    "detalle" => "Página no encontrada."
                 );
-                
                 echo json_encode($json, true);
                 return;
-            break;
+                break;
         }
     }
 
-}elseif(count(array_filter($arrayRutas)) < 3){
+} elseif(count(array_filter($arrayRutas)) < 3){
 
     if(count(array_filter($arrayRutas)) == 2){
-
-        $json=array(
-            "status"=>200,
-            "detalle"=>"Diriga a la página principal"
+        $json = array(
+            "status" => 200,
+            "detalle" => "Dirígete a la página principal"
         );
-
-    }else{
-
-        $json=array(
-            "status"=>404,
-            "detalle"=>"No encontrado"
+    } else {
+        $json = array(
+            "status" => 404,
+            "detalle" => "No encontrado"
         );
-
     }
+
     echo json_encode($json, true);
     return;
 }
+?>
