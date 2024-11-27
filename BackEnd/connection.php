@@ -6,9 +6,9 @@ class Connection {
     static public function connect() {
         $host = 'localhost';
         $usuario = 'root';
-        $contrasena = '';
+        $contrasena = '12345678';
         $baseDeDatos = 'compania';
-        $puerto = 3307; 
+        $puerto = 3308; 
         $conexion = null;
 
         try {
