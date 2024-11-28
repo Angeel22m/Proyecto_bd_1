@@ -22,4 +22,29 @@ class ClientesController {
 
         return;
     }
+
+    public function readAll(){
+        $clienteModel = new ClientesModel();
+        // Llamando método para hacer la lectura en la tabla de Empleado
+        $clientes = Utf8Convert::utf8_convert($clienteModel::readAll());
+
+        if(empty($clientes)){
+
+            $json=array(
+                "status"=>404,
+                "detalle"=>"No hay clientes almacenados en la base de datos."
+            );
+
+            echo json_encode($json, true);
+            return;
+        }else{
+            $json=array(
+                "status"=>200,
+                "detalle"=>$clientes
+            );
+
+            echo json_encode($json, true);
+            return;
+        }
+    }
 }

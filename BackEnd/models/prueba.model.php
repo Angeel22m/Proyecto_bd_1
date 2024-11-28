@@ -10,7 +10,7 @@ class PruebaModel {
                 throw new Exception("Error: No se pudo establecer la conexión a la base de datos.");
             }
 
-            $script = $connection->prepare("SELECT * FROM modelos");
+            $script = $connection->prepare("SELECT * FROM clientes");
             $script->execute();
             $result = $script->fetchAll(PDO::FETCH_CLASS);
             $script->closeCursor();
@@ -32,4 +32,6 @@ class PruebaModel {
             ];
         }
     }
+
+
 }

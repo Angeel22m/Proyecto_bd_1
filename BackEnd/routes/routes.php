@@ -19,20 +19,12 @@ if (count($arrayRutas) >= 3) {
     $archiveRoute = $arrayRutas[2] ?? null; // Tercer segmento
 
     switch ($archiveRoute) {
-        case 'hola':
-            echo json_encode(["status" => 200, "message" => "Hola Mundo"]);
-            break;
-
-        case 'getClientes':
-            handleGetClientes($requestMethod);
-            break;
-
         case 'login':
             handleLogin($requestMethod);
             break;
 
-        case 'nuevoCliente';
-            handleNuevoCliente($requestMethod);
+        case 'cliente';
+            handleCliente($requestMethod);
             break;
 
         default:
@@ -51,30 +43,6 @@ if (count($arrayRutas) >= 3) {
     ]);
 }
 
-/**
- * Función para manejar solicitudes GET para obtener clientes.
- * 
- * @param string $method Método HTTP de la solicitud.
- */
-function handleGetClientes($method) {
-    if ($method === 'GET') {
-        $pruebaController = new PruebaController();
-        try {
-            $pruebaController->metodoControllerPrueba();
-        } catch (Exception $e) {
-            echo json_encode([
-                "status" => 500,
-                "error" => "Error interno al obtener los clientes.",
-                "detalle" => $e->getMessage()
-            ]);
-        }
-    } else {
-        echo json_encode([
-            "status" => 405,
-            "detalle" => "Método no permitido."
-        ]);
-    }
-}
 
 /**
  * Función para manejar el inicio de sesión.
@@ -128,34 +96,63 @@ function handleLogin($method) {
  * 
  * @param string $method Método HTTP de la solicitud.
  */
-function handleNuevoCliente($method) {
+function handleCliente($method) {
+    $cliente = new ClientesController();
 
-    if ($method === 'POST') {
-        session_start();
+    switch ($method) {
+        case 'POST':
+            // Verifica que los datos POST estén presentes
+            if (
+                isset($_POST['nombre'], $_POST['direccion'], $_POST['noTelefono'], $_POST['sexo'], $_POST['ingresosAnuales'])
+            ) {
+                $nombre = $_POST['nombre'];
+                $direccion = $_POST['direccion'];
+                $noTelefono = $_POST['noTelefono'];
+                $sexo = $_POST['sexo'];
+                $ingresosAnuales = $_POST['ingresosAnuales'];
 
-        // Verifica que los datos POST estén presentes
-        if (isset($_POST['nombre']) && isset($_POST['direccion'])
-         && isset($_POST['noTelefono']) && isset($_POST['sexo'])
-         && isset($_POST['ingresosAnuales'])) {
+                try {
+                    $cliente->crearCliente($nombre, $direccion, $noTelefono, $sexo, $ingresosAnuales);
+                    echo json_encode([
+                        "status" => 201,
+                        "message" => "Cliente creado con éxito"
+                    ]);
+                } catch (Exception $e) {
+                    echo json_encode([
+                        "status" => 500,
+                        "error" => "Error interno al crear el cliente.",
+                        "detalle" => $e->getMessage()
+                    ]);
+                }
+            } else {
+                echo json_encode([
+                    "status" => 400,
+                    "error" => "Faltan datos obligatorios para crear el cliente."
+                ]);
+            }
+            break;
 
-            $nombre = $_POST['nombre'];
-            $direccion = $_POST['direccion'];
-            $noTelefono = $_POST['noTelefono'];
-            $sexo = $_POST['sexo'];
-            $ingresosAnuales = $_POST['ingresosAnuales'];
+        case 'GET':
+            try {
+                $result = $cliente->readAll();               
+            } catch (Exception $e) {
+                echo json_encode([
+                    "status" => 500,
+                    "error" => "Error interno al obtener los clientes.",
+                    "detalle" => $e->getMessage()
+                ]);
+            }
+            break;
 
-            $cliente = new ClientesController();
-            $cliente->crearCliente($nombre,$direccion,$noTelefono,$sexo,$ingresosAnuales);
-
-           
+        default:
+            echo json_encode([
+                "status" => 405,
+                "detalle" => "Método no permitido."
+            ]);
+            break;
     }
- else {
-    echo json_encode([
-        "status" => 405,
-        "detalle" => "Método no permitido."
-    ]);
 }
-}}
+
 
 
 
