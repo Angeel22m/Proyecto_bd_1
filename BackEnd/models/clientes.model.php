@@ -82,9 +82,51 @@ class ClientesModel {
     }
     
 
-    public static function updateCliente($Datos){
+    public static function actualizarCliente($Datos){
+        
+// Preparación de la consulta de actualización
+$query = Connection::connect()->prepare(
+    "CALL actualizarClientePorId(
+        :idCliente,
+        :nombre,
+        :direccion,
+        :sexo,
+        :noTelefono,
+        :ingresosAnuales
+    )"
+);
 
+// Vinculación de los parámetros
+$query->bindParam(":idCliente", $Datos["idCliente"], PDO::PARAM_INT);
+$query->bindParam(":nombre", $Datos["nombre"], PDO::PARAM_STR);
+$query->bindParam(":direccion", $Datos["direccion"], PDO::PARAM_STR);
+$query->bindParam(":sexo", $Datos["sexo"], PDO::PARAM_STR);
+$query->bindParam(":noTelefono", $Datos["noTelefono"], PDO::PARAM_STR);
+$query->bindParam(":ingresosAnuales", $Datos["ingresosAnuales"], PDO::PARAM_STR);
 
+try {
+    // Ejecución de la consulta
+    $query->execute();
+
+    // Verificar si la consulta afectó alguna fila
+    if ($query->rowCount() > 0) {
+        echo json_encode([
+            "status" => 200,
+            "message" => "Cliente actualizado con éxito."
+        ]);
+    } else {
+        echo json_encode([
+            "status" => 404,
+            "error" => "No se encontró el cliente o no se realizaron cambios."
+        ]);
+    }
+} catch (PDOException $e) {
+    echo json_encode([
+        "status" => 500,
+        "error" => "Error interno al actualizar el cliente.",
+        "detalle" => $e->getMessage()
+    ]);
+}
 
     }
     

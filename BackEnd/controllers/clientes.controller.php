@@ -47,4 +47,20 @@ class ClientesController {
             return;
         }
     }
+
+    public function actualizarCliente($idCliente, $campos){
+
+        $datos = 
+        $json = array(
+            "idCliente" => $idCliente,
+            "nombre" => !empty($campos['nombre']) ? $campos['nombre'] : null,
+            "direccion" => !empty($campos['direccion']) ? $campos['direccion'] : null,
+            "sexo" => !empty($campos['sexo']) ? $campos['sexo'] : null,
+            "noTelefono" => !empty($campos['noTelefono']) ? $campos['noTelefono'] : null,
+            "ingresosAnuales" => !empty($campos['ingresosAnuales']) ? $campos['ingresosAnuales'] : null
+        );
+        
+        $clienteModel = new ClientesModel();
+        $clienteModel::actualizarCliente($datos);
+    }
 }

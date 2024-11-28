@@ -44,11 +44,6 @@ if (count($arrayRutas) >= 3) {
 }
 
 
-/**
- * Función para manejar el inicio de sesión.
- * 
- * @param string $method Método HTTP de la solicitud.
- */
 function handleLogin($method) {
     if ($method === 'POST') {
         session_start();
@@ -91,11 +86,6 @@ function handleLogin($method) {
 }
 
 
-/**
- * Función para las solicitudes En cliente.
- * 
- * @param string $method Método HTTP de la solicitud.
- */
 function handleCliente($method) {
     $cliente = new ClientesController();
 
@@ -134,11 +124,57 @@ function handleCliente($method) {
 
         case 'GET':
             try {
-                $result = $cliente->readAll();               
+                $result = $cliente->readAll();
+                echo json_encode([
+                    "status" => 200,
+                    "data" => $result
+                ]);
             } catch (Exception $e) {
                 echo json_encode([
                     "status" => 500,
                     "error" => "Error interno al obtener los clientes.",
+                    "detalle" => $e->getMessage()
+                ]);
+            }
+            break;
+
+        case 'PUT':
+            // Leer el cuerpo de la solicitud para datos JSON
+            parse_str(file_get_contents("php://input"), $putData);
+
+            if (!isset($putData['idCliente'])) {
+                echo json_encode([
+                    "status" => 400,
+                    "error" => "El idCliente es obligatorio para actualizar un cliente."
+                ]);
+                break;
+            }
+
+            $idCliente = $putData['idCliente'];
+
+            // Validar que al menos un campo opcional esté presente
+            $campos = [];
+            if (!empty($putData['nombre'])) $campos['nombre'] = $putData['nombre'];
+            if (!empty($putData['direccion'])) $campos['direccion'] = $putData['direccion'];
+            if (!empty($putData['noTelefono'])) $campos['noTelefono'] = $putData['noTelefono'];
+            if (!empty($putData['sexo'])) $campos['sexo'] = $putData['sexo'];
+            if (!empty($putData['ingresosAnuales'])) $campos['ingresosAnuales'] = $putData['ingresosAnuales'];
+
+            if (empty($campos)) {
+                echo json_encode([
+                    "status" => 400,
+                    "error" => "Debe proporcionar al menos un campo para actualizar."
+                ]);
+                break;
+            }
+
+            try {
+                
+                $cliente->actualizarCliente($idCliente, $campos);               
+            } catch (Exception $e) {
+                echo json_encode([
+                    "status" => 500,
+                    "error" => "Error interno al actualizar el cliente.",
                     "detalle" => $e->getMessage()
                 ]);
             }
@@ -152,6 +188,7 @@ function handleCliente($method) {
             break;
     }
 }
+
 
 
 
