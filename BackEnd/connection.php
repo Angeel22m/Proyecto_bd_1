@@ -1,41 +1,46 @@
 <?php
-class Connection {
-    
 
-    // Método para establecer conexión
+class Connection {
+    private static $conexion = null;
+
     static public function connect() {
+        if (session_status() == PHP_SESSION_NONE) {
+            session_start();
+        }
+
+        if (!isset($_SESSION['usuario']) || !isset($_SESSION['password'])) {
+            header("Location: login.php");
+            exit;
+        }
+
         $host = 'localhost';
-        $usuario = 'root';
-        $contrasena = '12345678';
+        $usuario = $_SESSION['usuario'];
+        $contrasena = $_SESSION['password'];
         $baseDeDatos = 'compania';
-        $puerto = 3308; 
-        $conexion = null;
+        $puerto = 3308;
+
+        if (empty($usuario) || empty($contrasena)) {
+            echo "Error: Las credenciales de la sesión están vacías.";
+            exit;
+        }
 
         try {
-            // Crear conexión con PDO
-            $conexion = new PDO(
-                "mysql:host={$host};port={$puerto};dbname={$baseDeDatos};charset=utf8",
-                $usuario,
-                $contrasena
-            );
-            // Configurar errores de PDO
-            $conexion->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-            return $conexion;
+            if (self::$conexion === null) {
+                self::$conexion = new PDO(
+                    "mysql:host={$host};port={$puerto};dbname={$baseDeDatos};charset=utf8",
+                    $usuario,
+                    $contrasena
+                );
+                self::$conexion->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+            }
+            return self::$conexion;
         } catch (PDOException $e) {
-            // Manejar errores
-            echo "Error al conectar: " . $e->getMessage();
-            $conexion = null; // Asegurar que la conexión sea nula en caso de error
+            throw new Exception("Error al conectar a la base de datos: " . $e->getMessage());
         }
     }
 
-    // Método para cerrar la conexión
     public function desconectar() {
-        $conexion = null;
+        self::$conexion = null;
         echo "Conexión cerrada<br>";
-    }
-
-    // Método para obtener la conexión actual
-    public function getConexion() {
-        return $conexion;
     }
 }

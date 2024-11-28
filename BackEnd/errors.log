@@ -1,0 +1,1 @@
+Error al ejecutar la consulta: SQLSTATE[42000]: Syntax error or access violation: 1142 SELECT command denied to user 'Angel'@'localhost' for table `compania`.`modelos`
