@@ -74,7 +74,8 @@ function handleLogin($method) {
         } else {
             echo json_encode([
                 "status" => 400,
-                "detalle" => "Faltan datos de inicio de sesión."
+                "detalle" => "Faltan datos de inicio de sesión.",
+                "mensaje"=> !empty($nombreUsuario) ? $nombreUsuario : null
             ]);
         }
     } else {
@@ -124,11 +125,7 @@ function handleCliente($method) {
 
         case 'GET':
             try {
-                $result = $cliente->readAll();
-                echo json_encode([
-                    "status" => 200,
-                    "data" => $result
-                ]);
+                $result = $cliente->readAll();               
             } catch (Exception $e) {
                 echo json_encode([
                     "status" => 500,
