@@ -129,5 +129,27 @@ try {
 }
 
     }
+
+
+    public static function eliminarClientePorID($idCliente) {
+       $conn = Connection::connect(); 
+        try {
+            // Preparar la consulta SQL para eliminar el cliente por su ID
+            $stmt = $conn->prepare("call eliminarClientePorId(:idCliente)");
+            $stmt->bindParam(':idCliente', $idCliente, PDO::PARAM_INT);
+            $stmt->execute();
+
+            // Si no se eliminó ninguna fila, significa que el cliente no existía
+            if ($stmt->rowCount() > 0) {
+                return true; // Se eliminó correctamente
+            } else {
+                return false; // No se encontró el cliente
+            }
+        } catch (Exception $e) {
+            // Manejo de errores, por ejemplo, si la base de datos no responde
+            error_log($e->getMessage()); // Registrar el error en un log
+            return false;
+        }
+    }
     
 }

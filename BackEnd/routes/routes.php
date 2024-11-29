@@ -177,6 +177,28 @@ function handleCliente($method) {
             }
             break;
 
+            case 'DELETE':
+                // Obtener el ID del cliente desde los parámetros de la URL
+                if (isset($_GET['idCliente'])) {
+                    $idCliente = $_GET['idCliente'];
+    
+                    try {
+                        $cliente->eliminarClientePorID($idCliente);                       
+                    } catch (Exception $e) {
+                        echo json_encode([
+                            "status" => 500,
+                            "error" => "Error interno al eliminar el cliente.",
+                            "detalle" => $e->getMessage()
+                        ]);
+                    }
+                } else {
+                    echo json_encode([
+                        "status" => 400,
+                        "error" => "El idCliente es obligatorio para eliminar un cliente."
+                    ]);
+                }
+                break;
+
         default:
             echo json_encode([
                 "status" => 405,

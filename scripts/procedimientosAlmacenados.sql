@@ -118,34 +118,55 @@ END;
 
 
 -- Acturalizar Cliente
+DELIMITER $$
 
 CREATE PROCEDURE actualizarClientePorId(
     IN p_idCliente INT,
     IN p_nombre VARCHAR(255),
     IN p_direccion VARCHAR(255),
-    IN p_sexo CHAR(1),
+    IN p_sexo ENUM('masculino','femenino','otro'),
     IN p_noTelefono VARCHAR(15),
-    IN p_ingresosAnuales DECIMAL(10,2)
+    IN p_ingresosAnuales INT(10)
 )
 BEGIN
-    UPDATE clientes
-    SET 
-        nombre = COALESCE(p_nombre, nombre),
-        direccion = COALESCE(p_direccion, direccion),
-        sexo = COALESCE(p_sexo, sexo),
-        noTelefono = COALESCE(p_noTelefono, noTelefono),
-        ingresosAnuales = COALESCE(p_ingresosAnuales, ingresosAnuales)
-    WHERE idCliente = p_idCliente;
-END
+    -- Verificamos si existe el cliente
+    IF EXISTS(SELECT 1 FROM clientes WHERE idCliente = p_idCliente) THEN
+        -- Si el cliente existe, realizamos la actualización
+        UPDATE clientes
+        SET 
+            nombre = COALESCE(p_nombre, nombre),
+            direccion = COALESCE(p_direccion, direccion),
+            sexo = COALESCE(p_sexo, sexo),
+            noTelefono = COALESCE(p_noTelefono, noTelefono),
+            ingresosAnuales = COALESCE(p_ingresosAnuales, ingresosAnuales)
+        WHERE idCliente = p_idCliente;
 
--- PROCEDIMIENTO PARA ELIMINAR CLIENTE POR ID
+    ELSE
+        -- Si no existe el cliente, enviamos un mensaje con el error
+        SELECT CONCAT('No existe cliente con el id: ', p_idCliente) AS Mensaje;
+    END IF;
+    
+END$$
 
-CREATE PROCEDURE eliminarClientePorId(
-    IN idCliente INT
+DELIMITER ;
+
+
+-- procedimiento para elimanar una cliente por id
+
+delimiter $$
+CREATE procedure eliminarClientePorId(
+    In p_idCliente INT
 )
-
 BEGIN
+    IF EXISTS (SELECT 1 FROM clientes c WHERE c.idCliente  = p_idCliente) THEN
+             DELETE FROM clientes
+             WHERE idCliente = p_idCliente;
+             SELECT 'cliente eliminado' as Mensaje;
+            ELSE
+            SELECT CONCAT('no existe una cliente con el Id: ',p_idPlanta) as Mensaje;
+     END IF;
+END $$
 
-END;
+delimiter;
 
 
