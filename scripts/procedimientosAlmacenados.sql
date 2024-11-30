@@ -170,3 +170,87 @@ END $$
 delimiter;
 
 
+-- procedimiento para crear un nuevo vehiculo
+DELIMITER $$
+
+CREATE PROCEDURE registrarNuevoVehiculo(
+    IN v_VIN VARCHAR(17),
+    IN v_idModelo INT,
+    IN v_color VARCHAR(10),
+    IN v_noMotor INT,
+    IN v_transmision VARCHAR(10),
+    IN v_fechaFabricacion DATE
+)
+BEGIN
+    IF v_color NOT IN ('rojo', 'azul', 'blanco', 'negro', 'gris') THEN
+        SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Color inválido';
+    ELSEIF v_transmision NOT IN ('manual', 'automática') THEN
+        SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Tipo de transmisión inválido';
+    ELSE
+        IF NOT EXISTS (SELECT 1 FROM VEHICULOS WHERE VIN = v_VIN) THEN
+            IF EXISTS (SELECT 1 FROM MODELOS WHERE idModelo = v_idModelo) THEN
+                INSERT INTO VEHICULOS (VIN, idModelo, color, noMotor, transmision, fechaFabricacion)
+                VALUES (v_VIN, v_idModelo, v_color, v_noMotor, v_transmision, v_fechaFabricacion);
+                SELECT 'Vehículo registrado correctamente' AS resultado;
+            ELSE
+                SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'El modelo especificado no existe';
+            END IF;
+        ELSE
+            SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'El vehículo con el VIN especificado ya existe';
+        END IF;
+    END IF;
+END$$
+
+DELIMITER ;
+
+-- procedimiento para actualizar un vehiculo
+DELIMITER $$
+
+CREATE PROCEDURE actualizarVehiculo(
+    IN v_VIN VARCHAR(17),
+    IN v_idModelo INT,
+    IN v_color ENUM('rojo', 'azul', 'blanco', 'negro', 'gris'),
+    IN v_noMotor INT,
+    IN v_transmision ENUM('manual', 'automática'),
+    IN v_fechaFabricacion DATE
+)
+BEGIN
+ DECLARE v_error_message TEXT;
+ DECLARE CONTINUE HANDLER FOR SQLEXCEPTION
+  	BEGIN
+        GET DIAGNOSTICS CONDITION 1
+            v_error_message = MESSAGE_TEXT;
+        SELECT CONCAT('Error: ', v_error_message) AS Mensaje;
+    END;
+            
+	 IF EXISTS (SELECT 1 FROM VEHICULOS v WHERE v.VIN = v_VIN) THEN
+            UPDATE VEHICULOS SET 
+            modelo = CASE WHEN v_idModelo IS NOT NULL AND 
+				EXISTS (SELECT 1 FROM MODELOS m WHERE m.idModelo = v_idModelo) 
+				THEN v_idModelo ELSE modelo END,
+				color = COALESCE(v_color, color),
+				motor = COALESCE(v_noMotor, noMotor),
+				tansmision = COALESCE(v_transmision, transmision),
+				fechaFabricacion = COALESCE(v_fechaFabricacion, fechaFabricacion);
+            SELECT 'Vehiculo actualizado exitosamente' AS Mensaje;
+        ELSE
+             SELECT  'El vehículo con el VIN especificado no existe' AS Mensaje;
+        END IF;
+END$$
+DELIMITER ;
+
+-- procedimiento para eliminar vehiculo
+DELIMITER $$
+
+CREATE PROCEDURE eliminarVehiculo(
+    IN v_VIN VARCHAR(17))
+BEGIN     
+	 IF EXISTS (SELECT 1 FROM VEHICULOS v WHERE v.VIN = v_VIN) THEN
+            DELETE FROM vehiculos
+            WHERE VIN = v_VIN;
+         SELECT 'Vehiculo eliminado exitosamente' AS mensage;
+      ELSE
+         SELECT 'El vehículo con el VIN especificado no existe' AS mesage;
+      END IF;
+END$$
+DELIMITER ;

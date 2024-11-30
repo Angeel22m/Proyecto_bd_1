@@ -8,7 +8,7 @@ CREATE TABLE Plantas (
 CREATE TABLE MODELOS (
   idModelo INT AUTO_INCREMENT PRIMARY KEY,
   nombre VARCHAR(10) NOT NULL,
-  estiloCarroceria ENUM('sedan', 'hatchback', 'suv', 'coupe', 'pickup') NOT NULL,
+  estiloCarroceria ENUM('sedan', 'hatchback', 'suv', 'coupe', 'pickup', 'convertible') NOT NULL,
   marca VARCHAR(10) NOT NULL
 );
 
