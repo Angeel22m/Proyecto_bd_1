@@ -25,6 +25,7 @@ CREATE TABLE VEHICULOS (
   color ENUM('rojo', 'azul', 'blanco', 'negro', 'gris') NOT NULL,
   noMotor INT NOT NULL CHECK (noMotor > 0),
   transmision ENUM('manual', 'automática') NOT NULL,
+  fechaFabricacion DATE NOT NULL,
   FOREIGN KEY (idModelo) REFERENCES Modelos(idModelo)
     ON DELETE CASCADE ON UPDATE CASCADE 
 );
@@ -82,6 +83,7 @@ CREATE TABLE MODELOSXPROVEEDORES (
 CREATE TABLE VEHICULOSXCONCESIONARIOS (
   VIN VARCHAR(17) NOT NULL,
   idConcesionario INT NOT NULL,
+  fechaIngreso DATE NOT NULL,
   PRIMARY KEY (VIN, idConcesionario),
   FOREIGN KEY (VIN) REFERENCES Vehiculos(VIN)
         ON DELETE CASCADE ON UPDATE CASCADE,
