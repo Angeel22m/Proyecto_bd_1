@@ -5,7 +5,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login Asíncrono</title>
+    <title>Login</title>
     <script>
 
     // Función para manejar el formulario
