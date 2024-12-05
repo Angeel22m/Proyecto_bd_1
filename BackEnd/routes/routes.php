@@ -1,5 +1,9 @@
 <?php
 
+header("Access-Control-Allow-Origin: *");
+header("Access-Control-Allow-Methods: POST, GET, OPTIONS");
+header("Access-Control-Allow-Headers: Content-Type, Authorization");
+
 // Obtención de la ruta y parámetros de la solicitud
 $requestUri = $_SERVER['REQUEST_URI'];
 $parsedUrl = parse_url($requestUri);
@@ -59,6 +63,7 @@ function handleLogin($method) {
                 // Establece la conexión con el usuario correcto
                 $_SESSION['usuario'] = $nombreUsuario;
                 $_SESSION['password'] = $contrasena;
+                $_SESSION['rol'] = $rol;
 
                 echo json_encode([
                     "status" => 200,

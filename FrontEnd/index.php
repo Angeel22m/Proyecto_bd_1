@@ -1,3 +1,5 @@
+
+
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -29,7 +31,7 @@
                 case 200:
                     alert("Inicio de sesión exitoso.");
                     // Redirigir a otra página (cambia la URL de acuerdo con tu necesidad)
-                    window.location.href = "http://localhost/Proyecto_bd_1/FrontEnd/index.html"; // Cambia la URL de destino
+                    window.location.href = "http://localhost/Proyecto_bd_1/FrontEnd/clientes.php"; // Cambia la URL de destino
                     break;
 
                 case 401:

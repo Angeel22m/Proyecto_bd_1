@@ -56,7 +56,7 @@ class ClientesModel {
         try {
             // Preparación de la consulta de lectura.
             $query = Connection::connect()->prepare(
-                "select * from vista_clientes"
+                "select * from VISTA_CLIENTES"
             );
     
             // Ejecución de la consulta.

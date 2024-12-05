@@ -3,11 +3,11 @@
 class Login {
 
     // Definir constantes de configuración de la base de datos
-    const DB_HOST = 'localhost';
-    const DB_PORT = 3308;
+    const DB_HOST = '3.16.137.112';
+    const DB_PORT = 3306;
     const DB_NAME = 'compania';
-    const DB_USER_ADMIN = 'Validaciones';  // Usuario con permisos de validación
-    const DB_PASS_ADMIN = '12345678';    // Contraseña del usuario admin
+    const DB_USER_ADMIN = 'admin';  // Usuario con permisos de validación
+    const DB_PASS_ADMIN = 'adminadmin';    // Contraseña del usuario admin
 
     /**
      * Conexión a la base de datos usando PDO
@@ -37,7 +37,7 @@ class Login {
         }
 
         try {
-            $stmt = $conn->prepare("SELECT contrasenaHash, rol FROM usuarios_aplicacion WHERE nombreUsuario = :nombreUsuario");
+            $stmt = $conn->prepare("SELECT contrasenaHash, rol FROM USUARIOS_APLICACION WHERE nombreUsuario = :nombreUsuario");
             $stmt->bindParam(':nombreUsuario', $nombreUsuario);
             $stmt->execute();
 

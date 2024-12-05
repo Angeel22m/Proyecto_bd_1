@@ -1,3 +1,22 @@
+<?php
+session_start();
+
+// Verificar si el usuario está autenticado
+if (!isset($_SESSION['usuario'])) {
+    header('Location: index.php'); // Redirige a la página de login
+    exit;
+}
+
+// Verificar permisos (opcional, si usas roles)
+if ($_SESSION['rol'] !== 'admin') {
+    echo "No tienes permiso para acceder a esta página.";
+    exit;
+}
+
+// Contenido protegido
+echo "Bienvenido, " . htmlspecialchars($_SESSION['usuario']) . ". Esta es una página protegida.";
+?>
+
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -43,6 +62,7 @@
             }
         }
 
+
         // Llamar a la función para cargar los datos al cargar la página
         window.onload = function() {
             cargarDatosRelacion();
@@ -64,6 +84,9 @@
             <!-- Aquí se insertarán los datos de la API -->
         </tbody>
     </table>
+
+    <a href="http://localhost/Proyecto_bd_1/FrontEnd/cerrarsession.php">Cerrar la Seccion</a>
+
 </body>
 </html>
 

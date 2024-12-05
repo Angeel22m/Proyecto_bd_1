@@ -13,11 +13,11 @@ class Connection {
             exit;
         }
 
-        $host = 'localhost';
+        $host = '3.16.137.112';
         $usuario = $_SESSION['usuario'];
         $contrasena = $_SESSION['password'];
         $baseDeDatos = 'compania';
-        $puerto = 3308;
+        $puerto = 3306;
 
         if (empty($usuario) || empty($contrasena)) {
             echo "Error: Las credenciales de la sesión están vacías.";
@@ -37,10 +37,5 @@ class Connection {
         } catch (PDOException $e) {
             throw new Exception("Error al conectar a la base de datos: " . $e->getMessage());
         }
-    }
-
-    public function desconectar() {
-        self::$conexion = null;
-        echo "Conexión cerrada<br>";
     }
 }

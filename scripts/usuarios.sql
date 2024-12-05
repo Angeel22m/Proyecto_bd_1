@@ -5,14 +5,14 @@ GRANT SELECT ON compania.clientes TO 'Angel'@'localhost';
 FLUSH PRIVILEGES;
 
 
-CREATE TABLE usuarios_aplicacion (
+CREATE TABLE USUARIOS_APLICACION (
     idUsuario INT AUTO_INCREMENT PRIMARY KEY,
     nombreUsuario VARCHAR(50) UNIQUE NOT NULL,
     contrasenaHash VARCHAR(255) NOT NULL,
     rol ENUM('lectura', 'admin') NOT NULL
 );
 
-INSERT INTO usuarios_aplicacion (nombreUsuario, contrasenaHash, rol)
+INSERT INTO USUARIOS_APLICACION (nombreUsuario, contrasenaHash, rol)
 VALUES (
     
     'Angel',
@@ -20,7 +20,7 @@ VALUES (
     'lectura'
   );
 
-  SELECT * from usuarios_aplicacion;
+  SELECT * from USUARIOS_APLICACION;
 
 
   SHOW GRANTS FOR 'usuario'@'localhost';
@@ -28,8 +28,8 @@ VALUES (
 -- Crea el usuario con contraseña segura
 CREATE USER 'Validaciones'@'localhost' IDENTIFIED BY '12345678';
 
--- Otorga permisos de solo lectura en la tabla usuarios_aplicacion
-GRANT SELECT ON compania.usuarios_aplicacion TO 'Validaciones'@'localhost';
+-- Otorga permisos de solo lectura en la tabla USUARIOS_APLICACION
+GRANT SELECT ON compania.USUARIOS_APLICACION TO 'Validaciones'@'localhost';
 
 -- Guarda los cambios en los privilegios
 FLUSH PRIVILEGES;
