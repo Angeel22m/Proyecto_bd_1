@@ -34,14 +34,14 @@ CREATE TABLE CONCESIONARIOS (
   idConcesionario INT AUTO_INCREMENT PRIMARY KEY,
   nombre VARCHAR(20) NOT NULL,
   direccion VARCHAR(50) NOT NULL,
-  noTelefono VARCHAR(15) NOT NULL
+  noTelefono VARCHAR(15) NOT NULL UNIQUE
 );
 
 CREATE TABLE CLIENTES (
   idCliente INT AUTO_INCREMENT PRIMARY KEY,
   nombre VARCHAR(20) NOT NULL,
   direccion VARCHAR(50) NOT NULL,
-  noTelefono VARCHAR(15) NOT NULL,
+  noTelefono VARCHAR(15) NOT NULL UNIQUE,
   sexo ENUM('masculino', 'femenino', 'otro') NOT NULL,
   ingresosAnuales INT NOT NULL CHECK (ingresosAnuales > 0)
 );

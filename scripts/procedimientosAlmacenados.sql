@@ -1,103 +1,109 @@
 
 ---procedimiento para crear una nueva planta
 
-CREATE procedure registrarNuevaPlanta(
-    In p_nombre VARCHAR(100),
-    IN p_ubicacion VARCHAR(100)
+DELIMITER $$
+
+CREATE PROCEDURE registrarNuevaPlanta(
+    IN p_nombre VARCHAR(20),
+    IN p_ubicacion VARCHAR(50)
 )
 BEGIN
-    IF NOT EXISTS (SELECT 1 FROM Plantas p 
-     WHERE p.nombre = p_nombre 
-     and p.ubicacion = p_ubicacion ) THEN
-        INSERT INTO Plantas (nombre, ubicacion) VALUES 
-(p_nombre, p_ubicacion);
-    ELSE 
-        SELECT 'ya existe esa planta';
+    IF NOT EXISTS (
+        SELECT 1 
+        FROM Plantas 
+        WHERE nombre = p_nombre 
+          AND ubicacion = p_ubicacion
+    ) THEN
+        INSERT INTO Plantas (nombre, ubicacion) 
+        VALUES (p_nombre, p_ubicacion);
+        SELECT 'Planta registrada exitosamente.' AS Mensaje;
+    ELSE
+        SELECT 'Ya existe una planta con el mismo nombre y ubicación.' AS Mensaje;
     END IF;
+END$$
 
-END;
+DELIMITER ;
 
---Actualizar planta
+
+--procdedimiento para actualizar planta
+DELIMITER $$
 
 CREATE PROCEDURE actualizarPlantaPorId(
     IN p_idPlanta INT,
-    IN p_nombre VARCHAR(100),
-    IN p_ubicacion VARCHAR(100)
+    IN p_nombre VARCHAR(20),
+    IN p_ubicacion VARCHAR(50)
 )
 BEGIN
-    -- Verifica si existe la planta
-    IF EXISTS (SELECT 1 FROM Plantas P WHERE P.idPlanta = p_idPlanta) THEN
-        -- Actualiza solo los campos proporcionados
+    -- Verifica si la planta existe
+    IF EXISTS (
+        SELECT 1 
+        FROM Plantas 
+        WHERE idPlanta = p_idPlanta
+    ) THEN
+        -- Actualiza los campos proporcionados
         UPDATE Plantas
         SET 
-            nombre = CASE WHEN p_nombre IS NOT NULL THEN p_nombre ELSE nombre END,
-            ubicacion = CASE WHEN p_ubicacion IS NOT NULL THEN p_ubicacion ELSE ubicacion END
+            nombre = COALESCE(p_nombre, nombre),
+            ubicacion = COALESCE(p_ubicacion, ubicacion)
         WHERE idPlanta = p_idPlanta;
-        -- Mensaje de confirmación
+
         SELECT CONCAT('La planta con ID ', p_idPlanta, ' fue actualizada correctamente.') AS Mensaje;
     ELSE
-        -- Mensaje si la planta no existe
-        SELECT CONCAT('No existe planta con el ID: ', p_idPlanta) AS Mensaje;
+        SELECT CONCAT('No existe una planta con el ID: ', p_idPlanta) AS Mensaje;
     END IF;
-END; 
+END$$
 
--- procedimiento para elimanar una planta por id
-CREATE procedure eliminarPlantaPorId(
-    In p_idPlanta INT
+DELIMITER ;
+
+-- procedimiento para eliminar planta
+
+CREATE PROCEDURE eliminarPlantaPorId(
+    IN p_idPlanta INT
 )
 BEGIN
-    IF EXISTS (SELECT 1 FROM Plantas P WHERE p.idPlanta = p_idPlanta) THEN
-             DELETE FROM Plantas
-             WHERE idPlanta = p_idPlanta;
-            
-        IF EXISTS (SELECT 1 FROM ModelosXPlantas mp WHERE mp.idPlanta = p_idPlanta) THEN
-            DELETE FROM ModelosXPlantas
-            WHERE idPlanta = p_idPlanta;
-            END IF;
-            ELSE
-            SELECT CONCAT('no existe una planta con el Id: ',p_idPlanta) as Mensaje;
-     END IF;
-END;
+    -- Verifica si la planta existe
+    IF EXISTS (
+        SELECT 1 
+        FROM Plantas 
+        WHERE idPlanta = p_idPlanta
+    ) THEN
+        -- Elimina registros relacionados en ModelosXPlantas
+        DELETE FROM ModelosXPlantas 
+        WHERE idPlanta = p_idPlanta;
 
---procedimiento para crear clientes
+        -- Elimina la planta
+        DELETE FROM Plantas 
+        WHERE idPlanta = p_idPlanta;
+
+        SELECT CONCAT('La planta con ID ', p_idPlanta, ' y sus registros relacionados fueron eliminados.') AS Mensaje;
+    ELSE
+        SELECT CONCAT('No existe una planta con el ID: ', p_idPlanta) AS Mensaje;
+    END IF;
+END$$
+
+DELIMITER ;
+
+--procedimiento para crear cliente 
+DELIMITER $$
 
 CREATE PROCEDURE crearCliente(
-    IN p_nombre VARCHAR(100),
-    IN p_direccion VARCHAR(100),
+    IN p_nombre VARCHAR(20),
+    IN p_direccion VARCHAR(50),
     IN p_noTelefono VARCHAR(15),
     IN p_sexo ENUM('masculino', 'femenino', 'otro'),
     IN p_ingresosAnuales INT
 )
 BEGIN
-    -- Variables para capturar el error
-    DECLARE v_error_message TEXT;
-
-    -- Handler para manejar excepciones SQL
-    DECLARE CONTINUE HANDLER FOR SQLEXCEPTION
-    BEGIN
-        -- Capturar el mensaje de error más reciente
-        GET DIAGNOSTICS CONDITION 1
-            v_error_message = MESSAGE_TEXT;
-
-        -- Mostrar el mensaje de error al usuario
-        SELECT CONCAT('Error: ', v_error_message) AS Mensaje;
-    END;
-
-    -- Validar si ya existe un cliente con los mismos datos
+    -- Validar si ya existe un cliente con el mismo número de teléfono
     IF EXISTS (
         SELECT 1 
-        FROM clientes 
-        WHERE nombre = p_nombre
-          AND direccion = p_direccion
-          AND noTelefono = p_noTelefono
-          AND sexo = p_sexo
-          AND ingresosAnuales = p_ingresosAnuales
+        FROM CLIENTES 
+        WHERE noTelefono = p_noTelefono
     ) THEN
-        -- Cliente ya existente
-        SELECT 'El cliente ya existe con los mismos datos.' AS Mensaje;
+        SELECT 'Ya existe un cliente con este número de teléfono.' AS Mensaje;
     ELSE
         -- Intentar insertar el cliente
-        INSERT INTO clientes (
+        INSERT INTO CLIENTES (
             nombre,
             direccion,
             noTelefono,
@@ -110,64 +116,66 @@ BEGIN
             p_sexo,
             p_ingresosAnuales
         );
-
         -- Confirmación de éxito
         SELECT 'Cliente creado exitosamente.' AS Mensaje;
     END IF;
-END;
+END $$
 
+DELIMITER ;
 
--- Acturalizar Cliente
+--procedimiento para actualizar cliente
 DELIMITER $$
 
 CREATE PROCEDURE actualizarClientePorId(
     IN p_idCliente INT,
-    IN p_nombre VARCHAR(255),
-    IN p_direccion VARCHAR(255),
-    IN p_sexo ENUM('masculino','femenino','otro'),
+    IN p_nombre VARCHAR(20),
+    IN p_direccion VARCHAR(50),
     IN p_noTelefono VARCHAR(15),
-    IN p_ingresosAnuales INT(10)
+    IN p_sexo ENUM('masculino', 'femenino', 'otro'),
+    IN p_ingresosAnuales INT
 )
 BEGIN
-    -- Verificamos si existe el cliente
-    IF EXISTS(SELECT 1 FROM clientes WHERE idCliente = p_idCliente) THEN
-        -- Si el cliente existe, realizamos la actualización
-        UPDATE clientes
+    -- Verificar si el cliente existe
+    IF EXISTS (SELECT 1 FROM CLIENTES WHERE idCliente = p_idCliente) THEN
+        -- Actualizar cliente usando COALESCE para manejar NULL
+        UPDATE CLIENTES
         SET 
             nombre = COALESCE(p_nombre, nombre),
             direccion = COALESCE(p_direccion, direccion),
-            sexo = COALESCE(p_sexo, sexo),
             noTelefono = COALESCE(p_noTelefono, noTelefono),
+            sexo = COALESCE(p_sexo, sexo),
             ingresosAnuales = COALESCE(p_ingresosAnuales, ingresosAnuales)
         WHERE idCliente = p_idCliente;
-
+        -- Confirmación
+        SELECT 'Cliente actualizado exitosamente.' AS Mensaje;
     ELSE
-        -- Si no existe el cliente, enviamos un mensaje con el error
-        SELECT CONCAT('No existe cliente con el id: ', p_idCliente) AS Mensaje;
+        -- Cliente no encontrado
+        SELECT CONCAT('No existe cliente con el ID: ', p_idCliente) AS Mensaje;
     END IF;
-    
-END$$
+END $$
 
 DELIMITER ;
 
+--procedimiento para eliminar un cliente 
+DELIMITER $$
 
--- procedimiento para elimanar una cliente por id
-
-delimiter $$
-CREATE procedure eliminarClientePorId(
-    In p_idCliente INT
+CREATE PROCEDURE eliminarClientePorId(
+    IN p_idCliente INT
 )
 BEGIN
-    IF EXISTS (SELECT 1 FROM clientes c WHERE c.idCliente  = p_idCliente) THEN
-             DELETE FROM clientes
-             WHERE idCliente = p_idCliente;
-             SELECT 'cliente eliminado' as Mensaje;
-            ELSE
-            SELECT CONCAT('no existe una cliente con el Id: ',p_idPlanta) as Mensaje;
-     END IF;
+    -- Verificar si el cliente existe
+    IF EXISTS (SELECT 1 FROM CLIENTES WHERE idCliente = p_idCliente) THEN
+        DELETE FROM CLIENTES WHERE idCliente = p_idCliente;
+        -- Confirmación
+        SELECT 'Cliente eliminado exitosamente.' AS Mensaje;
+    ELSE
+        -- Cliente no encontrado
+        SELECT CONCAT('No existe un cliente con el ID: ', p_idCliente) AS Mensaje;
+    END IF;
 END $$
 
-delimiter;
+DELIMITER ;
+
 
 
 -- procedimiento para crear un nuevo vehiculo
@@ -500,3 +508,83 @@ BEGIN
 END$$
 
 DELIMITER ;
+
+--procedimiento para crear concesionario
+DELIMITER $$
+
+CREATE PROCEDURE crearConcesionario(
+    IN p_nombre VARCHAR(50),
+    IN p_direccion VARCHAR(100),
+    IN p_noTelefono VARCHAR(15)
+)
+BEGIN
+    -- Validar si ya existe un concesionario con el mismo teléfono o dirección
+    IF EXISTS (
+        SELECT 1
+        FROM CONCESIONARIOS
+        WHERE noTelefono = p_noTelefono OR direccion = p_direccion
+    ) THEN
+        SELECT 'Ya existe un concesionario con este número de teléfono o dirección.' AS Mensaje;
+    ELSE
+        -- Insertar el nuevo concesionario
+        INSERT INTO CONCESIONARIOS (nombre, direccion, noTelefono)
+        VALUES (p_nombre, p_direccion, p_noTelefono);
+        -- Confirmación de éxito
+        SELECT 'Concesionario creado exitosamente.' AS Mensaje;
+    END IF;
+END $$
+
+DELIMITER ;
+
+--procedimiento para actualizar concesionario
+DELIMITER $$
+
+CREATE PROCEDURE actualizarConcesionarioPorId(
+    IN p_idConcesionario INT,
+    IN p_nombre VARCHAR(20),
+    IN p_direccion VARCHAR(50),
+    IN p_noTelefono VARCHAR(15)
+)
+BEGIN
+    -- Validar si el concesionario existe
+    IF EXISTS (SELECT 1 FROM CONCESIONARIOS WHERE idConcesionario = p_idConcesionario) THEN
+        -- Actualizar los campos proporcionados usando COALESCE
+        UPDATE CONCESIONARIOS
+        SET 
+            nombre = COALESCE(p_nombre, nombre),
+            direccion = COALESCE(p_direccion, direccion),
+            noTelefono = COALESCE(p_noTelefono, noTelefono)
+        WHERE idConcesionario = p_idConcesionario;
+        -- Confirmación de éxito
+        SELECT 'Concesionario actualizado exitosamente.' AS Mensaje;
+    ELSE
+        -- Mensaje si no se encuentra el concesionario
+        SELECT CONCAT('No existe un concesionario con el ID: ', p_idConcesionario) AS Mensaje;
+    END IF;
+END $$
+
+DELIMITER ;
+
+--procedimiento para eliminar consecionario
+DELIMITER $$
+
+CREATE PROCEDURE eliminarConcesionarioPorId(
+    IN p_idConcesionario INT
+)
+BEGIN
+    -- Verificar si el concesionario existe
+    IF EXISTS (SELECT 1 FROM CONCESIONARIOS WHERE idConcesionario = p_idConcesionario) THEN
+        -- Eliminar concesionario
+        DELETE FROM CONCESIONARIOS WHERE idConcesionario = p_idConcesionario;
+        -- Confirmación de éxito
+        SELECT 'Concesionario eliminado exitosamente.' AS Mensaje;
+    ELSE
+        -- Mensaje si no se encuentra el concesionario
+        SELECT CONCAT('No existe un concesionario con el ID: ', p_idConcesionario) AS Mensaje;
+    END IF;
+END $$
+
+DELIMITER ;
+
+
+
