@@ -1,9 +1,5 @@
 <?php
 
-header("Access-Control-Allow-Origin: *");
-header("Access-Control-Allow-Methods: POST, GET, OPTIONS");
-header("Access-Control-Allow-Headers: Content-Type, Authorization");
-
 // Obtención de la ruta y parámetros de la solicitud
 $requestUri = $_SERVER['REQUEST_URI'];
 $parsedUrl = parse_url($requestUri);

@@ -108,18 +108,25 @@ try {
     // Ejecución de la consulta
     $query->execute();
 
-    // Verificar si la consulta afectó alguna fila
-    if ($query->rowCount() > 0) {
+// Obtener el mensaje de la consulta
+$message = $query->fetch(PDO::FETCH_ASSOC);
+
+// Verificar el mensaje y tomar acción
+if ($message) {
+    if (strpos($message['Mensaje'], 'exitosamente') !== false) {
+        // Si el mensaje contiene "exitosamente", significa que el cliente fue actualizado
         echo json_encode([
             "status" => 200,
-            "message" => "Cliente actualizado con éxito."
+            "message" => $message['Mensaje']
         ]);
     } else {
+        // Si no contiene "exitosamente", significa que no se encontró al cliente
         echo json_encode([
             "status" => 404,
-            "error" => "No se encontró el cliente o no se realizaron cambios."
+            "error" => $message['Mensaje']
         ]);
     }
+}
 } catch (PDOException $e) {
     echo json_encode([
         "status" => 500,
@@ -138,13 +145,27 @@ try {
             $stmt = $conn->prepare("call eliminarClientePorId(:idCliente)");
             $stmt->bindParam(':idCliente', $idCliente, PDO::PARAM_INT);
             $stmt->execute();
+            
+// Obtener el mensaje de la consulta
+$message = $stmt->fetch(PDO::FETCH_ASSOC);
 
-            // Si no se eliminó ninguna fila, significa que el cliente no existía
-            if ($stmt->rowCount() > 0) {
-                return true; // Se eliminó correctamente
-            } else {
-                return false; // No se encontró el cliente
-            }
+// Verificar el mensaje y tomar acción
+if ($message) {
+    if (strpos($message['Mensaje'], 'exitosamente') !== false) {
+        // Si el mensaje contiene "exitosamente", significa que el cliente fue eliminado
+        echo json_encode([
+            "status" => 200,
+            "message" => $message['Mensaje']
+        ]);
+    } else {
+        // Si no contiene "exitosamente", significa que no se encontró al cliente
+        echo json_encode([
+            "status" => 404,
+            "error" => $message['Mensaje']
+        ]);
+    }
+}
+
         } catch (Exception $e) {
             // Manejo de errores, por ejemplo, si la base de datos no responde
             error_log($e->getMessage()); // Registrar el error en un log

@@ -56,32 +56,33 @@ END$$
 DELIMITER ;
 
 -- procedimiento para eliminar planta
+DELIMITER $$
 
 CREATE PROCEDURE eliminarPlantaPorId(
     IN p_idPlanta INT
 )
 BEGIN
     -- Verifica si la planta existe
-    IF EXISTS (
-        SELECT 1 
-        FROM Plantas 
-        WHERE idPlanta = p_idPlanta
-    ) THEN
-        -- Elimina registros relacionados en ModelosXPlantas
-        DELETE FROM ModelosXPlantas 
-        WHERE idPlanta = p_idPlanta;
+    IF EXISTS (SELECT 1 FROM Plantas WHERE idPlanta = p_idPlanta) THEN
+        -- Elimina las relaciones en la tabla ModelosXPlantas si existen
+        IF EXISTS (SELECT 1 FROM ModelosXPlantas WHERE idPlanta = p_idPlanta) THEN
+            DELETE FROM ModelosXPlantas WHERE idPlanta = p_idPlanta;
+            SELECT CONCAT('Las relaciones con ModelosXPlantas para la planta con ID ', p_idPlanta, ' fueron eliminadas.') AS Mensaje;
+        END IF;
 
-        -- Elimina la planta
-        DELETE FROM Plantas 
-        WHERE idPlanta = p_idPlanta;
+        -- Ahora elimina la planta
+        DELETE FROM Plantas WHERE idPlanta = p_idPlanta;
 
+        -- Mensaje de confirmación
         SELECT CONCAT('La planta con ID ', p_idPlanta, ' y sus registros relacionados fueron eliminados.') AS Mensaje;
     ELSE
+        -- Si la planta no existe
         SELECT CONCAT('No existe una planta con el ID: ', p_idPlanta) AS Mensaje;
     END IF;
 END$$
 
 DELIMITER ;
+
 
 --procedimiento para crear cliente 
 DELIMITER $$
@@ -304,7 +305,7 @@ BEGIN
 	direccion = COALESCE(p_direccion, direccion),
 	noTelefono = COALESCE(p_noTelefono, noTelefono)
 	WHERE idProveedor = p_idProveedor;
-   SELECT 'Proveedor actualizado con exito ' AS mensaje;
+   SELECT 'Proveedor actualizado exitosamente ' AS mensaje;
    ELSE
    SELECT 'No esxiste un proveedor con estos datos' AS mensaje;
    END IF;
@@ -322,7 +323,7 @@ BEGIN
 	 WHERE p.idProveedor = p_idProveedor
 	 ) THEN
 	DELETE FROM proveedores WHERE idProveedor = p_idProveedor; 
-   SELECT 'Proveedor eliminado con exito ' AS mensaje;
+   SELECT 'Proveedor eliminado exitosamente ' AS mensaje;
    ELSE
    SELECT 'No esxiste un proveedor con estos datos' AS mensaje;
    END IF;
@@ -370,7 +371,7 @@ BEGIN
 	estiloCarroceria = COALESCE(m_estiloCarroceria, estiloCarroceria),
 	marca = COALESCE(m_marca, marca)
 	WHERE idModelo = m_idModelo;
-   SELECT 'Modelo actualizado con exito ' AS mensaje;
+   SELECT 'Modelo actualizado exitosamente ' AS mensaje;
    ELSE
    SELECT 'No esxiste un modelo con estos datos' AS mensaje;
    END IF;
@@ -389,7 +390,7 @@ BEGIN
 	 ) THEN
 	DELETE FROM MODELOS
 	WHERE idModelo = m_idModelo;
-   SELECT 'Modelo eliminado con exito ' AS mensaje;
+   SELECT 'Modelo eliminado exitosamente ' AS mensaje;
    ELSE
    SELECT 'No esxiste un modelo con estos datos' AS mensaje;
    END IF;
