@@ -170,3 +170,220 @@ END $$
 delimiter;
 
 
+-- procedimiento para crear un nuevo vehiculo
+DELIMITER $$
+
+CREATE PROCEDURE registrarNuevoVehiculo(
+    IN v_VIN VARCHAR(17),
+    IN v_idModelo INT,
+    IN v_color VARCHAR(10),
+    IN v_noMotor INT,
+    IN v_transmision VARCHAR(10),
+    IN v_fechaFabricacion DATE
+)
+BEGIN
+    IF v_color NOT IN ('rojo', 'azul', 'blanco', 'negro', 'gris') THEN
+        SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Color inválido';
+    ELSEIF v_transmision NOT IN ('manual', 'automática') THEN
+        SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Tipo de transmisión inválido';
+    ELSE
+        IF NOT EXISTS (SELECT 1 FROM VEHICULOS WHERE VIN = v_VIN) THEN
+            IF EXISTS (SELECT 1 FROM MODELOS WHERE idModelo = v_idModelo) THEN
+                INSERT INTO VEHICULOS (VIN, idModelo, color, noMotor, transmision, fechaFabricacion)
+                VALUES (v_VIN, v_idModelo, v_color, v_noMotor, v_transmision, v_fechaFabricacion);
+                SELECT 'Vehículo registrado correctamente' AS resultado;
+            ELSE
+                SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'El modelo especificado no existe';
+            END IF;
+        ELSE
+            SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'El vehículo con el VIN especificado ya existe';
+        END IF;
+    END IF;
+END$$
+
+DELIMITER ;
+
+-- procedimiento para actualizar un vehiculo
+DELIMITER $$
+
+CREATE PROCEDURE actualizarVehiculo(
+    IN v_VIN VARCHAR(17),
+    IN v_idModelo INT,
+    IN v_color ENUM('rojo', 'azul', 'blanco', 'negro', 'gris'),
+    IN v_noMotor INT,
+    IN v_transmision ENUM('manual', 'automática'),
+    IN v_fechaFabricacion DATE
+)
+BEGIN
+ DECLARE v_error_message TEXT;
+ DECLARE CONTINUE HANDLER FOR SQLEXCEPTION
+  	BEGIN
+        GET DIAGNOSTICS CONDITION 1
+            v_error_message = MESSAGE_TEXT;
+        SELECT CONCAT('Error: ', v_error_message) AS Mensaje;
+    END;
+            
+	 IF EXISTS (SELECT 1 FROM VEHICULOS v WHERE v.VIN = v_VIN) THEN
+            UPDATE VEHICULOS SET 
+            modelo = CASE WHEN v_idModelo IS NOT NULL AND 
+				EXISTS (SELECT 1 FROM MODELOS m WHERE m.idModelo = v_idModelo) 
+				THEN v_idModelo ELSE modelo END,
+				color = COALESCE(v_color, color),
+				motor = COALESCE(v_noMotor, noMotor),
+				tansmision = COALESCE(v_transmision, transmision),
+				fechaFabricacion = COALESCE(v_fechaFabricacion, fechaFabricacion);
+            SELECT 'Vehiculo actualizado exitosamente' AS Mensaje;
+        ELSE
+             SELECT  'El vehículo con el VIN especificado no existe' AS Mensaje;
+        END IF;
+END$$
+DELIMITER ;
+
+-- procedimiento para eliminar vehiculo
+DELIMITER $$
+
+CREATE PROCEDURE eliminarVehiculo(
+    IN v_VIN VARCHAR(17))
+BEGIN     
+	 IF EXISTS (SELECT 1 FROM VEHICULOS v WHERE v.VIN = v_VIN) THEN
+            DELETE FROM vehiculos
+            WHERE VIN = v_VIN;
+         SELECT 'Vehiculo eliminado exitosamente' AS mensaje;
+      ELSE
+         SELECT 'El vehículo con el VIN especificado no existe' AS mensaje;
+      END IF;
+END$$
+DELIMITER ;
+
+-- procedimiento para añadir un proveedor
+DELIMITER $$
+
+CREATE PROCEDURE nuevoProveedor(
+	p_nombre VARCHAR(20),
+   p_direccion VARCHAR(50),
+   p_noTelefono VARCHAR(15))
+BEGIN     
+	 IF EXISTS (
+	 SELECT 1 FROM PROVEEDORES p
+	 WHERE p.nombre = p_nombre
+	 AND p.direccion = p_direccion
+	 AND p.noTelefono = p_noTelefono
+	 ) THEN
+	 SELECT 'Ya esxiste un proveedor con estos datos' AS mensaje;
+   ELSE
+   INSERT INTO PROVEEDORES (nombre, direccion, noTelefono)
+   VALUES (p_nombre, p_direccion, p_noTelefono);
+   SELECT 'Proveedor añadido con exito ' AS mensaje;
+   END IF;
+END$$
+DELIMITER ;
+
+-- procedimiento para actualizar un proveedor
+DELIMITER $$
+
+CREATE PROCEDURE actualizarProveedor(
+	p_idProveedor INT,
+	p_nombre VARCHAR(20),
+   p_direccion VARCHAR(50),
+   p_noTelefono VARCHAR(15))
+BEGIN     
+	 IF EXISTS (
+	 SELECT 1 FROM PROVEEDORES p
+	 WHERE p.idProveedor = p_idProveedor
+	 ) THEN
+	UPDATE proveedores SET 
+	nombre = COALESCE(p_nombre, nombre),
+	direccion = COALESCE(p_direccion, direccion),
+	noTelefono = COALESCE(p_noTelefono, noTelefono)
+	WHERE idProveedor = p_idProveedor;
+   SELECT 'Proveedor actualizado con exito ' AS mensaje;
+   ELSE
+   SELECT 'No esxiste un proveedor con estos datos' AS mensaje;
+   END IF;
+END$$
+DELIMITER ;
+
+-- procedimiento para eliminar un proveedor
+DELIMITER $$
+
+CREATE PROCEDURE eliminarProveedor(
+	p_idProveedor INT)
+BEGIN     
+	 IF EXISTS (
+	 SELECT 1 FROM PROVEEDORES p
+	 WHERE p.idProveedor = p_idProveedor
+	 ) THEN
+	DELETE FROM proveedores WHERE idProveedor = p_idProveedor; 
+   SELECT 'Proveedor eliminado con exito ' AS mensaje;
+   ELSE
+   SELECT 'No esxiste un proveedor con estos datos' AS mensaje;
+   END IF;
+END$$
+DELIMITER ;
+
+-- procedimiento para añadir un nuevo modelo
+DELIMITER $$
+
+CREATE PROCEDURE nuevoModelo(
+	m_nombre VARCHAR(10),
+  m_estiloCarroceria ENUM('sedan', 'hatchback', 'suv', 'coupe', 'pickup', 'convertible'),
+   m_marca VARCHAR(10))
+BEGIN     
+	IF EXISTS (
+	SELECT 1 FROM MODELOS m
+	WHERE m.nombre = m_nombre
+	AND m.estiloCarroceria = m_estiloCarroceria
+	AND m.marca = m_marca
+	) THEN
+	SELECT 'Ya esxiste un modelo con estos datos' AS mensaje;
+   ELSE
+   INSERT INTO modelos (nombre, estiloCarroceria, marca)
+   VALUES (m_nombre, m_estiloCarroceria, m_marca);
+   SELECT 'Modelo agregado con exito ' AS mensaje;
+   END IF;
+END$$
+DELIMITER ;
+
+-- procedimiento para actualizar un modelo
+DELIMITER $$
+
+CREATE PROCEDURE actualizarModelo(
+	m_idModelo INT,
+	m_nombre VARCHAR(10),
+  m_estiloCarroceria ENUM('sedan', 'hatchback', 'suv', 'coupe', 'pickup', 'convertible'),
+   m_marca VARCHAR(10))
+BEGIN     
+	 IF EXISTS (
+	 SELECT 1 FROM MODELOS m
+	 WHERE m.idModelo = m_idModelo
+	 ) THEN
+	UPDATE MODELOS SET 
+	nombre = COALESCE(m_nombre, nombre),
+	estiloCarroceria = COALESCE(m_estiloCarroceria, estiloCarroceria),
+	marca = COALESCE(m_marca, marca)
+	WHERE idModelo = m_idModelo;
+   SELECT 'Modelo actualizado con exito ' AS mensaje;
+   ELSE
+   SELECT 'No esxiste un modelo con estos datos' AS mensaje;
+   END IF;
+END$$
+DELIMITER ;
+
+-- procedimiento para eliminar un modelos
+DELIMITER $$
+
+CREATE PROCEDURE eliminarModelo(
+	m_idModelo INT)
+BEGIN     
+	 IF EXISTS (
+	 SELECT 1 FROM MODELOS m
+	 WHERE m.idModelo = m_idModelo
+	 ) THEN
+	DELETE FROM MODELOS
+	WHERE idModelo = m_idModelo;
+   SELECT 'Modelo eliminado con exito ' AS mensaje;
+   ELSE
+   SELECT 'No esxiste un modelo con estos datos' AS mensaje;
+   END IF;
+END$$
+DELIMITER ;
