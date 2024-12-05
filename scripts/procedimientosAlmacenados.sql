@@ -387,3 +387,116 @@ BEGIN
    END IF;
 END$$
 DELIMITER ;
+
+--procedimiento para crear ventas
+DELIMITER $$
+
+CREATE PROCEDURE crearVenta(
+    IN p_fecha DATE,
+    IN p_idConcesionario INT,
+    IN p_idCliente INT,
+    IN p_VIN VARCHAR(17),
+    IN p_precio DECIMAL(10,2)
+)
+BEGIN
+    -- Variable para capturar errores
+    DECLARE v_error_message TEXT;
+
+    -- Handler para manejar excepciones SQL
+    DECLARE CONTINUE HANDLER FOR SQLEXCEPTION
+    BEGIN
+        GET DIAGNOSTICS CONDITION 1
+            v_error_message = MESSAGE_TEXT;
+        SELECT CONCAT('Error al crear la venta: ', v_error_message) AS Mensaje;
+    END;
+
+    -- Validar existencia de los datos relacionados
+    IF NOT EXISTS (SELECT 1 FROM Concesionarios WHERE idConcesionario = p_idConcesionario) THEN
+        SELECT 'El concesionario especificado no existe.' AS Mensaje;
+    ELSEIF NOT EXISTS (SELECT 1 FROM Clientes WHERE idCliente = p_idCliente) THEN
+        SELECT 'El cliente especificado no existe.' AS Mensaje;
+    ELSEIF NOT EXISTS (SELECT 1 FROM Vehiculos WHERE VIN = p_VIN) THEN
+        SELECT 'El vehículo especificado no existe.' AS Mensaje;
+    ELSE
+        -- Intentar crear la venta
+        INSERT INTO VENTAS (fecha, idConcesionario, idCliente, VIN, precio)
+        VALUES (p_fecha, p_idConcesionario, p_idCliente, p_VIN, p_precio);
+        SELECT 'Venta creada exitosamente.' AS Mensaje;
+    END IF;
+END$$
+
+DELIMITER ;
+
+
+--procedimiento para actualizar ventas
+
+DELIMITER $$
+
+CREATE PROCEDURE actualizarVenta(
+    IN p_idVenta INT,
+    IN p_fecha DATE,
+    IN p_idConcesionario INT,
+    IN p_idCliente INT,
+    IN p_VIN VARCHAR(17),
+    IN p_precio DECIMAL(10,2)
+)
+BEGIN
+    -- Variable para capturar errores
+    DECLARE v_error_message TEXT;
+
+    -- Handler para manejar excepciones SQL
+    DECLARE CONTINUE HANDLER FOR SQLEXCEPTION
+    BEGIN
+        GET DIAGNOSTICS CONDITION 1
+            v_error_message = MESSAGE_TEXT;
+        SELECT CONCAT('Error al actualizar la venta: ', v_error_message) AS Mensaje;
+    END;
+
+    -- Verificar si la venta existe
+    IF EXISTS (SELECT 1 FROM VENTAS WHERE idVenta = p_idVenta) THEN
+        -- Actualizar la venta
+        UPDATE VENTAS
+        SET 
+            fecha = COALESCE(p_fecha, fecha),
+            idConcesionario = COALESCE(p_idConcesionario, idConcesionario),
+            idCliente = COALESCE(p_idCliente, idCliente),
+            VIN = COALESCE(p_VIN, VIN),
+            precio = COALESCE(p_precio, precio)
+        WHERE idVenta = p_idVenta;
+        SELECT 'Venta actualizada exitosamente.' AS Mensaje;
+    ELSE
+        SELECT CONCAT('No existe una venta con el ID: ', p_idVenta) AS Mensaje;
+    END IF;
+END$$
+
+DELIMITER ;
+
+--procedimiento para eliminar venta
+DELIMITER $$
+
+CREATE PROCEDURE eliminarVenta(
+    IN p_idVenta INT
+)
+BEGIN
+    -- Variable para capturar errores
+    DECLARE v_error_message TEXT;
+
+    -- Handler para manejar excepciones SQL
+    DECLARE CONTINUE HANDLER FOR SQLEXCEPTION
+    BEGIN
+        GET DIAGNOSTICS CONDITION 1
+            v_error_message = MESSAGE_TEXT;
+        SELECT CONCAT('Error al eliminar la venta: ', v_error_message) AS Mensaje;
+    END;
+
+    -- Verificar si la venta existe
+    IF EXISTS (SELECT 1 FROM VENTAS WHERE idVenta = p_idVenta) THEN
+        -- Eliminar la venta
+        DELETE FROM VENTAS WHERE idVenta = p_idVenta;
+        SELECT 'Venta eliminada exitosamente.' AS Mensaje;
+    ELSE
+        SELECT CONCAT('No existe una venta con el ID: ', p_idVenta) AS Mensaje;
+    END IF;
+END$$
+
+DELIMITER ;
