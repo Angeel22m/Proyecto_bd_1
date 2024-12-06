@@ -1,42 +1,57 @@
 <?php
-class ClientesModel {
-    
-    
-    static public function crearCliente($nombre, $direccion, $noTelefono, $sexo, $ingresosAnuales) {
+class VentasModel {
+    static public function crearVenta($idConcesionario, $idVenta, $VIN, $precio) {
         try {
             // Obtener la conexión
             $connection = Connection::connect();
-
+    
             if (!$connection) {
                 throw new Exception("Error: No se pudo establecer la conexión a la base de datos.");
             }
-
+    
             // Preparar el procedimiento almacenado
-            $script = $connection->prepare('CALL crearCliente(:)');
-
+            $script = $connection->prepare('CALL crearVenta(:idConcesionario, :idVenta, :VIN, :precio,');
+    
             // Vincular las variables a los parámetros de la consulta
-            $script->bindParam(':nombre', $nombre, PDO::PARAM_STR); // Vinculando :nombre
-            $script->bindParam(':direccion', $direccion, PDO::PARAM_STR); // Vinculando :direccion
-            $script->bindParam(':noTelefono', $noTelefono, PDO::PARAM_STR); // Vinculando :noTelefono
-            $script->bindParam(':sexo', $sexo, PDO::PARAM_STR); // Vinculando :sexo
-            $script->bindParam(':ingresosAnuales', $ingresosAnuales, PDO::PARAM_INT); // Vinculando :ingresosAnuales
-
+            $script->bindParam(':idConcesionario', $idConcesionario, PDO::PARAM_STR); // Vinculando :idConcesionario
+            $script->bindParam(':idVenta', $idVenta, PDO::PARAM_STR); // Vinculando :idVenta
+            $script->bindParam(':VIN', $VIN, PDO::PARAM_STR); // Vinculando :VIN
+            $script->bindParam(':precio', $precio, PDO::PARAM_STR); // Vinculando :precio
+            
+    
             // Ejecutar la consulta
             $script->execute();
-
-            // Obtener los resultados si existen
-            $result = $script->fetchAll(PDO::FETCH_ASSOC);
-
+    
+            // Obtener el mensaje de la consulta
+            $message = $script->fetch(PDO::FETCH_ASSOC);
+    
             // Liberar los recursos
             $script->closeCursor();
             $script = null;
-
-            // Retornar el resultado
-            return [
-                "status" => 200,
-                "message" => "Cliente creado exitosamente",
-                "data" => $result
-            ];
+    
+            // Verificar el mensaje y tomar acción
+            if ($message) {
+                if (strpos($message['Mensaje'], 'exitosamente') !== false) {
+                    // Si el mensaje contiene "exitosamente", significa que la venta fue creada
+                    echo json_encode([
+                        "status" => 200,
+                        "message" => $message['Mensaje']
+                    ]);
+                } else {
+                    // Si no contiene "exitosamente"
+                    echo json_encode([
+                        "status" => 404,
+                        "error" => $message['Mensaje']
+                    ]);
+                }
+            } else {
+                // Si no hay mensaje (posible error al ejecutar el procedimiento)
+                echo json_encode([
+                    "status" => 404,
+                    "error" => "No se pudo crear el cliente."
+                ]);
+            }
+    
         } catch (PDOException $e) {
             // Registrar el error en un archivo de log
             error_log("Error al ejecutar la consulta: " . $e->getMessage(), 3, 'errors.log');
@@ -54,12 +69,11 @@ class ClientesModel {
         }
     }
 
-
     public static function readAll() {
         try {
             // Preparación de la consulta de lectura.
             $query = Connection::connect()->prepare(
-                "select * from CLIENTES"
+                "select * from VENTAS"
             );
     
             // Ejecución de la consulta.
@@ -85,27 +99,25 @@ class ClientesModel {
     }
     
 
-    public static function actualizarCliente($Datos){
+    public static function actualizarVenta($Datos){
         
 // Preparación de la consulta de actualización
 $query = Connection::connect()->prepare(
-    "CALL actualizarClientePorId(
-        :idCliente,
-        :nombre,
-        :direccion,
-        :sexo,
-        :noTelefono,
-        :ingresosAnuales
+    "CALL actualizarVenta(
+       :idVenta,
+    :idConcesionario,
+    :idCliente,
+    :VIN,
+    :precio
     )"
 );
 
 // Vinculación de los parámetros
-$query->bindParam(":idCliente", $Datos["idCliente"], PDO::PARAM_INT);
-$query->bindParam(":nombre", $Datos["nombre"], PDO::PARAM_STR);
-$query->bindParam(":direccion", $Datos["direccion"], PDO::PARAM_STR);
-$query->bindParam(":sexo", $Datos["sexo"], PDO::PARAM_STR);
-$query->bindParam(":noTelefono", $Datos["noTelefono"], PDO::PARAM_STR);
-$query->bindParam(":ingresosAnuales", $Datos["ingresosAnuales"], PDO::PARAM_STR);
+$query->bindParam(":idVenta", $Datos["idVenta"], PDO::PARAM_INT);
+$query->bindParam(":idConcesionario", $Datos["idConcesionario"], PDO::PARAM_STR);
+$query->bindParam(":idCliente", $Datos["idCliente"], PDO::PARAM_STR);
+$query->bindParam(":VIN", $Datos["VIN"], PDO::PARAM_STR);
+$query->bindParam(":precio", $Datos["precio"], PDO::PARAM_STR);
 
 try {
     // Ejecución de la consulta
@@ -117,13 +129,13 @@ $message = $query->fetch(PDO::FETCH_ASSOC);
 // Verificar el mensaje y tomar acción
 if ($message) {
     if (strpos($message['Mensaje'], 'exitosamente') !== false) {
-        // Si el mensaje contiene "exitosamente", significa que el cliente fue actualizado
+        // Si el mensaje contiene "exitosamente"
         echo json_encode([
             "status" => 200,
             "message" => $message['Mensaje']
         ]);
     } else {
-        // Si no contiene "exitosamente", significa que no se encontró al cliente
+        // Si no contiene "exitosamente",
         echo json_encode([
             "status" => 404,
             "error" => $message['Mensaje']
@@ -133,7 +145,7 @@ if ($message) {
 } catch (PDOException $e) {
     echo json_encode([
         "status" => 500,
-        "error" => "Error interno al actualizar el cliente.",
+        "error" => "Error interno al actualizar la venta.",
         "detalle" => $e->getMessage()
     ]);
 }
@@ -141,12 +153,12 @@ if ($message) {
     }
 
 
-    public static function eliminarClientePorID($idCliente) {
+    public static function eliminarVenta($idVenta) {
        $conn = Connection::connect(); 
         try {
             // Preparar la consulta SQL para eliminar el cliente por su ID
-            $stmt = $conn->prepare("call eliminarClientePorId(:idCliente)");
-            $stmt->bindParam(':idCliente', $idCliente, PDO::PARAM_INT);
+            $stmt = $conn->prepare("call eliminarVenta(:idVenta)");
+            $stmt->bindParam(':idVenta', $idVenta, PDO::PARAM_INT);
             $stmt->execute();
             
 // Obtener el mensaje de la consulta

@@ -27,6 +27,10 @@ if (count($arrayRutas) >= 3) {
             handleCliente($requestMethod);
             break;
 
+        case 'ventas';
+            handleVentas($requestMethod);
+            break;
+
         default:
             // Respuesta para rutas no encontradas
             echo json_encode([
@@ -206,8 +210,123 @@ function handleCliente($method) {
 }
 
 
+//
 
+//manejador para Ventas
 
+function handleVentas($method) {
+    $venta = new VentasController();
 
-?>
+    switch ($method) {
+        case 'POST':
+            // Verifica que los datos POST estén presentes
+            if (
+                isset($_POST['idConsecionario'], $_POST['idVenta'], $_POST['VIN'], $_POST['precio'])
+            ) {
+                $idConsecionario = $_POST['idConsecionario'];
+                $idVenta = $_POST['idVenta'];
+                $VIN = $_POST['VIN'];
+                $precio = $_POST['precio'];
+                
 
+                try {
+                    $venta->crearVenta($idConsecionario, $idVenta, $VIN, $precio);                   
+                } catch (Exception $e) {
+                    echo json_encode([
+                        "status" => 500,
+                        "error" => "Error interno al crear el venta$venta.",
+                        "detalle" => $e->getMessage()
+                    ]);
+                }
+            } else {
+                echo json_encode([
+                    "status" => 400,
+                    "error" => "Faltan datos obligatorios para crear el venta$venta."
+                ]);
+            }
+            break;
+
+        case 'GET':
+            try {
+                $result = $venta->readAll();               
+            } catch (Exception $e) {
+                echo json_encode([
+                    "status" => 500,
+                    "error" => "Error interno al obtener los clientes.",
+                    "detalle" => $e->getMessage()
+                ]);
+            }
+            break;
+            case 'PUT':
+                // Obtener el idVenta de la ruta (en la URL)
+                $idVenta = isset($_GET['idVenta']) ? $_GET['idVenta'] : null;
+            
+                if (!$idVenta) {
+                    echo json_encode([
+                        "status" => 400,
+                        "error" => "El idVenta es obligatorio para actualizar un venta$venta."
+                    ]);
+                    break;
+                }
+            
+                // Leer el cuerpo de la solicitud para obtener los datos del venta$venta en form data
+                parse_str(file_get_contents("php://input"), $putData);
+            
+                // Validar que al menos un campo opcional esté presente
+                $campos = [];
+                if (!empty($putData['idConsecionario'])) $campos['idConsecionario'] = $putData['idConsecionario'];
+                if (!empty($putData['idVenta'])) $campos['idVenta'] = $putData['idVenta'];
+                if (!empty($putData['VIN'])) $campos['VIN'] = $putData['VIN'];
+                if (!empty($putData['precio'])) $campos['precio'] = $putData['precio'];
+          
+            
+                if (empty($campos)) {
+                    echo json_encode([
+                        "status" => 400,
+                        "error" => "Debe proporcionar al menos un campo para actualizar."
+                    ]);
+                    break;
+                }
+            
+                try {
+                    // Llamar al método para actualizar el venta$venta
+                    $venta->actualizarVenta($idVenta, $campos);                               
+                } catch (Exception $e) {
+                    echo json_encode([
+                        "status" => 500,
+                        "error" => "Error interno al actualizar el venta$venta.",
+                        "detalle" => $e->getMessage()
+                    ]);
+                }
+                break;
+            
+            case 'DELETE':
+                // Obtener el ID de la venta desde los parámetros de la URL
+                if (isset($_GET['idVenta'])) {
+                    $idVenta = $_GET['idVenta'];
+    
+                    try {
+                        $venta->eliminarVenta($idVenta);                       
+                    } catch (Exception $e) {
+                        echo json_encode([
+                            "status" => 500,
+                            "error" => "Error interno al eliminar el venta$venta.",
+                            "detalle" => $e->getMessage()
+                        ]);
+                    }
+                } else {
+                    echo json_encode([
+                        "status" => 400,
+                        "error" => "El idVenta es obligatorio para eliminar un venta$venta."
+                    ]);
+                }
+                break;
+
+        default:
+            echo json_encode([
+                "status" => 405,
+                "detalle" => "Método no permitido."
+            ]);
+            break;
+    }
+}
