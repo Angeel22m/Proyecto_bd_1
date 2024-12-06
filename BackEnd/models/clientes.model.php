@@ -21,29 +21,41 @@ class ClientesModel {
             $script->bindParam(':sexo', $sexo, PDO::PARAM_STR); // Vinculando :sexo
             $script->bindParam(':ingresosAnuales', $ingresosAnuales, PDO::PARAM_INT); // Vinculando :ingresosAnuales
 
+            
+    
             // Ejecutar la consulta
             $script->execute();
-
-            // Obtener los resultados si existen
-            $result = $script->fetchAll(PDO::FETCH_ASSOC);
-
+    
+            // Obtener el mensaje de la consulta
+            $message = $script->fetch(PDO::FETCH_ASSOC);
+    
             // Liberar los recursos
             $script->closeCursor();
             $script = null;
-
-            // Retornar el resultado
-            return [
-                "status" => 200,
-                "message" => "Cliente creado exitosamente",
-                "data" => $result
-            ];
-        } catch (PDOException $e) {
-            // Registrar el error en un archivo de log
-            error_log("Error al ejecutar la consulta: " . $e->getMessage(), 3, 'errors.log');
-            return [
-                "status" => 500,
-                "error" => "Error en la base de datos. Verifique permisos o contacte al administrador."
-            ];
+    
+            // Verificar el mensaje y tomar acción
+            if ($message) {
+                if (strpos($message['Mensaje'], 'exitosamente') !== false) {
+                    // Si el mensaje contiene "exitosamente"
+                    echo json_encode([
+                        "status" => 200,
+                        "message" => $message['Mensaje']
+                    ]);
+                } else {
+                    // Si no contiene "exitosamente"
+                    echo json_encode([
+                        "status" => 404,
+                        "error" => $message['Mensaje']
+                    ]);
+                }
+            } else {
+                // Si no hay mensaje (posible error al ejecutar el procedimiento)
+                echo json_encode([
+                    "status" => 404,
+                    "error" => "No se pudo crear el cliente."
+                ]);
+            }
+    
         } catch (Exception $e) {
             // Manejar otros errores
             error_log("Error general: " . $e->getMessage(), 3, 'errors.log');

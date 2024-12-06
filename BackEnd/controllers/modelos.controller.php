@@ -6,20 +6,7 @@ class ModelosController {
         $modeloModel = new ModelosModel();
 
         // Llamar al método del modelo para crear el Modelo
-        $response = $modeloModel::nuevoModelo($nombre, $estiloCarroceria, $marca);
-
-        // Verificar si la respuesta está vacía o si hubo un error
-        if (isset($response['status']) && $response['status'] !== 200) {
-            // Error en la creación del Modelo
-            echo json_encode($response, JSON_PRETTY_PRINT);
-        } else {
-            // Modelo creado exitosamente
-            echo json_encode([
-                "status" => 200,
-                "data" => $response['data'] ?? null
-            ], JSON_PRETTY_PRINT);
-        }
-
+        $response = $modeloModel::nuevoModelo($nombre, $estiloCarroceria, $marca);    
         return;
     }
 
@@ -68,25 +55,7 @@ class ModelosController {
         
         // Intentar eliminar el modelo
         $response = $modeloModel::eliminarModelo($idModelo);
-    
-        // Comprobamos si la eliminación fue exitosa
-        if ($response === false) { // Cambié a 'false', asumiendo que el modelo devuelve false si no se encuentra el Modelo
-            // Modelo no encontrado
-            $json = array(
-                "status" => 404,
-                "detalle" => "No existe el modelo con el ID: $idModelo"
-            );
-            echo json_encode($json, true);
-            return;
-        } else {
-            // Modelo eliminado correctamente
-            $json = array(
-                "status" => 200,
-                "detalle" => "Modelo con ID: $idModelo ha sido eliminado correctamente"
-            );
-            echo json_encode($json, true);
-            return;
         }
     }
     
-}
+

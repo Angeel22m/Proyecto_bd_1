@@ -7,19 +7,6 @@ class PlantasController {
 
         // Llamar al método del modelo para crear la Planta
         $response = $plantaModel::registrarNuevaPlanta($nombre, $ubicacion);
-
-        // Verificar si la respuesta está vacía o si hubo un error
-        if (isset($response['status']) && $response['status'] !== 200) {
-            // Error en la creación de la planta
-            echo json_encode($response, JSON_PRETTY_PRINT);
-        } else {
-            // Planta creada exitosamente
-            echo json_encode([
-                "status" => 200,
-                "data" => $response['data'] ?? null
-            ], JSON_PRETTY_PRINT);
-        }
-
         return;
     }
 
@@ -68,24 +55,7 @@ class PlantasController {
         // Intentar eliminar la planta
         $response = $plantaModel::eliminarPlantaPorID($idPlanta);
     
-        // Comprobamos si la eliminación fue exitosa
-        if ($response === false) { // Cambié a 'false', asumiendo que el modelo devuelve false si no se encuentra la planta
-            // Planta no encontrada
-            $json = array(
-                "status" => 404,
-                "detalle" => "No existe la Planta con el ID: $idPlanta"
-            );
-            echo json_encode($json, true);
-            return;
-        } else {
-            // Planta eliminada correctamente
-            $json = array(
-                "status" => 200,
-                "detalle" => "Planta con ID: $idPlanta ha sido eliminada correctamente"
-            );
-            echo json_encode($json, true);
-            return;
         }
     }
     
-}
+

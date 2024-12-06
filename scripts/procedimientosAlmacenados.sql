@@ -276,11 +276,11 @@ BEGIN
         DELETE FROM VEHICULOS WHERE VIN = v_VIN;
 
         -- Confirmación
-        SELECT 'Vehículo y sus registros relacionados fueron eliminados exitosamente.' AS mensaje;
+        SELECT 'Vehículo y sus registros relacionados fueron eliminados exitosamente.' AS Mensaje;
 
     ELSE
         -- Vehículo no encontrado
-        SELECT 'El vehículo con el VIN especificado no existe' AS mensaje;
+        SELECT 'El vehículo con el VIN especificado no existe' AS Mensaje;
     END IF;
 END$$
 
@@ -301,11 +301,11 @@ BEGIN
 	 AND p.direccion = p_direccion
 	 AND p.noTelefono = p_noTelefono
 	 ) THEN
-	 SELECT 'Ya esxiste un proveedor con estos datos' AS mensaje;
+	 SELECT 'Ya esxiste un proveedor con estos datos' AS Mensaje;
    ELSE
    INSERT INTO PROVEEDORES (nombre, direccion, noTelefono)
    VALUES (p_nombre, p_direccion, p_noTelefono);
-   SELECT 'Proveedor añadido con exito ' AS mensaje;
+   SELECT 'Proveedor añadido con exito ' AS Mensaje;
    END IF;
 END$$
 DELIMITER ;
@@ -328,9 +328,9 @@ BEGIN
 	direccion = COALESCE(p_direccion, direccion),
 	noTelefono = COALESCE(p_noTelefono, noTelefono)
 	WHERE idProveedor = p_idProveedor;
-   SELECT 'Proveedor actualizado exitosamente ' AS mensaje;
+   SELECT 'Proveedor actualizado exitosamente ' AS Mensaje;
    ELSE
-   SELECT 'No esxiste un proveedor con estos datos' AS mensaje;
+   SELECT 'No esxiste un proveedor con estos datos' AS Mensaje;
    END IF;
 END$$
 DELIMITER ;
@@ -352,11 +352,11 @@ BEGIN
         DELETE FROM PROVEEDORES WHERE idProveedor = p_idProveedor;
 
         -- Confirmación
-        SELECT 'Proveedor y sus registros relacionados fueron eliminados exitosamente.' AS mensaje;
+        SELECT 'Proveedor y sus registros relacionados fueron eliminados exitosamente.' AS Mensaje;
 
     ELSE
         -- Proveedor no encontrado
-        SELECT 'No existe un proveedor con el ID especificado' AS mensaje;
+        SELECT 'No existe un proveedor con el ID especificado' AS Mensaje;
     END IF;
 END$$
 
@@ -377,11 +377,11 @@ BEGIN
 	AND m.estiloCarroceria = m_estiloCarroceria
 	AND m.marca = m_marca
 	) THEN
-	SELECT 'Ya esxiste un modelo con estos datos' AS mensaje;
+	SELECT 'Ya esxiste un modelo con estos datos' AS Mensaje;
    ELSE
    INSERT INTO modelos (nombre, estiloCarroceria, marca)
    VALUES (m_nombre, m_estiloCarroceria, m_marca);
-   SELECT 'Modelo agregado con exito ' AS mensaje;
+   SELECT 'Modelo agregado con exito ' AS Mensaje;
    END IF;
 END$$
 DELIMITER ;
@@ -404,9 +404,9 @@ BEGIN
 	estiloCarroceria = COALESCE(m_estiloCarroceria, estiloCarroceria),
 	marca = COALESCE(m_marca, marca)
 	WHERE idModelo = m_idModelo;
-   SELECT 'Modelo actualizado exitosamente ' AS mensaje;
+   SELECT 'Modelo actualizado exitosamente ' AS Mensaje;
    ELSE
-   SELECT 'No esxiste un modelo con estos datos' AS mensaje;
+   SELECT 'No esxiste un modelo con estos datos' AS Mensaje;
    END IF;
 END$$
 DELIMITER ;
@@ -433,10 +433,10 @@ BEGIN
         DELETE FROM MODELOS WHERE idModelo = m_idModelo;
 
         -- Confirmar la eliminación
-        SELECT 'Modelo eliminado exitosamente' AS mensaje;
+        SELECT 'Modelo eliminado exitosamente' AS Mensaje;
     ELSE
         -- En caso de que no exista el modelo
-        SELECT 'No existe un modelo con estos datos' AS mensaje;
+        SELECT 'No existe un modelo con estos datos' AS Mensaje;
     END IF;
 END$$
 

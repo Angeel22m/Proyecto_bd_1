@@ -17,23 +17,38 @@ class ModelosModel {
             $script->bindParam(':estiloCarroceria', $estiloCarroceria, PDO::PARAM_STR); // Vinculando :estiloCarroceria
 	    $script->bindParam(':marca', $marca, PDO::PARAM_STR); // Vinculando :marca
            
+// Ejecutar la consulta
+$script->execute();
+    
+// Obtener el mensaje de la consulta
+$message = $script->fetch(PDO::FETCH_ASSOC);
 
-            // Ejecutar la consulta
-            $script->execute();
+// Liberar los recursos
+$script->closeCursor();
+$script = null;
 
-            // Obtener los resultados si existen
-            $result = $script->fetchAll(PDO::FETCH_ASSOC);
-
-            // Liberar los recursos
-            $script->closeCursor();
-            $script = null;
-
-            // Retornar el resultado
-            return [
-                "status" => 200,
-                "message" => "Modelo creado exitosamente",
-                "data" => $result
-            ];
+// Verificar el mensaje y tomar acción
+if ($message) {
+    if (strpos($message['Mensaje'], 'exitosamente') !== false) {
+        // Si el mensaje contiene "exitosamente"
+        echo json_encode([
+            "status" => 200,
+            "message" => $message['Mensaje']
+        ]);
+    } else {
+        // Si no contiene "exitosamente"
+        echo json_encode([
+            "status" => 404,
+            "error" => $message['Mensaje']
+        ]);
+    }
+} else {
+    // Si no hay mensaje (posible error al ejecutar el procedimiento)
+    echo json_encode([
+        "status" => 404,
+        "error" => "No se pudo crear el cliente."
+    ]);
+}
         } catch (PDOException $e) {
             // Registrar el error en un archivo de log
             error_log("Error al ejecutar la consulta: " . $e->getMessage(), 3, 'errors.log');
@@ -55,7 +70,7 @@ class ModelosModel {
         try {
             // Preparación de la consulta de lectura.
             $query = Connection::connect()->prepare(
-                "select * from vista_modelos"
+                "select * from MODELOS"
             );
     
             // Ejecución de la consulta.
