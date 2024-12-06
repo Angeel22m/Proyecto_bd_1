@@ -12,7 +12,9 @@ require_once 'connection.php'; // Asegúrate de que la ruta sea correcta
 
 //incluimos los modelos
 require_once 'models/clientes.model.php';
-
+require_once 'models/modelos.model.php';
+require_once 'models/plantas.model.php';
+require_once 'models/proveedores.model.php';
 require_once 'models/ventas.model.php';
 
 require_once './utf8_convert.php';
