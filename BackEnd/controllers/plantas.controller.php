@@ -1,12 +1,12 @@
 <?php
 class PlantasController {
 
-    public function registrarNuevaPlanta($nombre, $ubicacion) {
+    public function crearPlanta($nombre, $ubicacion) {
         // Crear instancia del modelo
         $plantaModel = new PlantasModel();
 
         // Llamar al método del modelo para crear la Planta
-        $response = $plantaModel::registrarNuevaPlanta($nombre, $ubicacion);
+        $response = $plantaModel::crearPlanta($nombre, $ubicacion);
         return;
     }
 
@@ -35,7 +35,7 @@ class PlantasController {
         }
     }
 
-    public function actualizarPlantaPorId($idPlanta, $campos){
+    public function actualizarPlanta($idPlanta, $campos){
 
         $datos = 
         $json = array(
@@ -45,15 +45,15 @@ class PlantasController {
 	 );
         
         $plantaModel = new PlantasModel();
-        $plantaModel::actualizarPlantaPorId($datos);
+        $plantaModel::actualizarPlanta($datos);
     }
 
-    public function eliminarPlantaPorId($idPlanta){
+    public function eliminarPlanta($idPlanta){
         // Crear instancia del modelo de clientes
         $plantaModel = new PlantasModel();
         
         // Intentar eliminar la planta
-        $response = $plantaModel::eliminarPlantaPorID($idPlanta);
+        $response = $plantaModel::eliminarPlanta($idPlanta);
     
         }
     }

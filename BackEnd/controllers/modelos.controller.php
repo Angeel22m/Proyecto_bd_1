@@ -1,12 +1,12 @@
 <?php
 class ModelosController {
 
-    public function nuevoModelo($nombre, $estiloCarroceria, $marca) {
+    public function crearModelo($nombre, $estiloCarroceria, $marca) {
         // Crear instancia del modelo
         $modeloModel = new ModelosModel();
 
         // Llamar al método del modelo para crear el Modelo
-        $response = $modeloModel::nuevoModelo($nombre, $estiloCarroceria, $marca);    
+        $response = $modeloModel::crearModelo($nombre, $estiloCarroceria, $marca);    
         return;
     }
 

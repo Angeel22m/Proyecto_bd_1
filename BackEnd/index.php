@@ -7,6 +7,8 @@ require_once 'controllers/modelos.controller.php';
 require_once 'controllers/proveedor.controller.php';
 require_once 'controllers/login.controller.php';
 require_once 'controllers/ventas.controller.php';
+require_once 'controllers/vehiculos.controller.php';
+require_once 'controllers/concesionarios.controller.php';
 require_once 'connection.php'; // Asegúrate de que la ruta sea correcta
 
 
@@ -16,6 +18,8 @@ require_once 'models/modelos.model.php';
 require_once 'models/plantas.model.php';
 require_once 'models/proveedores.model.php';
 require_once 'models/ventas.model.php';
+require_once 'models/vehiculos.model.php';
+require_once 'models/concesionarios.model.php';
 
 require_once './utf8_convert.php';
 

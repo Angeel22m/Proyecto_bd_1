@@ -1,12 +1,12 @@
 <?php
 class VentasController {
 
-    public function crearVenta($idConcesionario, $idVenta, $VIN, $precio) {
+    public function crearVenta($idConcesionario, $idCliente, $VIN, $precio) {
         // Crear instancia del modelo
-        $ventasModel = new ventasModel();
+        $ventasModel = new VentasModel();
 
         // Llamar al método del modelo para crear el cliente
-        $response = $ventasModel::crearVenta($idConcesionario, $idVenta, $VIN, $precio);
+        $response = $ventasModel::crearVenta($idConcesionario, $idCliente, $VIN, $precio);
                 
         return;
     }

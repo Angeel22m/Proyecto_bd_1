@@ -1,6 +1,6 @@
 <?php
 class PlantasModel {
-    static public function registrarNuevaPlanta($nombre, $ubicacion) {
+    static public function crearPlanta($nombre, $ubicacion) {
         try {
             // Obtener la conexión
             $connection = Connection::connect();
@@ -10,7 +10,7 @@ class PlantasModel {
             }
 
             // Preparar el procedimiento almacenado
-            $script = $connection->prepare('CALL registrarNuevaPlanta(:nombre, :ubicacion)');
+            $script = $connection->prepare('CALL crearPlanta(:nombre, :ubicacion)');
 
             // Vincular las variables a los parámetros de la consulta
             $script->bindParam(':nombre', $nombre, PDO::PARAM_STR); // Vinculando :nombre
@@ -95,11 +95,11 @@ class PlantasModel {
     }
     
 
-    public static function actualizarPlantaPorId($Datos){
+    public static function actualizarPlanta($Datos){
         
 // Preparación de la consulta de actualización
 $query = Connection::connect()->prepare(
-    "CALL actualizarPlantaPorId(
+    "CALL actualizarPlanta(
         :idPlanta,
         :nombre,
         :ubicacion
@@ -146,11 +146,11 @@ if ($message) {
     }
 
 
-    public static function eliminarPlantaPorId($idPlanta) {
+    public static function eliminarPlanta($idPlanta) {
        $conn = Connection::connect(); 
         try {
             // Preparar la consulta SQL para eliminar la planta por su ID
-            $stmt = $conn->prepare("call eliminarPlantaPorId(:idPlanta)");
+            $stmt = $conn->prepare("call eliminarPlanta(:idPlanta)");
             $stmt->bindParam(':idPlanta', $idPlanta, PDO::PARAM_INT);
             $stmt->execute();
 

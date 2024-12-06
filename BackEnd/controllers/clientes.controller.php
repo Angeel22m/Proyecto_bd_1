@@ -37,9 +37,8 @@ class ClientesController {
     }
 
     public function actualizarCliente($idCliente, $campos){
-
-        $datos = 
-        $json = array(
+        
+        $datos = array(
             "idCliente" => $idCliente,
             "nombre" => !empty($campos['nombre']) ? $campos['nombre'] : null,
             "direccion" => !empty($campos['direccion']) ? $campos['direccion'] : null,
@@ -49,15 +48,15 @@ class ClientesController {
         );
         
         $clienteModel = new ClientesModel();
-        $clienteModel::actualizarCliente($datos);
+        $clienteModel::actualizarCliente($idCliente,$datos);
     }
 
-    public function eliminarClientePorID($idCliente){
+    public function eliminarCliente($idCliente){
         // Crear instancia del modelo de clientes
         $clienteModel = new ClientesModel();
         
         // Intentar eliminar el cliente
-        $response = $clienteModel::eliminarClientePorID($idCliente);
+        $response = $clienteModel::eliminarCliente($idCliente);
     
         
     }

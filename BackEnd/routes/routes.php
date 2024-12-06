@@ -40,8 +40,11 @@ if (count($arrayRutas) >= 3) {
             handleProveedor($requestMethod);
             break;
 
-    case 'ventas';
+    case 'venta';
             handleVentas($requestMethod);
+            break;
+    case 'vehiculo';
+            handleVehiculos($requestMethod);
             break;
 
         default:
@@ -112,7 +115,12 @@ function handleCliente($method) {
         case 'POST':
             // Verifica que los datos POST estén presentes
             if (
-                isset($_POST['nombre'], $_POST['direccion'], $_POST['noTelefono'], $_POST['sexo'], $_POST['ingresosAnuales'])
+                isset($_POST['nombre'], $_POST['direccion'], $_POST['noTelefono'], $_POST['sexo'], $_POST['ingresosAnuales']) &&
+    !empty(trim($_POST['nombre'])) &&
+    !empty(trim($_POST['direccion'])) &&
+    !empty(trim($_POST['noTelefono'])) &&
+    !empty(trim($_POST['sexo'])) &&
+    !empty(trim($_POST['ingresosAnuales']))
             ) {
                 $nombre = $_POST['nombre'];
                 $direccion = $_POST['direccion'];
@@ -122,10 +130,6 @@ function handleCliente($method) {
 
                 try {
                     $cliente->crearCliente($nombre, $direccion, $noTelefono, $sexo, $ingresosAnuales);
-                    echo json_encode([
-                        "status" => 201,
-                        "message" => "Cliente creado con éxito"
-                    ]);
                 } catch (Exception $e) {
                     echo json_encode([
                         "status" => 500,
@@ -154,18 +158,19 @@ function handleCliente($method) {
             break;
 
         case 'PUT':
+
+             // Obtener el idCliente de la ruta (en la URL)
+             $idCliente = isset($_GET['idCliente']) ? $_GET['idCliente'] : null;
+            
+             if (!$idCliente) {
+                 echo json_encode([
+                     "status" => 400,
+                     "error" => "El idCliente es obligatorio para actualizar."
+                 ]);
+                 break;
+             }
             // Leer el cuerpo de la solicitud para datos JSON
             parse_str(file_get_contents("php://input"), $putData);
-
-            if (!isset($putData['idCliente'])) {
-                echo json_encode([
-                    "status" => 400,
-                    "error" => "El idCliente es obligatorio para actualizar un cliente."
-                ]);
-                break;
-            }
-
-            $idCliente = $putData['idCliente'];
 
             // Validar que al menos un campo opcional esté presente
             $campos = [];
@@ -201,7 +206,7 @@ function handleCliente($method) {
                     $idCliente = $_GET['idCliente'];
     
                     try {
-                        $cliente->eliminarClientePorID($idCliente);                       
+                        $cliente->eliminarCliente($idCliente);                       
                     } catch (Exception $e) {
                         echo json_encode([
                             "status" => 500,
@@ -235,16 +240,14 @@ function handlePlanta($method) {
             // Verifica que los datos POST estén presentes
             if (
                 isset($_POST['nombre'], $_POST['ubicacion'])
+                &&!empty(trim($_POST['nombre']))
+                &&!empty(trim($_POST['ubicacion']))
             ) {
                 $nombre = $_POST['nombre'];
                 $ubicacion = $_POST['ubicacion'];
 
                 try {
-                    $planta->registrarNuevaPlanta($nombre, $ubicacion);
-                    echo json_encode([
-                        "status" => 201,
-                        "message" => "Planta creada con éxito"
-                    ]);
+                    $planta->crearPlanta($nombre, $ubicacion);                  
                 } catch (Exception $e) {
                     echo json_encode([
                         "status" => 500,
@@ -273,18 +276,19 @@ function handlePlanta($method) {
             break;
 
         case 'PUT':
+
+             // Obtener el idPlanta de la ruta (en la URL)
+             $idPlanta = isset($_GET['idPlanta']) ? $_GET['idPlanta'] : null;
+            
+             if (!$idPlanta) {
+                 echo json_encode([
+                     "status" => 400,
+                     "error" => "El idPlanta es obligatorio para actualizar."
+                 ]);
+                 break;
+             }
             // Leer el cuerpo de la solicitud para datos JSON
             parse_str(file_get_contents("php://input"), $putData);
-
-            if (!isset($putData['idPlanta'])) {
-                echo json_encode([
-                    "status" => 400,
-                    "error" => "El idPlanta es obligatorio para actualizar una planta."
-                ]);
-                break;
-            }
-
-            $idPlanta = $putData['idPlanta'];
 
             // Validar que al menos un campo opcional esté presente
             $campos = [];
@@ -301,7 +305,7 @@ function handlePlanta($method) {
 
             try {
                 
-                $planta->actualizarPlantaPorId($idPlanta, $campos);               
+                $planta->actualizarPlanta($idPlanta, $campos);               
             } catch (Exception $e) {
                 echo json_encode([
                     "status" => 500,
@@ -317,7 +321,7 @@ function handlePlanta($method) {
                     $idPlanta = $_GET['idPlanta'];
     
                     try {
-                        $planta->eliminarPlantaPorId($idPlanta);                       
+                        $planta->eliminarPlanta($idPlanta);                       
                     } catch (Exception $e) {
                         echo json_encode([
                             "status" => 500,
@@ -347,20 +351,19 @@ function handleModelo($method) {
 
     switch ($method) {
         case 'POST':
-            // Verifica que los datos POST estén presentes
+            // Verifica que los datos POST estén presentes y no estén vacíos
             if (
-                isset($_POST['nombre'], $_POST['estiloCarroceria'], $_POST['marca'])
+                isset($_POST['nombre'], $_POST['estiloCarroceria'], $_POST['marca']) &&
+                !empty(trim($_POST['nombre'])) &&
+                !empty(trim($_POST['estiloCarroceria'])) &&
+                !empty(trim($_POST['marca']))
             ) {
-                $nombre = $_POST['nombre'];
-                $estiloCarroceria = $_POST['estiloCarroceria'];
-                $marca = $_POST['marca'];
-
+                $nombre = trim($_POST['nombre']);
+                $estiloCarroceria = trim($_POST['estiloCarroceria']);
+                $marca = trim($_POST['marca']);
+        
                 try {
-                    $modelo->nuevoModelo($nombre, $estiloCarroceria, $marca);
-                    echo json_encode([
-                        "status" => 201,
-                        "message" => "Modelo creado con éxito"
-                    ]);
+                    $modelo->crearModelo($nombre, $estiloCarroceria, $marca);                 
                 } catch (Exception $e) {
                     echo json_encode([
                         "status" => 500,
@@ -371,10 +374,11 @@ function handleModelo($method) {
             } else {
                 echo json_encode([
                     "status" => 400,
-                    "error" => "Faltan datos obligatorios para crear el modelo."
+                    "error" => "Faltan datos obligatorios o contienen valores vacíos."
                 ]);
             }
             break;
+        
 
         case 'GET':
             try {
@@ -389,18 +393,19 @@ function handleModelo($method) {
             break;
 
         case 'PUT':
-            // Leer el cuerpo de la solicitud para datos JSON
-            parse_str(file_get_contents("php://input"), $putData);
 
-            if (!isset($putData['idModelo'])) {
+            // Obtener el idModelo de la ruta (en la URL)
+            $idModelo = isset($_GET['idModelo']) ? $_GET['idModelo'] : null;
+            
+            if (!$idModelo) {
                 echo json_encode([
                     "status" => 400,
-                    "error" => "El idModelo es obligatorio para actualizar un modelo."
+                    "error" => "El idModelo es obligatorio para actualizar."
                 ]);
                 break;
             }
-
-            $idModelo = $putData['idModelo'];
+            // Leer el cuerpo de la solicitud para datos JSON
+            parse_str(file_get_contents("php://input"), $putData);
 
             // Validar que al menos un campo opcional esté presente
             $campos = [];
@@ -467,17 +472,17 @@ function handleProveedor($method) {
             // Verifica que los datos POST estén presentes
             if (
                 isset($_POST['nombre'], $_POST['direccion'], $_POST['noTelefono'])
+                &&!empty(trim($_POST['nombre']))
+                &&!empty(trim($_POST['direccion']))
+                &&!empty(trim($_POST['noTelefono']))
             ) {
                 $nombre = $_POST['nombre'];
                 $direccion = $_POST['direccion'];
                 $noTelefono = $_POST['noTelefono'];
 
                 try {
-                    $proveedor->nuevoProveedor($nombre, $direccion, $noTelefono);
-                    echo json_encode([
-                        "status" => 201,
-                        "message" => "Proveedor creado con éxito"
-                    ]);
+                    $proveedor->crearProveedor($nombre, $direccion, $noTelefono);
+                  
                 } catch (Exception $e) {
                     echo json_encode([
                         "status" => 500,
@@ -586,16 +591,21 @@ function handleVentas($method) {
         case 'POST':
             // Verifica que los datos POST estén presentes
             if (
-                isset($_POST['idConsecionario'], $_POST['idVenta'], $_POST['VIN'], $_POST['precio'])
+                isset($_POST['idConcesionario'], $_POST['VIN'], $_POST['precio'],$_POST['idCliente'])
+                &&!empty(trim($_POST['idConcesionario']))            
+                &&!empty(trim($_POST['VIN']))
+                &&!empty(trim($_POST['precio']))
+                &&!empty(trim($_POST['idCliente']))
             ) {
-                $idConsecionario = $_POST['idConsecionario'];
-                $idVenta = $_POST['idVenta'];
+                $idConcesionario = $_POST['idConcesionario'];
+                $idCliente = $_POST['idCliente'];
                 $VIN = $_POST['VIN'];
                 $precio = $_POST['precio'];
                 
 
                 try {
-                    $venta->crearCliente($idConsecionario, $idVenta, $VIN, $precio);                   
+                   
+                    $venta->crearVenta($idConcesionario, $idCliente, $VIN, $precio);                   
                 } catch (Exception $e) {
                     echo json_encode([
                         "status" => 500,
@@ -606,7 +616,7 @@ function handleVentas($method) {
             } else {
                 echo json_encode([
                     "status" => 400,
-                    "error" => "Faltan datos obligatorios para crear el venta$venta."
+                    "error" => "Faltan datos obligatorios para crear el venta."
                 ]);
             }
             break;
@@ -639,10 +649,11 @@ function handleVentas($method) {
             
                 // Validar que al menos un campo opcional esté presente
                 $campos = [];
-                if (!empty($putData['idConsecionario'])) $campos['idConsecionario'] = $putData['idConsecionario'];
+                if (!empty($putData['idConcesionario'])) $campos['idConcesionario'] = $putData['idConcesionario'];
                 if (!empty($putData['idVenta'])) $campos['idVenta'] = $putData['idVenta'];
                 if (!empty($putData['VIN'])) $campos['VIN'] = $putData['VIN'];
                 if (!empty($putData['precio'])) $campos['precio'] = $putData['precio'];
+                if (!empty($putData['idCliente'])) $campos['idCliente'] = $putData['idCliente'];
           
             
                 if (empty($campos)) {
@@ -655,7 +666,7 @@ function handleVentas($method) {
             
                 try {
                     // Llamar al método para actualizar el venta$venta
-                    $venta->actualizarCliente($idVenta, $campos);                               
+                    $venta->actualizarVenta($idVenta, $campos);                               
                 } catch (Exception $e) {
                     echo json_encode([
                         "status" => 500,
@@ -671,7 +682,7 @@ function handleVentas($method) {
                     $idVenta = $_GET['idVenta'];
     
                     try {
-                        $venta->eliminarClientePorID($idVenta);                       
+                        $venta->eliminarVenta($idVenta);                       
                     } catch (Exception $e) {
                         echo json_encode([
                             "status" => 500,
@@ -696,6 +707,135 @@ function handleVentas($method) {
     }
 }
 
+
+function handleVehiculos($method) {
+    $vehiculos = new VehiculosController();
+
+    switch ($method) {
+        case 'POST':
+            // Verifica que los datos POST estén presentes
+            if (
+                isset($_POST['idModelo'], $_POST['VIN'], $_POST['fechaFabricacion'],$_POST['noMotor'],$_POST['color'])
+                &&!empty(trim($_POST['idModelo']))            
+                &&!empty(trim($_POST['VIN']))
+                &&!empty(trim($_POST['fechaFabricacion']))
+                &&!empty(trim($_POST['noMotor']))
+                &&!empty(trim($_POST['color']))
+                &&!empty(trim($_POST['transmision']))
+
+            ) {
+                $idModelo = $_POST['idModelo'];
+                $noMotor = $_POST['noMotor'];
+                $VIN = $_POST['VIN'];
+                $fechaFabricacion = $_POST['fechaFabricacion'];
+                $color = $_POST['color'];
+                $transmision = $_POST['transmision'];
+                
+
+                try {
+                   
+                    $vehiculos->crearVehiculo($idModelo, $noMotor, $VIN, $fechaFabricacion, $color, $transmision);                   
+                } catch (Exception $e) {
+                    echo json_encode([
+                        "status" => 500,
+                        "error" => "Error interno al crear el vehiculo.",
+                        "detalle" => $e->getMessage()
+                    ]);
+                }
+            } else {
+                echo json_encode([
+                    "status" => 400,
+                    "error" => "Faltan datos obligatorios para crear el vehiculos."
+                ]);
+            }
+            break;
+
+        case 'GET':
+            try {
+                $result = $vehiculos->readAll();               
+            } catch (Exception $e) {
+                echo json_encode([
+                    "status" => 500,
+                    "error" => "Error interno al obtener los clientes.",
+                    "detalle" => $e->getMessage()
+                ]);
+            }
+            break;
+            case 'PUT':
+                // Obtener el VIN de la ruta (en la URL)
+                $VIN = isset($_GET['VIN']) ? $_GET['VIN'] : null;
+                
+                if (!$VIN) {
+                    echo json_encode([
+                        "status" => 400,
+                        "error" => "El VIN es obligatorio para actualizar un Vehiculo."
+                    ]);
+                    break;
+                }
+            
+                // Leer el cuerpo de la solicitud para obtener los datos del Ve$vehiculos$vehiculos en form data
+                parse_str(file_get_contents("php://input"), $putData);
+            
+                // Validar que al menos un campo opcional esté presente
+                $campos = [];
+                if (!empty($putData['idModelo'])) $campos['idModelo'] = $putData['idModelo'];               
+                if (!empty($putData['fechaFabricacion'])) $campos['fechaFabricacion'] = $putData['fechaFabricacion'];
+                if (!empty($putData['noMotor'])) $campos['noMotor'] = $putData['noMotor'];
+                if (!empty($putData['color'])) $campos['color'] = $putData['color'];
+                if (!empty($putData['transmision'])) $campos['transmision'] = $putData['transmision'];
+
+          
+            
+                if (empty($campos)) {
+                    echo json_encode([
+                        "status" => 400,
+                        "error" => "Debe proporcionar al menos un campo para actualizar."
+                    ]);
+                    break;
+                }
+            
+                try {
+                    // Llamar al método para actualizar el Vehiculos
+                    $vehiculos->actualizarVehiculo($VIN, $campos);                               
+                } catch (Exception $e) {
+                    echo json_encode([
+                        "status" => 500,
+                        "error" => "Error interno al actualizar el Vehiculos.",
+                        "detalle" => $e->getMessage()
+                    ]);
+                }
+                break;
+            
+            case 'DELETE':
+                // Obtener el ID de la Vehiculos desde los parámetros de la URL
+                if (isset($_GET['VIN'])) {
+                    $VIN = $_GET['VIN'];
+    
+                    try {
+                        $vehiculos->eliminarVehiculo($VIN);                       
+                    } catch (Exception $e) {
+                        echo json_encode([
+                            "status" => 500,
+                            "error" => "Error interno al eliminar el Vehiculo.",
+                            "detalle" => $e->getMessage()
+                        ]);
+                    }
+                } else {
+                    echo json_encode([
+                        "status" => 400,
+                        "error" => "El VIN es obligatorio para eliminar un Vehiculo."
+                    ]);
+                }
+                break;
+
+        default:
+            echo json_encode([
+                "status" => 405,
+                "detalle" => "Método no permitido."
+            ]);
+            break;
+    }
+}
 
 ?>
 

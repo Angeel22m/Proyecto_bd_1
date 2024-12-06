@@ -1,6 +1,6 @@
 <?php
 class ProveedoresModel {
-    static public function nuevoProveedor($nombre, $direccion, $noTelefono) {
+    static public function crearProveedor($nombre, $direccion, $noTelefono) {
         try {
             // Obtener la conexión
             $connection = Connection::connect();
@@ -10,7 +10,7 @@ class ProveedoresModel {
             }
 
             // Preparar el procedimiento almacenado
-            $script = $connection->prepare('CALL nuevoProveedor(:nombre, :direccion, :noTelefono)');
+            $script = $connection->prepare('CALL crearProveedor(:nombre, :direccion, :noTelefono)');
 
             // Vincular las variables a los parámetros de la consulta
             $script->bindParam(':nombre', $nombre, PDO::PARAM_STR); // Vinculando :nombre

@@ -3,18 +3,18 @@
 
 DELIMITER $$
 
-CREATE PROCEDURE registrarNuevaPlanta(
+create PROCEDURE crearPlanta(
     IN p_nombre VARCHAR(20),
     IN p_ubicacion VARCHAR(50)
 )
 BEGIN
     IF NOT EXISTS (
         SELECT 1 
-        FROM Plantas 
+        FROM PLANTAS 
         WHERE nombre = p_nombre 
           AND ubicacion = p_ubicacion
     ) THEN
-        INSERT INTO Plantas (nombre, ubicacion) 
+        INSERT INTO PLANTAS (nombre, ubicacion) 
         VALUES (p_nombre, p_ubicacion);
         SELECT 'Planta registrada exitosamente.' AS Mensaje;
     ELSE
@@ -28,7 +28,7 @@ DELIMITER ;
 --procdedimiento para actualizar planta
 DELIMITER $$
 
-CREATE PROCEDURE actualizarPlantaPorId(
+CREATE PROCEDURE actualizarPlanta(
     IN p_idPlanta INT,
     IN p_nombre VARCHAR(20),
     IN p_ubicacion VARCHAR(50)
@@ -37,11 +37,11 @@ BEGIN
     -- Verifica si la planta existe
     IF EXISTS (
         SELECT 1 
-        FROM Plantas 
+        FROM PLANTAS 
         WHERE idPlanta = p_idPlanta
     ) THEN
         -- Actualiza los campos proporcionados
-        UPDATE Plantas
+        UPDATE PLANTAS
         SET 
             nombre = COALESCE(p_nombre, nombre),
             ubicacion = COALESCE(p_ubicacion, ubicacion)
@@ -58,19 +58,19 @@ DELIMITER ;
 -- procedimiento para eliminar planta
 DELIMITER $$
 
-CREATE PROCEDURE eliminarPlantaPorId(
+CREATE PROCEDURE eliminarPlanta(
     IN p_idPlanta INT
 )
 BEGIN
     -- Verifica si la planta existe
-    IF EXISTS (SELECT 1 FROM Plantas WHERE idPlanta = p_idPlanta) THEN
-        -- Elimina las relaciones en la tabla ModelosXPlantas si existen
-        IF EXISTS (SELECT 1 FROM ModelosXPlantas WHERE idPlanta = p_idPlanta) THEN
-            DELETE FROM ModelosXPlantas WHERE idPlanta = p_idPlanta;            
+    IF EXISTS (SELECT 1 FROM PLANTAS WHERE idPlanta = p_idPlanta) THEN
+        -- Elimina las relaciones en la tabla MODELOSXPLANTAS si existen
+        IF EXISTS (SELECT 1 FROM MODELOSXPLANTAS WHERE idPlanta = p_idPlanta) THEN
+            DELETE FROM MODELOSXPLANTAS WHERE idPlanta = p_idPlanta;            
         END IF;
 
         -- Ahora elimina la planta
-        DELETE FROM Plantas WHERE idPlanta = p_idPlanta;
+        DELETE FROM PLANTAS WHERE idPlanta = p_idPlanta;
 
         -- Mensaje de confirmación
         SELECT CONCAT('La planta con ID ', p_idPlanta, ' fue eliminada exitosamente.') AS Mensaje;
@@ -126,7 +126,7 @@ DELIMITER ;
 --procedimiento para actualizar cliente
 DELIMITER $$
 
-CREATE PROCEDURE actualizarClientePorId(
+CREATE PROCEDURE actualizarCliente(
     IN p_idCliente INT,
     IN p_nombre VARCHAR(20),
     IN p_direccion VARCHAR(50),
@@ -160,7 +160,7 @@ DELIMITER ;
 --procedimiento para eliminar cliente
 DELIMITER $$
 
-CREATE PROCEDURE eliminarClientePorId(
+CREATE PROCEDURE eliminarCliente(
     IN p_idCliente INT
 )
 BEGIN
@@ -190,7 +190,7 @@ DELIMITER ;
 -- procedimiento para crear un nuevo vehiculo
 DELIMITER $$
 
-CREATE PROCEDURE registrarNuevoVehiculo(
+create PROCEDURE crearVehiculo(
     IN v_VIN VARCHAR(17),
     IN v_idModelo INT,
     IN v_color VARCHAR(10),
@@ -290,7 +290,7 @@ DELIMITER ;
 -- procedimiento para añadir un proveedor
 DELIMITER $$
 
-CREATE PROCEDURE nuevoProveedor(
+create PROCEDURE crearProveedor(
 	p_nombre VARCHAR(20),
    p_direccion VARCHAR(50),
    p_noTelefono VARCHAR(15))
@@ -323,7 +323,7 @@ BEGIN
 	 SELECT 1 FROM PROVEEDORES p
 	 WHERE p.idProveedor = p_idProveedor
 	 ) THEN
-	UPDATE proveedores SET 
+	UPDATE PROVEEDORES SET 
 	nombre = COALESCE(p_nombre, nombre),
 	direccion = COALESCE(p_direccion, direccion),
 	noTelefono = COALESCE(p_noTelefono, noTelefono)
@@ -366,7 +366,7 @@ DELIMITER ;
 -- procedimiento para añadir un nuevo modelo
 DELIMITER $$
 
-CREATE PROCEDURE nuevoModelo(
+create PROCEDURE crearModelo(
 	m_nombre VARCHAR(10),
   m_estiloCarroceria ENUM('sedan', 'hatchback', 'suv', 'coupe', 'pickup', 'convertible'),
    m_marca VARCHAR(10))
@@ -481,56 +481,67 @@ END$$
 
 DELIMITER ;
 
-
-
---procedimiento para actualizar ventas
+---Actualizar venta
 DELIMITER $$
 
-CREATE PROCEDURE actualizarVenta(
+create PROCEDURE actualizarVenta(
     IN p_idVenta INT,
     IN p_idConcesionario INT,
     IN p_idCliente INT,
     IN p_VIN VARCHAR(17),
-    IN p_precio DECIMAL(10,2)
+    IN p_precio DECIMAL(10, 2)
 )
 BEGIN
     -- Variable para capturar errores
     DECLARE v_error_message TEXT;
+    DECLARE v_status INT DEFAULT 0;
 
     -- Handler para manejar excepciones SQL
     DECLARE CONTINUE HANDLER FOR SQLEXCEPTION
     BEGIN
+        SET v_status = 1;
         GET DIAGNOSTICS CONDITION 1
             v_error_message = MESSAGE_TEXT;
         SELECT CONCAT('Error al actualizar la venta: ', v_error_message) AS Mensaje;
     END;
 
-    -- Verificar si la venta existe
+    -- Validaciones
     IF NOT EXISTS (SELECT 1 FROM VENTAS WHERE idVenta = p_idVenta) THEN
         SELECT CONCAT('No existe una venta con el ID: ', p_idVenta) AS Mensaje;
-    -- Verificar si el concesionario existe
-    ELSEIF NOT EXISTS (SELECT 1 FROM CONCESIONARIOS WHERE idConcesionario = p_idConcesionario) THEN
-        SELECT CONCAT('El concesionario con ID: ', p_idConcesionario, ' no existe.') AS Mensaje;
-    -- Verificar si el cliente existe
-    ELSEIF NOT EXISTS (SELECT 1 FROM CLIENTES WHERE idCliente = p_idCliente) THEN
-        SELECT CONCAT('El cliente con ID: ', p_idCliente, ' no existe.') AS Mensaje;
-    -- Verificar si el vehículo (VIN) existe
-    ELSEIF NOT EXISTS (SELECT 1 FROM VEHICULOS WHERE VIN = p_VIN) THEN
-        SELECT CONCAT('El vehículo con VIN: ', p_VIN, ' no existe.') AS Mensaje;
+
     ELSE
-        -- Actualizar la venta
-        UPDATE VENTAS
-        SET             
-            idConcesionario = COALESCE(p_idConcesionario, idConcesionario),
-            idCliente = COALESCE(p_idCliente, idCliente),
-            VIN = COALESCE(p_VIN, VIN),
-            precio = COALESCE(p_precio, precio)
-        WHERE idVenta = p_idVenta;
-        SELECT 'Venta actualizada exitosamente.' AS Mensaje;
+        -- Validar concesionario solo si el valor no es NULL
+        IF p_idConcesionario IS NOT NULL AND NOT EXISTS (SELECT 1 FROM CONCESIONARIOS WHERE idConcesionario = p_idConcesionario) THEN
+            SELECT CONCAT('El concesionario con ID: ', p_idConcesionario, ' no existe.') AS Mensaje;
+
+        -- Validar cliente solo si el valor no es NULL
+        ELSEIF p_idCliente IS NOT NULL AND NOT EXISTS (SELECT 1 FROM CLIENTES WHERE idCliente = p_idCliente) THEN
+            SELECT CONCAT('El cliente con ID: ', p_idCliente, ' no existe.') AS Mensaje;
+
+        -- Validar VIN solo si el valor no es NULL
+        ELSEIF p_VIN IS NOT NULL AND NOT EXISTS (SELECT 1 FROM VEHICULOS WHERE VIN = p_VIN) THEN
+            SELECT CONCAT('El vehículo con VIN: ', p_VIN, ' no existe.') AS Mensaje;
+
+        ELSE
+            -- Intentar actualizar la venta
+            UPDATE VENTAS
+            SET             
+                idConcesionario = COALESCE(p_idConcesionario, idConcesionario),
+                idCliente = COALESCE(p_idCliente, idCliente),
+                VIN = COALESCE(p_VIN, VIN),
+                precio = COALESCE(p_precio, precio)
+            WHERE idVenta = p_idVenta;
+
+            -- Confirmar éxito si no hubo errores
+            IF v_status = 0 THEN
+                SELECT 'Venta actualizada exitosamente.' AS Mensaje;
+            END IF;
+        END IF;
     END IF;
-END$$
+END $$
 
 DELIMITER ;
+
 
 
 --procedimiento para eliminar venta
@@ -593,7 +604,7 @@ DELIMITER ;
 --procedimiento para actualizar concesionario
 DELIMITER $$
 
-CREATE PROCEDURE actualizarConcesionarioPorId(
+CREATE PROCEDURE actualizarConcesionario(
     IN p_idConcesionario INT,
     IN p_nombre VARCHAR(20),
     IN p_direccion VARCHAR(50),
@@ -622,7 +633,7 @@ DELIMITER ;
 --procedimiento para eliminar consecionarioDELIMITER $$
 
 DELIMITER $$
-CREATE PROCEDURE eliminarConcesionarioPorId(
+CREATE PROCEDURE eliminarConcesionario(
     IN p_idConcesionario INT
 )
 BEGIN
@@ -647,7 +658,4 @@ BEGIN
 END $$
 
 DELIMITER ;
-
-
-
 

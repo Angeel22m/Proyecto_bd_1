@@ -1,6 +1,6 @@
 <?php
 class ModelosModel {
-    static public function nuevoModelo($nombre, $estiloCarroceria, $marca) {
+    static public function crearModelo($nombre, $estiloCarroceria, $marca) {
         try {
             // Obtener la conexión
             $connection = Connection::connect();
@@ -10,7 +10,7 @@ class ModelosModel {
             }
 
             // Preparar el procedimiento almacenado
-            $script = $connection->prepare('CALL nuevoModelo(:nombre, :estiloCarroceria, :marca)');
+            $script = $connection->prepare('CALL crearModelo(:nombre, :estiloCarroceria, :marca)');
 
             // Vincular las variables a los parámetros de la consulta
             $script->bindParam(':nombre', $nombre, PDO::PARAM_STR); // Vinculando :nombre

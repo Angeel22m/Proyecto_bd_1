@@ -1,12 +1,12 @@
 <?php
 class ProveedoresController {
 
-    public function nuevoProveedor($nombre, $direccion, $noTelefono ) {
+    public function crearProveedor($nombre, $direccion, $noTelefono ) {
         // Crear instancia del modelo
         $proveedorModel = new ProveedoresModel();
 
         // Llamar al método del modelo para crear un proveedor
-        $response = $proveedorModel::nuevoProveedor($nombre, $direccion, $noTelefono);
+        $response = $proveedorModel::crearProveedor($nombre, $direccion, $noTelefono);
 
         return;
     }

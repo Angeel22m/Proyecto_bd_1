@@ -1,8 +1,8 @@
 <?php
-class ClientesModel {
+class VehiculosModel{
+
     
-    
-    static public function crearCliente($nombre, $direccion, $noTelefono, $sexo, $ingresosAnuales) {
+    static public function crearVehiculo($idModelo, $noMotor, $VIN, $fechaFabricacion, $color, $transmision) {
         try {
             // Obtener la conexión
             $connection = Connection::connect();
@@ -12,14 +12,15 @@ class ClientesModel {
             }
 
             // Preparar el procedimiento almacenado
-            $script = $connection->prepare('CALL crearCliente(:nombre,:direccion,:noTelefono,:sexo,:ingresosAnuales)');
+            $script = $connection->prepare('CALL crearVehiculo(:VIN,:idModelo,:color,:noMotor,:transmision,:fechaFabricacion)');
 
             // Vincular las variables a los parámetros de la consulta
-            $script->bindParam(':nombre', $nombre, PDO::PARAM_STR); // Vinculando :nombre
-            $script->bindParam(':direccion', $direccion, PDO::PARAM_STR); // Vinculando :direccion
-            $script->bindParam(':noTelefono', $noTelefono, PDO::PARAM_STR); // Vinculando :noTelefono
-            $script->bindParam(':sexo', $sexo, PDO::PARAM_STR); // Vinculando :sexo
-            $script->bindParam(':ingresosAnuales', $ingresosAnuales, PDO::PARAM_INT); // Vinculando :ingresosAnuales
+            $script->bindParam(':VIN', $VIN, PDO::PARAM_STR); // Vinculando :VIN
+            $script->bindParam(':idModelo', $idModelo, PDO::PARAM_INT); // Vinculando :idModelo
+            $script->bindParam(':color', $color, PDO::PARAM_STR); // Vinculando :color
+            $script->bindParam(':noMotor', $noMotor, PDO::PARAM_INT); // Vinculando :noMotor
+            $script->bindParam(':transmision', $transmision, PDO::PARAM_STR); // Vinculando :transmision
+            $script->bindParam(':fechaFabricacion', $fechaFabricacion, PDO::PARAM_STR); // Vinculando :transmision
 
             
     
@@ -71,7 +72,7 @@ class ClientesModel {
         try {
             // Preparación de la consulta de lectura.
             $query = Connection::connect()->prepare(
-                "select * from CLIENTES"
+                "select * from VEHICULOS"
             );
     
             // Ejecución de la consulta.
@@ -97,68 +98,75 @@ class ClientesModel {
     }
     
 
-    public static function actualizarCliente($idCliente, $Datos){
-        
-// Preparación de la consulta de actualización
-$query = Connection::connect()->prepare(
-    "CALL actualizarCliente(
-        :idCliente,
-        :nombre,
-        :direccion,
-        :noTelefono,
-        :sexo,
-        :ingresosAnuales
-    )"
-);
+    public static function actualizarVehiculo($VIN, $Datos)
+{
+    // Preparación de la consulta
+    $query = Connection::connect()->prepare(
+        "CALL actualizarVehiculo(
+            :VIN,
+            :idModelo,
+            :color,
+            :noMotor,
+            :transmision,
+            :fechaFabricacion
+        )"
+    );
 
-// Vinculación de los parámetros
-$query->bindParam(":idCliente", $Datos["idCliente"], PDO::PARAM_INT);
-$query->bindParam(":nombre", $Datos["nombre"], PDO::PARAM_STR);
-$query->bindParam(":direccion", $Datos["direccion"], PDO::PARAM_STR);
-$query->bindParam(":sexo", $Datos["sexo"], PDO::PARAM_STR);
-$query->bindParam(":noTelefono", $Datos["noTelefono"], PDO::PARAM_STR);
-$query->bindParam(":ingresosAnuales", $Datos["ingresosAnuales"], PDO::PARAM_STR);
+    // Vinculación de los parámetros
+    echo 
+    $query->bindParam(":VIN", $VIN, PDO::PARAM_STR);
+    $query->bindParam(":idModelo", $Datos["idModelo"], PDO::PARAM_INT);
+    $query->bindParam(":noMotor", $Datos["noMotor"], PDO::PARAM_STR); // Revisar tipo de dato
+    $query->bindParam(":color", $Datos["color"], PDO::PARAM_STR);
+    $query->bindParam(":transmision", $Datos["transmision"], PDO::PARAM_STR);
+    $query->bindParam(":fechaFabricacion", $Datos["fechaFabricacion"], PDO::PARAM_STR);
 
-try {
-    // Ejecución de la consulta
-    $query->execute();
+    try {
+        // Ejecución de la consulta
+        $query->execute();
 
-// Obtener el mensaje de la consulta
-$message = $query->fetch(PDO::FETCH_ASSOC);
+        // Obtener el mensaje de la consulta
+        $message = $query->fetch(PDO::FETCH_ASSOC);
 
-// Verificar el mensaje y tomar acción
-if ($message) {
-    if (strpos($message['Mensaje'], 'exitosamente') !== false) {
-        // Si el mensaje contiene "exitosamente", significa que el cliente fue actualizado
+        // Verificar si se obtuvo un mensaje
+        if ($message && isset($message['Mensaje'])) {
+            if (stripos($message['Mensaje'], 'exitosamente') !== false) {
+                // Éxito en la actualización
+                echo json_encode([
+                    "status" => 200,
+                    "message" => $message['Mensaje']
+                ]);
+            } else {
+                // Error en la actualización
+                echo json_encode([
+                    "status" => 404,
+                    "error" => $message['Mensaje']
+                ]);
+            }
+        } else {
+            // Sin mensaje devuelto
+            echo json_encode([
+                "status" => 500,
+                "error" => "Error al obtener el mensaje del procedimiento almacenado."
+            ]);
+        }
+    } catch (PDOException $e) {
+        // Error en la ejecución del procedimiento
         echo json_encode([
-            "status" => 200,
-            "message" => $message['Mensaje']
-        ]);
-    } else {
-        // Si no contiene "exitosamente", significa que no se encontró al cliente
-        echo json_encode([
-            "status" => 404,
-            "error" => $message['Mensaje']
+            "status" => 500,
+            "error" => "Error interno al actualizar el vehículo.",
+            "detalle" => $e->getMessage()
         ]);
     }
 }
-} catch (PDOException $e) {
-    echo json_encode([
-        "status" => 500,
-        "error" => "Error interno al actualizar el cliente.",
-        "detalle" => $e->getMessage()
-    ]);
-}
-
-    }
 
 
-    public static function eliminarCliente($idCliente) {
+    public static function eliminarVehiculo($VIN) {
        $conn = Connection::connect(); 
         try {
             // Preparar la consulta SQL para eliminar el cliente por su ID
-            $stmt = $conn->prepare("call eliminarCliente(:idCliente)");
-            $stmt->bindParam(':idCliente', $idCliente, PDO::PARAM_INT);
+            $stmt = $conn->prepare("call eliminarVehiculo(:VIN)");
+            $stmt->bindParam(':VIN', $VIN, PDO::PARAM_STR);
             $stmt->execute();
             
 // Obtener el mensaje de la consulta
@@ -187,5 +195,4 @@ if ($message) {
             return false;
         }
     }
-    
 }

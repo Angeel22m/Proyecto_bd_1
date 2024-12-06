@@ -1,6 +1,6 @@
 <?php
 class VentasModel {
-    static public function crearVenta($idConcesionario, $idVenta, $VIN, $precio) {
+    static public function crearVenta($idConcesionario, $idCliente, $VIN, $precio) {
         try {
             // Obtener la conexión
             $connection = Connection::connect();
@@ -10,11 +10,11 @@ class VentasModel {
             }
     
             // Preparar el procedimiento almacenado
-            $script = $connection->prepare('CALL crearVenta(:idConcesionario, :idVenta, :VIN, :precio,');
+            $script = $connection->prepare('CALL crearVenta(:idConcesionario, :idCliente, :VIN, :precio)');
     
             // Vincular las variables a los parámetros de la consulta
             $script->bindParam(':idConcesionario', $idConcesionario, PDO::PARAM_STR); // Vinculando :idConcesionario
-            $script->bindParam(':idVenta', $idVenta, PDO::PARAM_STR); // Vinculando :idVenta
+            $script->bindParam(':idCliente', $idCliente, PDO::PARAM_STR); // Vinculando :idVenta
             $script->bindParam(':VIN', $VIN, PDO::PARAM_STR); // Vinculando :VIN
             $script->bindParam(':precio', $precio, PDO::PARAM_STR); // Vinculando :precio
             
