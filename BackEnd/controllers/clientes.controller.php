@@ -71,24 +71,7 @@ class ClientesController {
         // Intentar eliminar el cliente
         $response = $clienteModel::eliminarClientePorID($idCliente);
     
-        // Comprobamos si la eliminación fue exitosa
-        if ($response === false) { // Cambié a 'false', asumiendo que el modelo devuelve false si no se encuentra el cliente
-            // Cliente no encontrado
-            $json = array(
-                "status" => 404,
-                "detalle" => "No existe el cliente con el ID: $idCliente"
-            );
-            echo json_encode($json, true);
-            return;
-        } else {
-            // Cliente eliminado correctamente
-            $json = array(
-                "status" => 200,
-                "detalle" => "Cliente con ID: $idCliente ha sido eliminado correctamente"
-            );
-            echo json_encode($json, true);
-            return;
-        }
+        
     }
     
 }
