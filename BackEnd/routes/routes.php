@@ -39,7 +39,7 @@ if (count($arrayRutas) >= 3) {
             handleProveedor($requestMethod);
             break;
 
-        case 'ventas';
+    case 'ventas';
             handleVentas($requestMethod);
             break;
 
