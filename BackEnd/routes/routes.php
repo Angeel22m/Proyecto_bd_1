@@ -104,11 +104,7 @@ function handleCliente($method) {
                 $ingresosAnuales = $_POST['ingresosAnuales'];
 
                 try {
-                    $cliente->crearCliente($nombre, $direccion, $noTelefono, $sexo, $ingresosAnuales);
-                    echo json_encode([
-                        "status" => 201,
-                        "message" => "Cliente creado con éxito"
-                    ]);
+                    $cliente->crearCliente($nombre, $direccion, $noTelefono, $sexo, $ingresosAnuales);                   
                 } catch (Exception $e) {
                     echo json_encode([
                         "status" => 500,
@@ -135,49 +131,49 @@ function handleCliente($method) {
                 ]);
             }
             break;
-
-        case 'PUT':
-            // Leer el cuerpo de la solicitud para datos JSON
-            parse_str(file_get_contents("php://input"), $putData);
-
-            if (!isset($putData['idCliente'])) {
-                echo json_encode([
-                    "status" => 400,
-                    "error" => "El idCliente es obligatorio para actualizar un cliente."
-                ]);
+            case 'PUT':
+                // Obtener el idCliente de la ruta (en la URL)
+                $idCliente = isset($_GET['idCliente']) ? $_GET['idCliente'] : null;
+            
+                if (!$idCliente) {
+                    echo json_encode([
+                        "status" => 400,
+                        "error" => "El idCliente es obligatorio para actualizar un cliente."
+                    ]);
+                    break;
+                }
+            
+                // Leer el cuerpo de la solicitud para obtener los datos del cliente en form data
+                parse_str(file_get_contents("php://input"), $putData);
+            
+                // Validar que al menos un campo opcional esté presente
+                $campos = [];
+                if (!empty($putData['nombre'])) $campos['nombre'] = $putData['nombre'];
+                if (!empty($putData['direccion'])) $campos['direccion'] = $putData['direccion'];
+                if (!empty($putData['noTelefono'])) $campos['noTelefono'] = $putData['noTelefono'];
+                if (!empty($putData['sexo'])) $campos['sexo'] = $putData['sexo'];
+                if (!empty($putData['ingresosAnuales'])) $campos['ingresosAnuales'] = $putData['ingresosAnuales'];
+            
+                if (empty($campos)) {
+                    echo json_encode([
+                        "status" => 400,
+                        "error" => "Debe proporcionar al menos un campo para actualizar."
+                    ]);
+                    break;
+                }
+            
+                try {
+                    // Llamar al método para actualizar el cliente
+                    $cliente->actualizarCliente($idCliente, $campos);                               
+                } catch (Exception $e) {
+                    echo json_encode([
+                        "status" => 500,
+                        "error" => "Error interno al actualizar el cliente.",
+                        "detalle" => $e->getMessage()
+                    ]);
+                }
                 break;
-            }
-
-            $idCliente = $putData['idCliente'];
-
-            // Validar que al menos un campo opcional esté presente
-            $campos = [];
-            if (!empty($putData['nombre'])) $campos['nombre'] = $putData['nombre'];
-            if (!empty($putData['direccion'])) $campos['direccion'] = $putData['direccion'];
-            if (!empty($putData['noTelefono'])) $campos['noTelefono'] = $putData['noTelefono'];
-            if (!empty($putData['sexo'])) $campos['sexo'] = $putData['sexo'];
-            if (!empty($putData['ingresosAnuales'])) $campos['ingresosAnuales'] = $putData['ingresosAnuales'];
-
-            if (empty($campos)) {
-                echo json_encode([
-                    "status" => 400,
-                    "error" => "Debe proporcionar al menos un campo para actualizar."
-                ]);
-                break;
-            }
-
-            try {
-                
-                $cliente->actualizarCliente($idCliente, $campos);               
-            } catch (Exception $e) {
-                echo json_encode([
-                    "status" => 500,
-                    "error" => "Error interno al actualizar el cliente.",
-                    "detalle" => $e->getMessage()
-                ]);
-            }
-            break;
-
+            
             case 'DELETE':
                 // Obtener el ID del cliente desde los parámetros de la URL
                 if (isset($_GET['idCliente'])) {
