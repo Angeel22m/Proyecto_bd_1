@@ -64,11 +64,16 @@ CREATE PROCEDURE eliminarPlantaPorId(
 BEGIN
     -- Verifica si la planta existe
     IF EXISTS (SELECT 1 FROM Plantas WHERE idPlanta = p_idPlanta) THEN
-        -- Elimina la planta de la tabla Plantas
+        -- Elimina las relaciones en la tabla ModelosXPlantas si existen
+        IF EXISTS (SELECT 1 FROM ModelosXPlantas WHERE idPlanta = p_idPlanta) THEN
+            DELETE FROM ModelosXPlantas WHERE idPlanta = p_idPlanta;            
+        END IF;
+
+        -- Ahora elimina la planta
         DELETE FROM Plantas WHERE idPlanta = p_idPlanta;
 
         -- Mensaje de confirmación
-        SELECT CONCAT('La planta con ID ', p_idPlanta, ' fue eliminada exitosamente') AS Mensaje;
+        SELECT CONCAT('La planta con ID ', p_idPlanta, ' fue eliminada exitosamente.') AS Mensaje;
     ELSE
         -- Si la planta no existe
         SELECT CONCAT('No existe una planta con el ID: ', p_idPlanta) AS Mensaje;
@@ -76,7 +81,6 @@ BEGIN
 END$$
 
 DELIMITER ;
-
 
 
 --procedimiento para crear cliente 
@@ -152,7 +156,8 @@ END $$
 
 DELIMITER ;
 
---procedimiento para eliminar un cliente 
+
+--procedimiento para eliminar cliente
 DELIMITER $$
 
 CREATE PROCEDURE eliminarClientePorId(
@@ -161,9 +166,16 @@ CREATE PROCEDURE eliminarClientePorId(
 BEGIN
     -- Verificar si el cliente existe
     IF EXISTS (SELECT 1 FROM CLIENTES WHERE idCliente = p_idCliente) THEN
+
+        -- Primero eliminar las ventas asociadas al cliente, si existen
+        DELETE FROM VENTAS WHERE idCliente = p_idCliente;
+
+        -- Luego eliminar el cliente
         DELETE FROM CLIENTES WHERE idCliente = p_idCliente;
+
         -- Confirmación
-        SELECT 'Cliente eliminado exitosamente.' AS Mensaje;
+        SELECT 'Cliente y sus registros asociados fueron eliminados exitosamente.' AS Mensaje;
+
     ELSE
         -- Cliente no encontrado
         SELECT CONCAT('No existe un cliente con el ID: ', p_idCliente) AS Mensaje;
@@ -171,6 +183,7 @@ BEGIN
 END $$
 
 DELIMITER ;
+
 
 
 
@@ -247,17 +260,32 @@ DELIMITER ;
 DELIMITER $$
 
 CREATE PROCEDURE eliminarVehiculo(
-    IN v_VIN VARCHAR(17))
+    IN v_VIN VARCHAR(17)
+)
 BEGIN     
-	 IF EXISTS (SELECT 1 FROM VEHICULOS v WHERE v.VIN = v_VIN) THEN
-            DELETE FROM vehiculos
-            WHERE VIN = v_VIN;
-         SELECT 'Vehiculo eliminado exitosamente' AS mensaje;
-      ELSE
-         SELECT 'El vehículo con el VIN especificado no existe' AS mensaje;
-      END IF;
+    -- Verificar si el vehículo existe
+    IF EXISTS (SELECT 1 FROM VEHICULOS WHERE VIN = v_VIN) THEN
+        
+        -- Eliminar las relaciones en VEHICULOSXCONCESIONARIOS si existen
+        DELETE FROM VEHICULOSXCONCESIONARIOS WHERE VIN = v_VIN;
+
+        -- Eliminar las relaciones en VENTAS si existen
+        DELETE FROM VENTAS WHERE VIN = v_VIN;
+
+        -- Ahora eliminar el vehículo de la tabla VEHICULOS
+        DELETE FROM VEHICULOS WHERE VIN = v_VIN;
+
+        -- Confirmación
+        SELECT 'Vehículo y sus registros relacionados fueron eliminados exitosamente.' AS mensaje;
+
+    ELSE
+        -- Vehículo no encontrado
+        SELECT 'El vehículo con el VIN especificado no existe' AS mensaje;
+    END IF;
 END$$
+
 DELIMITER ;
+
 
 -- procedimiento para añadir un proveedor
 DELIMITER $$
@@ -311,19 +339,29 @@ DELIMITER ;
 DELIMITER $$
 
 CREATE PROCEDURE eliminarProveedor(
-	p_idProveedor INT)
-BEGIN     
-	 IF EXISTS (
-	 SELECT 1 FROM PROVEEDORES p
-	 WHERE p.idProveedor = p_idProveedor
-	 ) THEN
-	DELETE FROM proveedores WHERE idProveedor = p_idProveedor; 
-   SELECT 'Proveedor eliminado exitosamente ' AS mensaje;
-   ELSE
-   SELECT 'No esxiste un proveedor con estos datos' AS mensaje;
-   END IF;
+    IN p_idProveedor INT
+)
+BEGIN
+    -- Verificar si el proveedor existe
+    IF EXISTS (SELECT 1 FROM PROVEEDORES WHERE idProveedor = p_idProveedor) THEN
+        
+        -- Eliminar las relaciones en MODELOSXPROVEEDORES si existen
+        DELETE FROM MODELOSXPROVEEDORES WHERE idProveedor = p_idProveedor;
+
+        -- Ahora eliminar el proveedor de la tabla PROVEEDORES
+        DELETE FROM PROVEEDORES WHERE idProveedor = p_idProveedor;
+
+        -- Confirmación
+        SELECT 'Proveedor y sus registros relacionados fueron eliminados exitosamente.' AS mensaje;
+
+    ELSE
+        -- Proveedor no encontrado
+        SELECT 'No existe un proveedor con el ID especificado' AS mensaje;
+    END IF;
 END$$
+
 DELIMITER ;
+
 
 -- procedimiento para añadir un nuevo modelo
 DELIMITER $$
@@ -377,20 +415,33 @@ DELIMITER ;
 DELIMITER $$
 
 CREATE PROCEDURE eliminarModelo(
-	m_idModelo INT)
-BEGIN     
-	 IF EXISTS (
-	 SELECT 1 FROM MODELOS m
-	 WHERE m.idModelo = m_idModelo
-	 ) THEN
-	DELETE FROM MODELOS
-	WHERE idModelo = m_idModelo;
-   SELECT 'Modelo eliminado exitosamente ' AS mensaje;
-   ELSE
-   SELECT 'No esxiste un modelo con estos datos' AS mensaje;
-   END IF;
+    m_idModelo INT
+)
+BEGIN
+    -- Verificar si el modelo existe
+    IF EXISTS (
+        SELECT 1 FROM MODELOS m
+        WHERE m.idModelo = m_idModelo
+    ) THEN
+        -- Eliminar registros dependientes
+        DELETE FROM VEHICULOS WHERE idModelo = m_idModelo;
+        DELETE FROM MODELOSXPLANTAS WHERE idModelo = m_idModelo;
+        DELETE FROM MODELOSXPROVEEDORES WHERE idModelo = m_idModelo;
+        DELETE FROM VEHICULOSXCONCESIONARIOS WHERE VIN IN (SELECT VIN FROM VEHICULOS WHERE idModelo = m_idModelo);
+
+        -- Finalmente eliminar el modelo
+        DELETE FROM MODELOS WHERE idModelo = m_idModelo;
+
+        -- Confirmar la eliminación
+        SELECT 'Modelo eliminado exitosamente' AS mensaje;
+    ELSE
+        -- En caso de que no exista el modelo
+        SELECT 'No existe un modelo con estos datos' AS mensaje;
+    END IF;
 END$$
+
 DELIMITER ;
+
 
 --procedimiento para crear ventas
 DELIMITER $$
@@ -561,17 +612,25 @@ END $$
 
 DELIMITER ;
 
---procedimiento para eliminar consecionario
-DELIMITER $$
+--procedimiento para eliminar consecionarioDELIMITER $$
 
+DELIMITER $$
 CREATE PROCEDURE eliminarConcesionarioPorId(
     IN p_idConcesionario INT
 )
 BEGIN
     -- Verificar si el concesionario existe
     IF EXISTS (SELECT 1 FROM CONCESIONARIOS WHERE idConcesionario = p_idConcesionario) THEN
+        -- Eliminar las dependencias primero (ventas relacionadas)
+        DELETE FROM VENTAS WHERE idConcesionario = p_idConcesionario;
+        
+        -- Si hay más tablas dependientes, se deben eliminar aquí
+        -- Ejemplo: Eliminar vehículos asociados a ese concesionario
+        DELETE FROM VEHICULOSXCONCESIONARIOS WHERE idConcesionario = p_idConcesionario;
+
         -- Eliminar concesionario
         DELETE FROM CONCESIONARIOS WHERE idConcesionario = p_idConcesionario;
+
         -- Confirmación de éxito
         SELECT 'Concesionario eliminado exitosamente.' AS Mensaje;
     ELSE
@@ -581,6 +640,7 @@ BEGIN
 END $$
 
 DELIMITER ;
+
 
 
 
