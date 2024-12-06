@@ -47,7 +47,7 @@ BEGIN
             ubicacion = COALESCE(p_ubicacion, ubicacion)
         WHERE idPlanta = p_idPlanta;
 
-        SELECT CONCAT('La planta con ID ', p_idPlanta, ' fue actualizada correctamente.') AS Mensaje;
+        SELECT CONCAT('La planta con ID ', p_idPlanta, ' fue actualizada exitosamente.') AS Mensaje;
     ELSE
         SELECT CONCAT('No existe una planta con el ID: ', p_idPlanta) AS Mensaje;
     END IF;
@@ -64,17 +64,11 @@ CREATE PROCEDURE eliminarPlantaPorId(
 BEGIN
     -- Verifica si la planta existe
     IF EXISTS (SELECT 1 FROM Plantas WHERE idPlanta = p_idPlanta) THEN
-        -- Elimina las relaciones en la tabla ModelosXPlantas si existen
-        IF EXISTS (SELECT 1 FROM ModelosXPlantas WHERE idPlanta = p_idPlanta) THEN
-            DELETE FROM ModelosXPlantas WHERE idPlanta = p_idPlanta;
-            SELECT CONCAT('Las relaciones con ModelosXPlantas para la planta con ID ', p_idPlanta, ' fueron eliminadas.') AS Mensaje;
-        END IF;
-
-        -- Ahora elimina la planta
+        -- Elimina la planta de la tabla Plantas
         DELETE FROM Plantas WHERE idPlanta = p_idPlanta;
 
         -- Mensaje de confirmación
-        SELECT CONCAT('La planta con ID ', p_idPlanta, ' y sus registros relacionados fueron eliminados.') AS Mensaje;
+        SELECT CONCAT('La planta con ID ', p_idPlanta, ' fue eliminada exitosamente') AS Mensaje;
     ELSE
         -- Si la planta no existe
         SELECT CONCAT('No existe una planta con el ID: ', p_idPlanta) AS Mensaje;
@@ -82,6 +76,7 @@ BEGIN
 END$$
 
 DELIMITER ;
+
 
 
 --procedimiento para crear cliente 
