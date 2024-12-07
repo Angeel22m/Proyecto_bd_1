@@ -46,17 +46,117 @@ if (count($arrayRutas) >= 3) {
     case 'vehiculo';
             handleVehiculos($requestMethod);
             break;
-
-        default:
-            // Respuesta para rutas no encontradas
+    case 'viewConcesionarios';
+        switch($requestMethod){
+            case 'GET';
+            $view = new ViewController();
+            try {
+                $result = $view->readAllConcesionarios();               
+            } catch (Exception $e) {
+                echo json_encode([
+                    "status" => 500,
+                    "error" => "Error interno al obtener los clientes.",
+                    "detalle" => $e->getMessage()
+                ]);
+            }
+            break;
+            
+            default:
             echo json_encode([
-                "status" => 404,
-                "detalle" => "Página no encontrada."
+                "status" => 405,
+                "detalle" => "Método no permitido."
             ]);
             break;
-        
+        }
+
+    break;
+
+    case 'viewConcesionario':
+        switch ($requestMethod) {
+            case 'GET':
+                $view = new ViewController();
+                $idConcesionario = isset($_GET['idConcesionario']) ? $_GET['idConcesionario'] : null;
+    
+                // Validar idConcesionario
+                if (!$idConcesionario || !filter_var($idConcesionario, FILTER_VALIDATE_INT)) {
+                    echo json_encode([
+                        "status" => 400,
+                        "error" => "El idConcesionario es obligatorio y debe ser un número válido."
+                    ]);
+                    break;
+                }
+    
+                try {
+                    // Intentar obtener el concesionario
+                    $result = $view->readConcesionario($idConcesionario);
+    
+                    
+                } catch (Exception $e) {
+                    // Manejo de errores generales
+                    echo json_encode([
+                        "status" => 500,
+                        "error" => "Error interno al obtener el concesionario.",
+                        "detalle" => $e->getMessage()
+                    ]);
+                }
+                break;
+    
+            default:
+                // Respuesta para métodos no permitidos
+                echo json_encode([
+                    "status" => 405,
+                    "detalle" => "Método no permitido para esta ruta."
+                ]);
+                break;
+        }
+
+    break;
+
+    case 'viewVehiculosConcesionarios';
+    switch ($requestMethod) {
+        case 'GET':
+            $view = new ViewController();
+            $idConcesionario = isset($_GET['idConcesionario']) ? $_GET['idConcesionario'] : null;
+
+            // Validar idConcesionario
+            if (!$idConcesionario || !filter_var($idConcesionario, FILTER_VALIDATE_INT)) {
+                echo json_encode([
+                    "status" => 400,
+                    "error" => "El idConcesionario es obligatorio y debe ser un número válido."
+                ]);
+                break;
+            }
+
+            try {
+                // Intentar obtener el concesionario
+                $result = $view->readVehiculosConcesionario($idConcesionario);
+
+                
+            } catch (Exception $e) {
+                // Manejo de errores generales
+                echo json_encode([
+                    "status" => 500,
+                    "error" => "Error interno al obtener los vehiculos.",
+                    "detalle" => $e->getMessage()
+                ]);
+            }
+            break;
+
+        default:
+            // Respuesta para métodos no permitidos
+            echo json_encode([
+                "status" => 405,
+                "detalle" => "Método no permitido para esta ruta."
+            ]);
+            break;
     }
-} else {
+
+    break;
+    
+      
+        
+    }}
+ else {
     echo json_encode([
         "status" => 404,
         "detalle" => "Ruta incompleta o no encontrada."

@@ -78,7 +78,7 @@
                 switch (data.status) {
                     case 200:
                         alert("Inicio de sesión exitoso.");
-                        window.location.href = "http://localhost/Proyecto_bd_1/FrontEnd/clientes.php";
+                        window.location.href = "http://localhost/Proyecto_bd_1/FrontEnd/clienteVIew.php";
                         break;
                     case 401:
                         alert("Credenciales inválidas. Por favor, verifica tu usuario y contraseña.");
