@@ -1661,44 +1661,62 @@ if (!isset($_SESSION['usuario'])) {
         })
 
 
-        //modificar aun no funciona
         async function handleModificarCliente(event) {
-            event.preventDefault(); 
+    event.preventDefault();
 
-            const formData = new FormData( document.getElementById('modificarCliente'));
-            const id = document.getElementById('inmodificarCliente').value;
-            
-            try {
-                const response = await fetch( apiClientes+'?idCliente='+id.trim() , {
-                    method: "PUT",
-                    body: formData,
-                });
+    // Capturar el formulario y datos del cliente
+    const formElement = document.getElementById('modificarCliente');
+    const formData = new FormData(formElement);
+    const id = document.getElementById('inmodificarCliente').value.trim();
 
-                const data = await response.json();
+    // Convertir FormData a URLSearchParams para x-www-form-urlencoded
+    const urlEncodedData = new URLSearchParams();
+    formData.forEach((value, key) => {
+        urlEncodedData.append(key, value.trim());
+    });
 
-                switch (data.status) {
-                    case 200:
-                        alert("cliente actualizado exitosamente"); 
-                        loadClientes();
-                        break;
-                    case 401:
-                        alert("Credenciales inválidas. Por favor, verifica");
-                        break;
-                    case 400:
-                        alert("Faltan datos o los datos son incorrectos.");
-                        break;
-                    case 405:
-                        alert("Método no permitido. Por favor, utiliza el método adecuado.");
-                        break;
-                    default:
-                        alert("Error desconocido. Intenta nuevamente.");
-                        break;
-                }
-            } catch (error) {
-                alert("Ocurrió un error al intentar modificar el cliente. Intenta nuevamente.");
-                console.error(error);
-            }
+    console.log("Datos enviados como x-www-form-urlencoded:", urlEncodedData.toString());
+
+    try {
+        // Realizar la solicitud PUT
+        const response = await fetch(`${apiClientes}?idCliente=${id}`, {
+            method: "PUT",
+            headers: {
+                "Content-Type": "application/x-www-form-urlencoded",
+            },
+            body: urlEncodedData.toString(), // Convertido a una cadena
+        });
+
+        // Leer la respuesta JSON
+        const data = await response.json();
+        console.log("Respuesta de la API:", data);
+
+        // Manejar respuestas basadas en el estado devuelto
+        switch (response.status) {
+            case 200:
+                alert("Cliente actualizado exitosamente.");
+                loadClientes();
+                break;
+            case 401:
+                alert("Credenciales inválidas. Por favor, verifica.");
+                break;
+            case 400:
+                alert(data.error || "Faltan datos o los datos son incorrectos.");
+                break;
+            case 405:
+                alert("Método no permitido. Por favor, utiliza el método adecuado.");
+                break;
+            default:
+                alert("Error desconocido. Intenta nuevamente.");
+                break;
         }
+    } catch (error) {
+        alert("Ocurrió un error al intentar modificar el cliente. Intenta nuevamente.");
+        console.error("Error capturado:", error);
+    }
+}
+
+
         
 
         async function handleModificarVehiculo(event) {

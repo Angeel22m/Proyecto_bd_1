@@ -493,7 +493,7 @@ function handleCliente($method) {
             if (!empty($putData['noTelefono'])) $campos['noTelefono'] = $putData['noTelefono'];
             if (!empty($putData['sexo'])) $campos['sexo'] = $putData['sexo'];
             if (!empty($putData['ingresosAnuales'])) $campos['ingresosAnuales'] = $putData['ingresosAnuales'];
-
+             
             if (empty($campos)) {
                 echo json_encode([
                     "status" => 400,
