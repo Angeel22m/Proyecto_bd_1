@@ -195,4 +195,40 @@ if ($message) {
             return false;
         }
     }
+
+    
+    public static function buscarVehiculo($datos) {
+        try {
+            // Preparación de la consulta de lectura.
+            $query = Connection::connect()->prepare(
+                "call BuscarVehiculos(:color,:transmision,:estiloCarroceria,:marca)"
+
+            );
+           
+            $query->bindParam(":color", $datos["color"], PDO::PARAM_STR);           
+            $query->bindParam(":transmision", $datos["transmision"], PDO::PARAM_STR);
+            $query->bindParam(":estiloCarroceria", $datos["estiloCarroceria"], PDO::PARAM_STR);
+            $query->bindParam(":marca", $datos["marca"], PDO::PARAM_STR);    
+    
+            // Ejecución de la consulta.
+            $query->execute();
+    
+            // Capturando los datos pedidos por la consulta.
+            $result = $query->fetchAll(PDO::FETCH_CLASS);
+    
+            // Finalizando la variable de consulta.
+            $query->closeCursor();
+            $query = null;
+    
+            // Retornando los datos solicitados.
+            return $result;
+    
+        } catch (PDOException $e) {
+            // Manejo de errores específicos de PDO.
+            throw new Exception("Error al leer los datos: " . $e->getMessage());
+        } catch (Exception $e) {
+            // Manejo de errores generales.
+            throw new Exception("Se produjo un error: " . $e->getMessage());
+        }
+    }
 }

@@ -61,5 +61,39 @@ class VehiculosController{
         
     }
     
+    public function buscarVehiculo($campos) {
+        // Crear instancia del modelo
+       
+        $datos = array(            
+            "estiloCarroceria" => !empty($campos['estiloCarroceria']) ? $campos['estiloCarroceria'] : null,
+            "marca" => !empty($campos['marca']) ? $campos['marca'] : null,
+            "color" => !empty($campos['color']) ? $campos['color'] : null,
+            "transmision" => !empty($campos['transmision']) ? $campos['transmision'] : null,            
+        );
+      
+        $vehiculoModel = new VehiculosModel();
+        // Llamar al método del modelo para crear el cliente
+        $response = $vehiculoModel::buscarVehiculo($datos);
+       
+        if(empty($response)){
+
+            $json=array(
+                "status"=>404,
+                "detalle"=>["Mensaje"=>"No hay Coincidencias."]
+            );
+
+            echo json_encode($json, true);
+            return;
+        }else{
+            $json=array(
+                "status"=>200,
+                "detalle"=>$response
+            );
+
+            echo json_encode($json, true);
+            return;
+        }
+
+    }
 
 }

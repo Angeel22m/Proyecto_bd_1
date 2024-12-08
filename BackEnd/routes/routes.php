@@ -322,9 +322,54 @@ switch($requestMethod){
     break;
 }
 break;
+
+case 'buscarVehiculo';
+switch($requestMethod){
+    case 'POST';
+      
+
+    // Leer el cuerpo de la solicitud para obtener los datos del venta$venta en form data
+    parse_str(file_get_contents("php://input"), $putData);
+
+    // Validar que al menos un campo opcional esté presente
+    $campos = [];
+    if (!empty($_POST['color'])) $campos['color'] = $_POST['color'];
+    if (!empty($_POST['transmision'])) $campos['transmision'] = $_POST['transmision'];
+    if (!empty($_POST['estiloCarroceria'])) $campos['estiloCarroceria'] = $_POST['estiloCarroceria'];
+    if (!empty($_POST['marca'])) $campos['marca'] = $_POST['marca'];
+
+
+    if (empty($campos)) {
+        echo json_encode([
+            "status" => 400,
+            "error" => "Debe proporcionar al menos un campo para buscar."
+        ]);
+        break;
+    }
+
+    try {       
+        $vehiculo = new VehiculosController();
+        // Llamar al método para actualizar el venta$venta
+        $vehiculo->buscarVehiculo($campos);                               
+    } catch (Exception $e) {
+        echo json_encode([
+            "status" => 500,
+            "error" => "Error interno al actualizar el venta.",
+            "detalle" => $e->getMessage()
+        ]);
+    }
+    break;
+    
+    default:
+    echo json_encode([
+        "status" => 405,
+        "detalle" => "Método no permitido."
+    ]);
+    break;
+break;
       
         
-    }}
+    }}}
  else {
     echo json_encode([
         "status" => 404,
@@ -878,7 +923,7 @@ function handleVentas($method) {
                 } catch (Exception $e) {
                     echo json_encode([
                         "status" => 500,
-                        "error" => "Error interno al crear el venta$venta.",
+                        "error" => "Error interno al crear el venta.",
                         "detalle" => $e->getMessage()
                     ]);
                 }
@@ -939,7 +984,7 @@ function handleVentas($method) {
                 } catch (Exception $e) {
                     echo json_encode([
                         "status" => 500,
-                        "error" => "Error interno al actualizar el venta$venta.",
+                        "error" => "Error interno al actualizar el venta.",
                         "detalle" => $e->getMessage()
                     ]);
                 }
@@ -955,14 +1000,14 @@ function handleVentas($method) {
                     } catch (Exception $e) {
                         echo json_encode([
                             "status" => 500,
-                            "error" => "Error interno al eliminar el venta$venta.",
+                            "error" => "Error interno al eliminar el venta.",
                             "detalle" => $e->getMessage()
                         ]);
                     }
                 } else {
                     echo json_encode([
                         "status" => 400,
-                        "error" => "El idVenta es obligatorio para eliminar un venta$venta."
+                        "error" => "El idVenta es obligatorio para eliminar un venta."
                     ]);
                 }
                 break;
