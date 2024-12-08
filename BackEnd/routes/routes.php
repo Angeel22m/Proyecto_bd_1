@@ -152,7 +152,176 @@ if (count($arrayRutas) >= 3) {
     }
 
     break;
+    case 'viewInformeVentas';
+    switch($requestMethod){
+        case 'GET';
+        $view = new ViewController();
+        try {
+            $result = $view->readInformeVentas();               
+        } catch (Exception $e) {
+            echo json_encode([
+                "status" => 500,
+                "error" => "Error interno al obtener los clientes.",
+                "detalle" => $e->getMessage()
+            ]);
+        }
+        break;
+        
+        default:
+        echo json_encode([
+            "status" => 405,
+            "detalle" => "Método no permitido."
+        ]);
+        break;
+    }
+
+break;
+     
+case 'viewMUV';
+switch($requestMethod){
+    case 'GET';
+    $view = new ViewController();
+    try {
+        $result = $view->viewMUV();               
+    } catch (Exception $e) {
+        echo json_encode([
+            "status" => 500,
+            "error" => "Error interno al obtener los clientes.",
+            "detalle" => $e->getMessage()
+        ]);
+    }
+    break;
     
+    default:
+    echo json_encode([
+        "status" => 405,
+        "detalle" => "Método no permitido."
+    ]);
+    break;
+}
+
+break;
+
+case 'viewMTD';
+switch($requestMethod){
+    case 'GET';
+    $view = new ViewController();
+    try {
+        $result = $view->viewMTD();               
+    } catch (Exception $e) {
+        echo json_encode([
+            "status" => 500,
+            "error" => "Error interno al obtener los clientes.",
+            "detalle" => $e->getMessage()
+        ]);
+    }
+    break;
+    
+    default:
+    echo json_encode([
+        "status" => 405,
+        "detalle" => "Método no permitido."
+    ]);
+    break;
+}
+break;
+
+case 'viewTV';
+switch($requestMethod){
+    case 'GET';
+    $view = new ViewController();
+    try {
+        $result = $view->viewTV();               
+    } catch (Exception $e) {
+        echo json_encode([
+            "status" => 500,
+            "error" => "Error interno al obtener los clientes.",
+            "detalle" => $e->getMessage()
+        ]);
+    }
+    break;
+    
+    default:
+    echo json_encode([
+        "status" => 405,
+        "detalle" => "Método no permitido."
+    ]);
+    break;
+}
+break;
+
+case 'viewTI';
+
+switch($requestMethod){
+    case 'GET';
+    $view = new ViewController();
+    try {
+        $result = $view->viewTI();               
+    } catch (Exception $e) {
+        echo json_encode([
+            "status" => 500,
+            "error" => "Error interno al obtener los clientes.",
+            "detalle" => $e->getMessage()
+        ]);
+    }
+    break;
+    
+    default:
+    echo json_encode([
+        "status" => 405,
+        "detalle" => "Método no permitido."
+    ]);
+    break;
+}
+break;
+
+case 'viewConvertibles';
+switch($requestMethod){
+    case 'GET';
+    $view = new ViewController();
+    try {
+        $result = $view->viewConvertibles();               
+    } catch (Exception $e) {
+        echo json_encode([
+            "status" => 500,
+            "error" => "Error interno al obtener los clientes.",
+            "detalle" => $e->getMessage()
+        ]);
+    }
+    break;
+    
+    default:
+    echo json_encode([
+        "status" => 405,
+        "detalle" => "Método no permitido."
+    ]);
+    break;
+}
+break;
+
+case 'historial';
+switch($requestMethod){
+    case 'GET';
+    $view = new ViewController();
+    try {
+        $result = $view->historial();               
+    } catch (Exception $e) {
+        echo json_encode([
+            "status" => 500,
+            "error" => "Error interno al obtener los clientes.",
+            "detalle" => $e->getMessage()
+        ]);
+    }
+    break;
+    
+    default:
+    echo json_encode([
+        "status" => 405,
+        "detalle" => "Método no permitido."
+    ]);
+    break;
+}
+break;
       
         
     }}
