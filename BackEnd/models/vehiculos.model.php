@@ -112,8 +112,7 @@ class VehiculosModel{
         )"
     );
 
-    // Vinculación de los parámetros
-    echo 
+    // Vinculación de los parámetros    
     $query->bindParam(":VIN", $VIN, PDO::PARAM_STR);
     $query->bindParam(":idModelo", $Datos["idModelo"], PDO::PARAM_INT);
     $query->bindParam(":noMotor", $Datos["noMotor"], PDO::PARAM_STR); // Revisar tipo de dato
