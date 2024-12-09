@@ -7,6 +7,11 @@ if (!isset($_SESSION['usuario'])) {
     exit;
 }
 
+// Verificar permisos (permitir acceso si el usuario es administrador o concesionario)
+if ($_SESSION['rol'] !== 'admin' && $_SESSION['rol'] !== 'cliente') {
+    echo "No tienes permiso para acceder a esta página.";
+    exit;
+}
 ?>
 <!DOCTYPE html>
 <html lang="en">

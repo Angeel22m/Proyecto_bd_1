@@ -61,43 +61,63 @@
         }
     </style>
 
-    <script>
-        async function handleLogin(event) {
-            event.preventDefault(); // Evitar el envío tradicional del formulario
+    <script>async function handleLogin(event) {
+    event.preventDefault(); // Evitar el envío tradicional del formulario
 
-            const formData = new FormData(document.getElementById("loginForm"));
+    const formData = new FormData(document.getElementById("loginForm"));
 
-            try {
-                const response = await fetch("http://localhost/Proyecto_bd_1/backEnd/login", {
-                    method: "POST",
-                    body: formData,
-                });
+    try {
+        const response = await fetch("http://localhost/Proyecto_bd_1/backEnd/login", {
+            method: "POST",
+            body: formData,
+        });
 
-                const data = await response.json();
+        const data = await response.json();
 
-                switch (data.status) {
-                    case 200:
-                        alert("Inicio de sesión exitoso.");
-                        window.location.href = "http://localhost/Proyecto_bd_1/FrontEnd/clienteVIew.php";
-                        break;
-                    case 401:
-                        alert("Credenciales inválidas. Por favor, verifica tu usuario y contraseña.");
-                        break;
-                    case 400:
-                        alert("Faltan datos de inicio de sesión o los datos son incorrectos.");
-                        break;
-                    case 405:
-                        alert("Método no permitido. Por favor, utiliza el método adecuado.");
-                        break;
-                    default:
-                        alert("Error desconocido. Intenta nuevamente.");
-                        break;
-                }
-            } catch (error) {
-                alert("Ocurrió un error al intentar iniciar sesión. Intenta nuevamente.");
-                console.error(error);
+        if (data.status === 200) {
+            alert("Inicio de sesión exitoso.");
+
+            // Redirigir según el rol del usuario
+            switch (data.rol) {
+                case "admin":
+                    window.location.href = "http://localhost/Proyecto_bd_1/FrontEnd/admin.php";
+                    break;
+                case "cliente":
+                    window.location.href = "http://localhost/Proyecto_bd_1/FrontEnd/clienteView.php";
+                    break;
+                case "concesionario":
+                    window.location.href = "http://localhost/Proyecto_bd_1/FrontEnd/servicioBusqueda.php";
+                    break;
+                case "marketing":
+                    window.location.href = "http://localhost/Proyecto_bd_1/FrontEnd/viewMarketing.php";
+                    break;
+                default:
+                    alert("Rol desconocido. Contacta al administrador.");
+                    break;
+            }
+        } else {
+            // Manejar errores de autenticación
+            switch (data.status) {
+                case 401:
+                    alert("Credenciales inválidas. Por favor, verifica tu usuario y contraseña.");
+                    break;
+                case 400:
+                    alert("Faltan datos de inicio de sesión o los datos son incorrectos.");
+                    break;
+                case 405:
+                    alert("Método no permitido. Por favor, utiliza el método adecuado.");
+                    break;
+                default:
+                    alert("Error desconocido. Intenta nuevamente.");
+                    break;
             }
         }
+    } catch (error) {
+        alert("Ocurrió un error al intentar iniciar sesión. Intenta nuevamente.");
+        console.error(error);
+    }
+}
+
     </script>
 </head>
 <body>

@@ -1,3 +1,18 @@
+<?php
+session_start();
+
+// Verificar si el usuario está autenticado
+if (!isset($_SESSION['usuario'])) {
+    header('Location: index.php'); // Redirige a la página de login
+    exit;
+}
+
+// Verificar permisos (permitir acceso si el usuario es administrador o concesionario)
+if ($_SESSION['rol'] !== 'admin' && $_SESSION['rol'] !== 'marketing') {
+    echo "No tienes permiso para acceder a esta página.";
+    exit;
+}
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -10,7 +25,7 @@
 <div class="container my-4">
     <!-- Botón de Cerrar Sesión -->
     <div class="d-flex justify-content-end mb-3">
-        <a href="/logout" class="btn btn-danger">Cerrar Sesión</a>
+        <a href="http://localhost/Proyecto_bd_1/FrontEnd/cerrarsession.php" class="btn btn-danger">Cerrar Sesión</a>
     </div>
 
     <!-- Título -->

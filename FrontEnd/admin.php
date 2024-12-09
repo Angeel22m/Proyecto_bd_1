@@ -7,6 +7,11 @@ if (!isset($_SESSION['usuario'])) {
     exit;
 }
 
+// Verificar permisos (opcional, si usas roles)
+if ($_SESSION['rol'] !== 'admin') {
+    echo "No tienes permiso para acceder a esta página.";
+    exit;
+}
 ?>
 <!DOCTYPE html>
 
