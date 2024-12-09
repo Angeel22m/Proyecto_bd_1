@@ -109,7 +109,7 @@ if ($_SESSION['rol'] !== 'admin' && $_SESSION['rol'] !== 'cliente') {
             try {
                 const response = await fetch(apiConcesionarioInfo(id));
                 const info = await response.json();
-                console.log(info.detalle);
+                
                 // Llenar la tabla con la información del concesionario
                 concesionarioTableBody.innerHTML = `
                     <tr>
