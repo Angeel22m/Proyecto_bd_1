@@ -819,28 +819,30 @@ if (!isset($_SESSION['usuario'])) {
                 <div class="mb-2 row text-secondary">
                   <label  class="col-form-label">ID Modelo</label>
                   <div>
-                    <input type="text" class="form-control" id="updIDModelo">
+                    <input type="text" class="form-control" id="inmodificarModelo">
                   </div>
                 </div>
+                <form id="modificarModelo" >
                 <div class="mb-2 row text-secondary">
                   <label  class="col-form-label">Nombre</label>
                   <div>
-                    <input type="text" class="form-control" id="updNombreModelo">
+                    <input type="text" class="form-control" name="nombre">
                   </div>
                 </div>
                 <div class="mb-2 row text-secondary">
                   <label  class="col-form-label">Estilo de carrocería</label>
                   <div>
-                    <input type="text" class="form-control" id="updCarroceríaModelo">
+                    <input type="text" class="form-control" name="estiloCarroceria">
                   </div>
                 </div>
                 <div class="mb-2 row text-secondary">
                   <label  class="col-form-label">Marca</label>
                   <div>
-                    <input type="text" class="form-control" id="updMarcaModelo">
+                    <input type="text" class="form-control" name="marca">
                   </div>
                 </div>
-  
+                <button type="submit" class="btn btn-primary">modificar modelo</button>
+                </form>
               </div>
         
               <div id="Plantas" class="table-mode">
@@ -848,22 +850,25 @@ if (!isset($_SESSION['usuario'])) {
                 <div class="mb-2 row text-secondary">
                   <label  class="col-form-label">ID Planta</label>
                   <div>
-                    <input type="text" class="form-control" id="updIDPlanta">
+                    <input type="text" class="form-control" id="inmodificarPlanta">
                   </div>
                 </div>
+
+                <form id="modificarPlanta">
                 <div class="mb-2 row text-secondary">
                   <label  class="col-form-label">Nombre</label>
                   <div>
-                    <input type="text" class="form-control" id="updNombrePlanta">
+                    <input type="text" class="form-control" name="nombre">
                   </div>
                 </div>
                 <div class="mb-2 row text-secondary">
                   <label  class="col-form-label">Ubicación</label>
                   <div>
-                    <input type="text" class="form-control" id="updUbicacionPLanta">
+                    <input type="text" class="form-control" name="ubicacion">
                   </div>
                 </div>
-          
+                <button type="submit" class="btn btn-primary">modificar planta</button>
+                </form>
               </div>
         
               <div id="Prooveedores" class="table-mode">
@@ -871,28 +876,30 @@ if (!isset($_SESSION['usuario'])) {
                 <div class="mb-2 row text-secondary">
                   <label  class="col-form-label">ID Prooveedor</label>
                   <div>
-                    <input type="text" class="form-control" id="updIDProoveedor">
+                    <input type="text" class="form-control" id="inmodificarProoveedor">
                   </div>
                 </div>
+                <form id="modificarProoveedor">
                 <div class="mb-2 row text-secondary">
                   <label  class="col-form-label">Nombre</label>
                   <div>
-                    <input type="text" class="form-control" id="updNombreProoveedor">
+                    <input type="text" class="form-control" name="nombre">
                   </div>
                 </div>
                 <div class="mb-2 row text-secondary">
                   <label  class="col-form-label">Direccion</label>
                   <div>
-                    <input type="text" class="form-control" id="updDireccionProoveedor">
+                    <input type="text" class="form-control" name="direccion">
                   </div>
                 </div>
                 <div class="mb-2 row text-secondary">
                   <label  class="col-form-label">Numero telefónico</label>
                   <div>
-                    <input type="text" class="form-control" id="updNoTelfProoveedor">
+                    <input type="text" class="form-control" name="noTelefono">
                   </div>
                 </div>
-  
+                <button type="submit" class="btn btn-primary">modificar prooveedor</button>
+                </form>
               </div>
         
               <div id="Ventas" class="table-mode">
@@ -900,95 +907,48 @@ if (!isset($_SESSION['usuario'])) {
                 <div class="mb-2 row text-secondary">
                   <label  class="col-form-label">ID Venta</label>
                   <div>
-                    <input type="text" class="form-control" id="updIDVenta">
+                    <input type="text" class="form-control" id="inmodificarVenta">
                   </div>
                 </div>
-                <div class="mb-2 row text-secondary">
-                  <label  class="col-form-label">Fecha</label>
-                  <div>
-                    <input type="text" class="form-control" id="updFechaVenta">
-                  </div>
-                </div>
+                <form id="modificarVenta">
                 <div class="mb-2 row text-secondary">
                   <label  class="col-form-label">ID Concesionario</label>
                   <div>
-                    <input type="text" class="form-control" id="updIDConcesionarioVenta">
+                    <input type="text" class="form-control" name="idConcesionario">
                   </div>
                 </div>
                 <div class="mb-2 row text-secondary">
                   <label  class="col-form-label">ID Cliente</label>
                   <div>
-                    <input type="text" class="form-control" id="updIDClienteVenta">
+                    <input type="text" class="form-control" name="idCliente">
                   </div>
                 </div>
                 <div class="mb-2 row text-secondary">
                   <label  class="col-form-label">VIN</label>
                   <div>
-                    <input type="text" class="form-control" id="updVINVenta">
+                    <input type="text" class="form-control" name="VIN">
                   </div>
                 </div>
                 <div class="mb-2 row text-secondary">
                   <label  class="col-form-label">Precio</label>
                   <div>
-                    <input type="text" class="form-control" id="updPrecioVenta">
+                    <input type="text" class="form-control" name="precio">
                   </div>
                 </div>
-  
+                <button type="submit" class="btn btn-primary">modificar venta</button>
+                </form>
               </div>
         
                 <div id="VehículosxConcesionarios" class="table-mode">
-                  
-                  <div class="mb-2 row text-secondary">
-                    <label  class="col-form-label">VIN</label>
-                    <div>
-                      <input type="text" class="form-control" id="updVINVehiculoxConcesionarios">
-                    </div>
-                  </div>
-  
-                  <div class="mb-2 row text-secondary">
-                    <label  class="col-form-label">ID Concesionario</label>
-                    <div>
-                      <input type="text" class="form-control" id="updIDConcesionarioVehiculoxConcesionarios">
-                    </div>
-                  </div>
-  
-  
+                  <h2 class="text-primary"> No se puede modificar</h2>
                 </div>
         
                 <div id="ModelosxPlantas" class="table-mode">
-                  
-                  <div class="mb-2 row text-secondary">
-                    <label  class="col-form-label">ID Modelo</label>
-                    <div>
-                      <input type="text" class="form-control" id="updIDModeloModelosxPlantas">
-                    </div>
-                  </div>
-  
-                  <div class="mb-2 row text-secondary">
-                    <label  class="col-form-label">ID Planta</label>
-                    <div>
-                      <input type="text" class="form-control" id="updIDPlantaModelosxPlantas">
-                    </div>
-                  </div>
-                
+                <h2 class="text-primary"> No se puede modificar</h2>
                 </div>
         
                 <div id="ModelosxProoveedores" class="table-mode">
-                  
-                  <div class="mb-2 row text-secondary">
-                    <label  class="col-form-label">ID Modelo</label>
-                    <div>
-                      <input type="text" class="form-control" id="updIDModeloModelosxProoveedores">
-                    </div>
-                  </div>
-  
-                  <div class="mb-2 row text-secondary">
-                    <label  class="col-form-label">ID Prooveedor</label>
-                    <div>
-                      <input type="text" class="form-control" id="updIDProoveedorModelosxProoveedores">
-                    </div>
-                  </div>
-                
+                  <h2 class="text-primary"> No se puede modificar</h2>
                 </div>
                 <button type="button" style="position: absolute; bottom: 3%; right: 3%;" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
           </div>
@@ -1022,7 +982,7 @@ if (!isset($_SESSION['usuario'])) {
     <script>
       //api
       const apiClientes = 'http://localhost/Proyecto_bd_1/BackEnd/cliente';
-      const apiConcesionarios = 'http://localhost/Proyecto_bd_1/BackEnd/viewConcesionarios';
+      const apiConcesionarios = 'http://localhost/Proyecto_bd_1/BackEnd/viewConcesionarios';//es otra
       const apiVehiculos = 'http://localhost/Proyecto_bd_1/BackEnd/vehiculo';
       const apiModelos = 'http://localhost/Proyecto_bd_1/BackEnd/modelo';
       const apiPlanta = 'http://localhost/Proyecto_bd_1/BackEnd/planta';
@@ -1661,9 +1621,10 @@ if (!isset($_SESSION['usuario'])) {
         })
 
 
-        async function handleModificarCliente(event) {
+    async function handleModificarCliente(event) {
     event.preventDefault();
 
+    
     // Capturar el formulario y datos del cliente
     const formElement = document.getElementById('modificarCliente');
     const formData = new FormData(formElement);
@@ -1717,49 +1678,280 @@ if (!isset($_SESSION['usuario'])) {
 }
 
 
-        
+    //el de concesionario    
 
-        async function handleModificarVehiculo(event) {
-            event.preventDefault(); 
+async function handleModificarVehiculo(event) {
+    event.preventDefault();
 
-            const formData = new FormData( document.getElementById('modificarVehiculo'));
-            const id = document.getElementById('inmodificarVehiculo').value;
-            
-            try {
-                const response = await fetch( apiVehiculos+'?VIN='+id.trim() , {
-                    method: "PUT",
-                    body: formData,
-                });
+    
+   
+    const formElement = document.getElementById('modificarVehiculo');
+    const formData = new FormData(formElement);
+    const id = document.getElementById('inmodificarVehiculo').value.trim();
 
-                const data = await response.json();
+    const urlEncodedData = new URLSearchParams();
+    formData.forEach((value, key) => {
+        urlEncodedData.append(key, value.trim());
+    });
 
-                switch (data.status) {
-                    case 200:
-                        alert("vehiculo actualizado exitosamente"); 
-                        loadClientes();
-                        break;
-                    case 401:
-                        alert("Credenciales inválidas. Por favor, verifica");
-                        break;
-                    case 400:
-                        alert("Faltan datos o los datos son incorrectos.");
-                        break;
-                    case 405:
-                        alert("Método no permitido. Por favor, utiliza el método adecuado.");
-                        break;
-                    default:
-                        alert("Error desconocido. Intenta nuevamente.");
-                        break;
-                }
-            } catch (error) {
-                alert("Ocurrió un error al intentar modificar el vehiculo. Intenta nuevamente.");
-                console.error(error);
-            }
+    console.log("Datos enviados como x-www-form-urlencoded:", urlEncodedData.toString());
+
+    try {
+
+        const response = await fetch(`${apiVehiculos}?VIN=${id}`, {
+            method: "PUT",
+            headers: {
+                "Content-Type": "application/x-www-form-urlencoded",
+            },
+            body: urlEncodedData.toString(), 
+        });
+
+        const data = await response.json();
+        console.log("Respuesta de la API:", data);
+
+        switch (response.status) {
+            case 200:
+                alert("Vehiculo actualizado exitosamente.");
+                loadVehiculos();
+                break;
+            case 401:
+                alert("Credenciales inválidas. Por favor, verifica.");
+                break;
+            case 400:
+                alert(data.error || "Faltan datos o los datos son incorrectos.");
+                break;
+            case 405:
+                alert("Método no permitido. Por favor, utiliza el método adecuado.");
+                break;
+            default:
+                alert("Error desconocido. Intenta nuevamente.");
+                break;
         }
+    } catch (error) {
+        alert("Ocurrió un error al intentar modificar el vehiculo. Intenta nuevamente.");
+        console.error("Error capturado:", error);
+    }
+}
 
-        document.getElementById('modificarCliente').addEventListener("submit",handleModificarCliente);
+async function handleModificarModelo(event) {
+    event.preventDefault();
+
+    
+   
+    const formElement = document.getElementById('modificarModelo');
+    const formData = new FormData(formElement);
+    const id = document.getElementById('inmodificarModelo').value.trim();
+
+    const urlEncodedData = new URLSearchParams();
+    formData.forEach((value, key) => {
+        urlEncodedData.append(key, value.trim());
+    });
+
+    console.log("Datos enviados como x-www-form-urlencoded:", urlEncodedData.toString());
+
+    try {
+
+        const response = await fetch(`${apiModelos}?idModelo=${id}`, {
+            method: "PUT",
+            headers: {
+                "Content-Type": "application/x-www-form-urlencoded",
+            },
+            body: urlEncodedData.toString(), 
+        });
+
+        const data = await response.json();
+        console.log("Respuesta de la API:", data);
+
+        switch (response.status) {
+            case 200:
+                alert("modelo actualizado exitosamente.");
+                loadModelos();
+                break;
+            case 401:
+                alert("Credenciales inválidas. Por favor, verifica.");
+                break;
+            case 400:
+                alert(data.error || "Faltan datos o los datos son incorrectos.");
+                break;
+            case 405:
+                alert("Método no permitido. Por favor, utiliza el método adecuado.");
+                break;
+            default:
+                alert("Error desconocido. Intenta nuevamente.");
+                break;
+        }
+    } catch (error) {
+        alert("Ocurrió un error al intentar modificar el modelo. Intenta nuevamente.");
+        console.error("Error capturado:", error);
+    }
+}
+
+async function handleModificarPlanta(event) {
+    event.preventDefault();
+
+    
+   
+    const formElement = document.getElementById('modificarPlanta');
+    const formData = new FormData(formElement);
+    const id = document.getElementById('inmodificarPlanta').value.trim();
+
+    const urlEncodedData = new URLSearchParams();
+    formData.forEach((value, key) => {
+        urlEncodedData.append(key, value.trim());
+    });
+
+    console.log("Datos enviados como x-www-form-urlencoded:", urlEncodedData.toString());
+
+    try {
+
+        const response = await fetch(`${apiPlanta}?idPlanta=${id}`, {
+            method: "PUT",
+            headers: {
+                "Content-Type": "application/x-www-form-urlencoded",
+            },
+            body: urlEncodedData.toString(), 
+        });
+
+        const data = await response.json();
+        console.log("Respuesta de la API:", data);
+
+        switch (response.status) {
+            case 200:
+                alert("planta actualizada exitosamente.");
+                loadPlantas();
+                break;
+            case 401:
+                alert("Credenciales inválidas. Por favor, verifica.");
+                break;
+            case 400:
+                alert(data.error || "Faltan datos o los datos son incorrectos.");
+                break;
+            case 405:
+                alert("Método no permitido. Por favor, utiliza el método adecuado.");
+                break;
+            default:
+                alert("Error desconocido. Intenta nuevamente.");
+                break;
+        }
+    } catch (error) {
+        alert("Ocurrió un error al intentar modificar la planta. Intenta nuevamente.");
+        console.error("Error capturado:", error);
+    }
+}
+
+async function handleModificarProoveedor(event) {
+    event.preventDefault();
+
+    
+   
+    const formElement = document.getElementById('modificarProoveedor');
+    const formData = new FormData(formElement);
+    const id = document.getElementById('inmodificarProoveedor').value.trim();
+
+    const urlEncodedData = new URLSearchParams();
+    formData.forEach((value, key) => {
+        urlEncodedData.append(key, value.trim());
+    });
+
+    console.log("Datos enviados como x-www-form-urlencoded:", urlEncodedData.toString());
+
+    try {
+
+        const response = await fetch(`${apiProoveedores}?idProveedor=${id}`, {
+            method: "PUT",
+            headers: {
+                "Content-Type": "application/x-www-form-urlencoded",
+            },
+            body: urlEncodedData.toString(), 
+        });
+
+        const data = await response.json();
+        console.log("Respuesta de la API:", data);
+
+        switch (response.status) {
+            case 200:
+                alert("prooveedor actualizado exitosamente.");
+                loadProovedores();
+                break;
+            case 401:
+                alert("Credenciales inválidas. Por favor, verifica.");
+                break;
+            case 400:
+                alert(data.error || "Faltan datos o los datos son incorrectos.");
+                break;
+            case 405:
+                alert("Método no permitido. Por favor, utiliza el método adecuado.");
+                break;
+            default:
+                alert("Error desconocido. Intenta nuevamente.");
+                break;
+        }
+    } catch (error) {
+        alert("Ocurrió un error al intentar modificar el prooveedor. Intenta nuevamente.");
+        console.error("Error capturado:", error);
+    }
+}
+
+async function handleModificarVenta(event) {
+    event.preventDefault();
+
+    
+   
+    const formElement = document.getElementById('modificarVenta');
+    const formData = new FormData(formElement);
+    const id = document.getElementById('inmodificarVenta').value.trim();
+
+    const urlEncodedData = new URLSearchParams();
+    formData.forEach((value, key) => {
+        urlEncodedData.append(key, value.trim());
+    });
+
+    console.log("Datos enviados como x-www-form-urlencoded:", urlEncodedData.toString());
+
+    try {
+
+        const response = await fetch(`${apiVenta}?idVenta=${id}`, {
+            method: "PUT",
+            headers: {
+                "Content-Type": "application/x-www-form-urlencoded",
+            },
+            body: urlEncodedData.toString(), 
+        });
+
+        const data = await response.json();
+        console.log("Respuesta de la API:", data);
+
+        switch (response.status) {
+            case 200:
+                alert("venta actualizada exitosamente.");
+                loadVentas();
+                break;
+            case 401:
+                alert("Credenciales inválidas. Por favor, verifica.");
+                break;
+            case 400:
+                alert(data.error || "Faltan datos o los datos son incorrectos.");
+                break;
+            case 405:
+                alert("Método no permitido. Por favor, utiliza el método adecuado.");
+                break;
+            default:
+                alert("Error desconocido. Intenta nuevamente.");
+                break;
+        }
+    } catch (error) {
+        alert("Ocurrió un error al intentar modificar la venta. Intenta nuevamente.");
+        console.error("Error capturado:", error);
+    }
+}
+        
+document.getElementById('modificarCliente').addEventListener("submit",handleModificarCliente);
+//concesionarios
         document.getElementById('modificarVehiculo').addEventListener("submit",handleModificarVehiculo);
-
+        document.getElementById('modificarModelo').addEventListener("submit",handleModificarModelo);
+        document.getElementById('modificarPlanta').addEventListener("submit",handleModificarPlanta);
+        document.getElementById('modificarProoveedor').addEventListener("submit",handleModificarProoveedor);
+        document.getElementById('modificarVenta').addEventListener("submit",handleModificarVenta);
     </script>
 
     </html>
