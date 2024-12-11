@@ -173,43 +173,17 @@ if ($_SESSION['rol'] !== 'admin') {
         </table>
       </div>
 
-        <div id="VehículosxConcesionarios" class="table-mode">
+        <div id="Bitácora" class="table-mode">
           <table class="table table-bordered" >
             <thead>
               <tr>
-                <th scope="col">VIN</th>
-                <th scope="col">ID Concesionario</th>
+                <th scope="col">Tabla</th>
+                <th scope="col">Usuario que cambio</th>
+                <th scope="col">Accion que hizo</th>
+                <th scope="col">Fecha</th>
               </tr>
             </thead>
-            <tbody id="vehiculosxconcesionariosTableBody" >
-  
-            </tbody>
-          </table>
-        </div>
-
-        <div id="ModelosxPlantas" class="table-mode">
-          <table class="table table-bordered" >
-            <thead>
-              <tr>
-                <th scope="col">ID Modelo</th>
-                <th scope="col">ID Planta</th>
-              </tr>
-            </thead>
-            <tbody id="modelosxplantasTableBody" >
-  
-            </tbody>
-          </table>
-        </div>
-
-        <div id="ModelosxProoveedores" class="table-mode">
-          <table class="table table-bordered" >
-            <thead>
-              <tr>
-                <th scope="col">ID Modelo</th>
-                <th scope="col">ID Prooveedor</th>
-              </tr>
-            </thead>
-            <tbody id="modelosxprooveedoresTableBody" >
+            <tbody id="BitacoraTableBody" >
   
             </tbody>
           </table>
@@ -229,9 +203,7 @@ if ($_SESSION['rol'] !== 'admin') {
                 <option value="Plantas">Plantas</option>
                 <option value="Prooveedores">Prooveedores</option>
                 <option value="Ventas">Ventas</option>
-                <option value="VehículosxConcesionarios">VehículosxConcesionarios</option>
-                <option value="ModelosxPlantas">ModelosxPlantas</option>
-                <option value="ModelosxProoveedores">ModelosxProoveedores</option>
+                <option value="Bitácora">Bitácora</option>
               </select>
           </div>
 
@@ -284,7 +256,12 @@ if ($_SESSION['rol'] !== 'admin') {
               <div class="mb-2 row text-secondary">
                 <label  class="col-form-label">Sexo</label>
                 <div>
-                  <input type="text" class="form-control" name="sexo">
+                  <select  class="form-control" name="sexo">
+                    <option value="">Seleccione el sexo</option>
+                    <option value="masculino">masculino</option>
+                    <option value="femenino">femenino</option>
+                    <option value="otro">otro</option>
+                  </select>
                 </div>
               </div>
               <div class="mb-2 row text-secondary">
@@ -368,48 +345,57 @@ if ($_SESSION['rol'] !== 'admin') {
       
             <div id="Modelos" class="table-mode">
 
-              <form id="agregarModelo">
-              <div class="mb-2 row text-secondary">
-                <label  class="col-form-label">Nombre</label>
-                <div>
-                  <input type="text" class="form-control" name="nombre">
+            <form id="agregarModelo">
+            <div class="mb-2 row text-secondary">
+            <label class="col-form-label">Nombre</label>
+            <div>
+            <input type="text" class="form-control" name="nombre" required>
+            </div>
+            </div>
+            <div class="mb-2 row text-secondary">
+            <label class="col-form-label">Estilo de carrocería</label>
+            <div>
+            <select class="form-control" name="estiloCarroceria" required>
+              <option value="">Seleccione un estilo</option>
+              <option value="sedan">Sedan</option>
+              <option value="hatchback">Hatchback</option>
+              <option value="suv">SUV</option>
+              <option value="coupe">Coupé</option>
+              <option value="pickup">Pickup</option>
+              <option value="convertible">Convertible</option>
+            </select>
+            </div>
+            </div>
+            <div class="mb-2 row text-secondary">
+      <div class="mb-2 row text-secondary">
+      <label class="col-form-label">Marca</label>
+      </div>
+      <div>
+        <input type="text" class="form-control" name="marca" required>
+      </div>
+    </div>
+    <button type="submit" class="btn btn-primary">Agregar Modelo</button>
+  </form>
+  </div>
+      
+                <div id="Plantas" class="table-mode">
+                <form id="agregarPlanta">
+                <div class="mb-2 row text-secondary">
+                  <label  class="col-form-label">Nombre</label>
+                  <div>
+                    <input type="text" class="form-control" name="nombre">
+                  </div>
                 </div>
-              </div>
-              <div class="mb-2 row text-secondary">
-                <label  class="col-form-label">Estilo de carrocería</label>
-                <div>
-                  <input type="text" class="form-control" name="estiloCarroceria">
+                <div class="mb-2 row text-secondary">
+                  <label  class="col-form-label">Ubicación</label>
+                  <div>
+                    <input type="text" class="form-control" name="ubicacion">
+                  </div>
                 </div>
-              </div>
-              <div class="mb-2 row text-secondary">
-                <label  class="col-form-label">Marca</label>
-                <div>
-                  <input type="text" class="form-control" name="marca">
-                </div>
+                <button type="submit" class="btn btn-primary">modificar planta</button>
+                </form>
               </div>
 
-              <button type="submit" class="btn btn-primary">Agregar Modelo</button>
-            </form>
-            </div>
-      
-            <div id="Plantas" class="table-mode">
-              <form id="agregarPlanta">
-              <div class="mb-2 row text-secondary">
-                <label  class="col-form-label">Nombre</label>
-                <div>
-                  <input type="text" class="form-control" name="nombre">
-                </div>
-              </div>
-              <div class="mb-2 row text-secondary">
-                <label  class="col-form-label">Ubicación</label>
-                <div>
-                  <input type="text" class="form-control" name="ubicacion">
-                </div>
-              </div>
-              <button type="submit" class="btn btn-primary">Agregar Planta</button>
-            </form>
-            </div>
-      
             <div id="Prooveedores" class="table-mode">
               <form id="agregarProoveedor">
               <div class="mb-2 row text-secondary">
@@ -465,63 +451,8 @@ if ($_SESSION['rol'] !== 'admin') {
             </form>
             </div>
       
-              <div id="VehículosxConcesionarios" class="table-mode">
-                
-                <form id="agregarVehiculoxConcesionario">
-                <div class="mb-2 row text-secondary">
-                  <label  class="col-form-label">VIN</label>
-                  <div>
-                    <input type="text" class="form-control" name="VIN">
-                  </div>
-                </div>
-
-
-                <div class="mb-2 row text-secondary">
-                  <label  class="col-form-label">ID Concesionario</label>
-                  <div>
-                    <input type="text" class="form-control" name="idConcesionario">
-                  </div>
-                </div>
-                <button type="submit" class="btn btn-primary">Agregar VehiculoxConcesionario</button>
-              </form>
-              </div>
-      
-              <div id="ModelosxPlantas" class="table-mode">
-                <form id="agregarModeloxPlanta">
-                <div class="mb-2 row text-secondary">
-                  <label  class="col-form-label">ID Modelo</label>
-                  <div>
-                    <input type="text" class="form-control" name="idModelo">
-                  </div>
-                </div>
-                <div class="mb-2 row text-secondary">
-                  <label  class="col-form-label">ID Planta</label>
-                  <div>
-                    <input type="text" class="form-control" name="idPlanta">
-                  </div>
-                </div>
-                <button type="submit" class="btn btn-primary">Agregar ModeloxPlanta</button>
-
-              </form>
-              </div>
-      
-              <div id="ModelosxProoveedores" class="table-mode">
-                <form id="agregarModeloxProveedor">
-                <div class="mb-2 row text-secondary">
-                  <label  class="col-form-label">ID Modelo</label>
-                  <div>
-                    <input type="text" class="form-control" name="idModelo">
-                  </div>
-                </div>
-
-                <div class="mb-2 row text-secondary">
-                  <label  class="col-form-label">ID Prooveedor</label>
-                  <div>
-                    <input type="text" class="form-control" name="idProoveedor">
-                  </div>
-                </div>
-                <button type="submit" class="btn btn-primary">Agregar ModeloxProoveedor</button>
-              </form>
+              <div id="Bitácora" class="table-mode">
+                <h2 class="text-primary">No se puede agregar</h2>
               </div>
       
               <button type="button" style="position: absolute; bottom: 3%; right: 3%;" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
@@ -628,60 +559,11 @@ if ($_SESSION['rol'] !== 'admin') {
                 <button type="button" class="btn btn-primary" id="btnEliminarVenta" >Borrar Venta</button>
               </div>
         
-                <div id="VehículosxConcesionarios" class="table-mode">
-                  
-                  <div class="mb-2 row text-secondary">
-                    <label  class="col-form-label">VIN</label>
-                    <div>
-                      <input type="text" class="form-control" id="inVINVehiculoxConcesionarios">
-                    </div>
-                  </div>
-  
-                  <div class="mb-2 row text-secondary">
-                    <label  class="col-form-label">ID Concesionario</label>
-                    <div>
-                      <input type="text" class="form-control" id="inIDConcesionarioVehiculoxConcesionarios">
-                    </div>
-                  </div>
-                  <button type="button" class="btn btn-primary" id="btnEliminarVehiculoxConcesionario" >Borrar VehículosxConcesionarios</button>
-                </div>
-        
-                <div id="ModelosxPlantas" class="table-mode">
-                  
-                  <div class="mb-2 row text-secondary">
-                    <label  class="col-form-label">ID Modelo</label>
-                    <div>
-                      <input type="text" class="form-control" id="inIDModeloModelosxPlantas">
-                    </div>
-                  </div>
-  
-                  <div class="mb-2 row text-secondary">
-                    <label  class="col-form-label">ID Planta</label>
-                    <div>
-                      <input type="text" class="form-control" id="inIDPlantaModelosxPlantas">
-                    </div>
-                  </div>
-                  <button type="button" class="btn btn-primary" id="btnEliminarModelosxPlantas" >Borrar ModelosxPlantas</button>
-                </div>
-        
-                <div id="ModelosxProoveedores" class="table-mode">
-                  
-                  <div class="mb-2 row text-secondary">
-                    <label  class="col-form-label">ID Modelo</label>
-                    <div>
-                      <input type="text" class="form-control" id="delIDModeloModelosxProoveedores">
-                    </div>
-                  </div>
-  
-                  <div class="mb-2 row text-secondary">
-                    <label  class="col-form-label">ID Prooveedor</label>
-                    <div>
-                      <input type="text" class="form-control" id="delIDProoveedorModelosxProoveedores">
-                    </div>
-                  </div>
-                  <button type="button" class="btn btn-primary" id="btnEliminarModelosxProoveedores" >Borrar ModelosxProoveedores</button>
+                <div id="Bitácora" class="table-mode">
+                  <h2 class="text-primary">No se puede eliminar.</h2>
                 </div>
                 <button type="button" style="position: absolute; bottom: 3%; right: 3%;" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+        </div>
           </div>
           <div class="modal-footer">
           </div>
@@ -710,35 +592,40 @@ if ($_SESSION['rol'] !== 'admin') {
 
                 <form id="modificarCliente">
                 <div class="mb-2 row text-secondary">
-                  <label  class="col-form-label">Nombre</label>
-                  <div>
-                    <input type="text" class="form-control" name="nombre">
-                  </div>
+                <label  class="col-form-label">Nombre</label>
+                <div>
+                  <input type="text" class="form-control" name="nombre">
                 </div>
-                <div class="mb-2 row text-secondary">
-                  <label  class="col-form-label">Direccion</label>
-                  <div>
-                    <input type="text" class="form-control" name="direccion">
-                  </div>
+              </div>
+              <div class="mb-2 row text-secondary">
+                <label  class="col-form-label">Direccion</label>
+                <div>
+                  <input type="text" class="form-control" name="direccion">
                 </div>
-                <div class="mb-2 row text-secondary">
-                  <label  class="col-form-label">Número telefónico</label>
-                  <div>
-                    <input type="text" class="form-control" name="noTelefono">
-                  </div>
+              </div>
+              <div class="mb-2 row text-secondary">
+                <label  class="col-form-label">Número telefónico</label>
+                <div>
+                  <input type="text" class="form-control" name = "noTelefono">
                 </div>
-                <div class="mb-2 row text-secondary">
-                  <label  class="col-form-label">Sexo</label>
-                  <div>
-                    <input type="text" class="form-control" name="sexo">
-                  </div>
+              </div>
+              <div class="mb-2 row text-secondary">
+                <label  class="col-form-label">Sexo</label>
+                <div>
+                  <select  class="form-control" name="sexo">
+                    <option value="">Seleccione el sexo</option>
+                    <option value="masculino">masculino</option>
+                    <option value="femenino">femenino</option>
+                    <option value="otro">otro</option>
+                  </select>
                 </div>
-                <div class="mb-2 row text-secondary">
-                  <label  class="col-form-label">Ingresosanuales</label>
-                  <div>
-                    <input type="text" class="form-control" name="ingresosAnuales">
-                  </div>
+              </div>
+              <div class="mb-2 row text-secondary">
+                <label  class="col-form-label">Ingresos anuales</label>
+                <div>
+                  <input type="text" class="form-control" name="ingresosAnuales">
                 </div>
+              </div>
                 <button type="submit" class="btn btn-primary">modificar Cliente</button>
                 </form>
                 
@@ -829,23 +716,33 @@ if ($_SESSION['rol'] !== 'admin') {
                 </div>
                 <form id="modificarModelo" >
                 <div class="mb-2 row text-secondary">
-                  <label  class="col-form-label">Nombre</label>
-                  <div>
-                    <input type="text" class="form-control" name="nombre">
-                  </div>
-                </div>
-                <div class="mb-2 row text-secondary">
-                  <label  class="col-form-label">Estilo de carrocería</label>
-                  <div>
-                    <input type="text" class="form-control" name="estiloCarroceria">
-                  </div>
-                </div>
-                <div class="mb-2 row text-secondary">
-                  <label  class="col-form-label">Marca</label>
-                  <div>
-                    <input type="text" class="form-control" name="marca">
-                  </div>
-                </div>
+            <label class="col-form-label">Nombre</label>
+            <div>
+            <input type="text" class="form-control" name="nombre" >
+            </div>
+            </div>
+            <div class="mb-2 row text-secondary">
+            <label class="col-form-label">Estilo de carrocería</label>
+            <div>
+            <select class="form-control" name="estiloCarroceria" >
+              <option value="">Seleccione un estilo</option>
+              <option value="sedan">Sedan</option>
+              <option value="hatchback">Hatchback</option>
+              <option value="suv">SUV</option>
+              <option value="coupe">Coupé</option>
+              <option value="pickup">Pickup</option>
+              <option value="convertible">Convertible</option>
+            </select>
+            </div>
+            </div>
+            <div class="mb-2 row text-secondary">
+      <div class="mb-2 row text-secondary">
+      <label class="col-form-label">Marca</label>
+      </div>
+      <div>
+        <input type="text" class="form-control" name="marca" >
+      </div>
+    </div>
                 <button type="submit" class="btn btn-primary">modificar modelo</button>
                 </form>
               </div>
@@ -944,17 +841,10 @@ if ($_SESSION['rol'] !== 'admin') {
                 </form>
               </div>
         
-                <div id="VehículosxConcesionarios" class="table-mode">
+                <div id="Bitácora" class="table-mode">
                   <h2 class="text-primary"> No se puede modificar</h2>
                 </div>
         
-                <div id="ModelosxPlantas" class="table-mode">
-                <h2 class="text-primary"> No se puede modificar</h2>
-                </div>
-        
-                <div id="ModelosxProoveedores" class="table-mode">
-                  <h2 class="text-primary"> No se puede modificar</h2>
-                </div>
                 <button type="button" style="position: absolute; bottom: 3%; right: 3%;" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
           </div>
           <div class="modal-footer">
