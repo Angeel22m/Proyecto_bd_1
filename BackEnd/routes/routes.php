@@ -47,7 +47,7 @@ if (count($arrayRutas) >= 3) {
             handleVehiculos($requestMethod);
             break;
     case 'concesionario';
-            handleconcesionario($requestMethod);
+            handleConcesionario($requestMethod);
             break;
     case 'viewConcesionarios';
         switch($requestMethod){
