@@ -46,6 +46,9 @@ if (count($arrayRutas) >= 3) {
     case 'vehiculo';
             handleVehiculos($requestMethod);
             break;
+    case 'concesionario';
+            handleconcesionario($requestMethod);
+            break;
     case 'viewConcesionarios';
         switch($requestMethod){
             case 'GET';
@@ -544,7 +547,6 @@ function handleCliente($method) {
             break;
     }
 }
-
 
 function handlePlanta($method) {
     $planta = new PlantasController();
@@ -1150,6 +1152,124 @@ function handleVehiculos($method) {
             break;
     }
 }
+
+function handleConcesionario($method) {
+    $concesionario = new ConcesionariosController();
+
+    switch ($method) {
+        case 'POST':
+            // Verifica que los datos POST estén presentes
+            if (
+                isset($_POST['nombre'], $_POST['direccion'], $_POST['noTelefono']) &&
+    !empty(trim($_POST['nombre'])) &&
+    !empty(trim($_POST['direccion'])) &&
+    !empty(trim($_POST['noTelefono']))
+            ) {
+                $nombre = $_POST['nombre'];
+                $direccion = $_POST['direccion'];
+                $noTelefono = $_POST['noTelefono'];
+
+                try {
+                    $concesionario->crearConcesionario($nombre, $direccion, $noTelefono);
+                } catch (Exception $e) {
+                    echo json_encode([
+                        "status" => 500,
+                        "error" => "Error interno al crear el concesionario.",
+                        "detalle" => $e->getMessage()
+                    ]);
+                }
+            } else {
+                echo json_encode([
+                    "status" => 400,
+                    "error" => "Faltan datos obligatorios para crear el concesionario."
+                ]);
+            }
+            break;
+
+        case 'GET':
+            try {
+                $result = $concesionario->readAll();               
+            } catch (Exception $e) {
+                echo json_encode([
+                    "status" => 500,
+                    "error" => "Error interno al obtener los concesionarios.",
+                    "detalle" => $e->getMessage()
+                ]);
+            }
+            break;
+
+        case 'PUT':
+
+             // Obtener el idConcesionario de la ruta (en la URL)
+             $idConcesionario = isset($_GET['idConcesionario']) ? $_GET['idConcesionario'] : null;
+            
+             if (!$idConcesionario) {
+                 echo json_encode([
+                     "status" => 400,
+                     "error" => "El idConcesionario es obligatorio para actualizar."
+                 ]);
+                 break;
+             }
+            // Leer el cuerpo de la solicitud para datos JSON
+            parse_str(file_get_contents("php://input"), $putData);
+
+            // Validar que al menos un campo opcional esté presente
+            $campos = [];
+            if (!empty($putData['nombre'])) $campos['nombre'] = $putData['nombre'];
+            if (!empty($putData['direccion'])) $campos['direccion'] = $putData['direccion'];
+            if (!empty($putData['noTelefono'])) $campos['noTelefono'] = $putData['noTelefono'];
+          
+            if (empty($campos)) {
+                echo json_encode([
+                    "status" => 400,
+                    "error" => "Debe proporcionar al menos un campo para actualizar."
+                ]);
+                break;
+            }
+
+            try {
+                
+                $concesionario->actualizarConcesionario($idConcesionario, $campos);               
+            } catch (Exception $e) {
+                echo json_encode([
+                    "status" => 500,
+                    "error" => "Error interno al actualizar el Concesionario.",
+                    "detalle" => $e->getMessage()
+                ]);
+            }
+            break;
+
+            case 'DELETE':
+                // Obtener el ID del cliente desde los parámetros de la URL
+                if (isset($_GET['idConcesionario'])) {
+                    $idConcesionario = $_GET['idConcesionario'];
+    
+                    try {
+                        $concesionario->eliminarConcesionario($idConcesionario);                       
+                    } catch (Exception $e) {
+                        echo json_encode([
+                            "status" => 500,
+                            "error" => "Error interno al eliminar el Concesionario.",
+                            "detalle" => $e->getMessage()
+                        ]);
+                    }
+                } else {
+                    echo json_encode([
+                        "status" => 400,
+                        "error" => "El idConcesionario es obligatorio para eliminar un concesionario."
+                    ]);
+                }
+                break;
+
+        default:
+            echo json_encode([
+                "status" => 405,
+                "detalle" => "Método no permitido."
+            ]);
+            break;
+    }
+}
+
 
 ?>
 
