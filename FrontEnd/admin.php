@@ -347,7 +347,7 @@ if ($_SESSION['rol'] !== 'admin') {
               <div class="mb-2 row text-secondary">
                 <label  class="col-form-label">Fecha de fabricacion</label>
                 <div>
-                  <input type="text" class="form-control" name="fechaFabricacion">
+                  <input type="date" class="form-control" name="fechaFabricacion">
                 </div>
               </div>
               <button type="submit" class="btn btn-primary">Agregar Vehículo</button>
@@ -747,7 +747,7 @@ if ($_SESSION['rol'] !== 'admin') {
                 <div class="mb-2 row text-secondary">
                   <label  class="col-form-label">Fecha fabricacion</label>
                   <div>
-                    <input type="text" class="form-control" name="fechaFabricacion">
+                    <input type="date" class="form-control" name="fechaFabricacion">
                   </div>
                 </div>
                 <button type="submit" class="btn btn-primary">modificar vehiculo</button>
