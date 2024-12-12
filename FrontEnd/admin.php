@@ -1237,7 +1237,6 @@ if ($_SESSION['rol'] !== 'admin') {
             console.error('Error al cargar las ventas:', error);
           }
         }
-<<<<<<< HEAD
 
         async function loadBitacora(){
           try {
@@ -1260,9 +1259,6 @@ if ($_SESSION['rol'] !== 'admin') {
           }
         }
         //falta modeloxplantas,ModeloxProoveedor, vehiculoxconcesionario
-=======
-        
->>>>>>> 2c5118af6467a2c6002b220d27c6c47f38ab4117
 
         
         loadClientes();
