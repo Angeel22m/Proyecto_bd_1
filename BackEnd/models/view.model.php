@@ -297,4 +297,35 @@ class ViewModel{
             throw new Exception("Se produjo un error: " . $e->getMessage());
         }
     }
+
+    
+    public static function getBitacora() {
+        try {
+            // Preparación de la consulta de lectura.
+            $query = Connection::connect()->prepare(
+                'select * from BITACORA'
+            );
+         
+            // Ejecución de la consulta.
+            $query->execute();
+    
+            // Capturando los datos pedidos por la consulta.
+            $result = $query->fetchAll(PDO::FETCH_CLASS);
+    
+            // Finalizando la variable de consulta.
+            $query->closeCursor();
+            $query = null;
+    
+            // Retornando los datos solicitados.
+            return $result;
+    
+        } catch (PDOException $e) {
+            // Manejo de errores específicos de PDO.
+            throw new Exception("Error al leer los datos: " . $e->getMessage());
+        } catch (Exception $e) {
+            // Manejo de errores generales.
+            throw new Exception("Se produjo un error: " . $e->getMessage());
+        }
+    }
+
 }

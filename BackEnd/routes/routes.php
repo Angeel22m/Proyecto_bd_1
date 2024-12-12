@@ -71,6 +71,33 @@ if (count($arrayRutas) >= 3) {
 
     break;
 
+    case 'bitacora';
+
+    switch($requestMethod){
+        case 'GET';
+        $view = new ViewController();
+        try {
+            $result = $view->getBitacora();               
+        } catch (Exception $e) {
+            echo json_encode([
+                "status" => 500,
+                "error" => "Error interno al obtener la bitacora.",
+                "detalle" => $e->getMessage()
+            ]);
+        }
+        break;
+        
+        default:
+        echo json_encode([
+            "status" => 405,
+            "detalle" => "Método no permitido."
+        ]);
+        break;
+    }
+
+    break;
+
+
     case 'viewConcesionario':
         switch ($requestMethod) {
             case 'GET':

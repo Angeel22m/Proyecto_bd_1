@@ -253,4 +253,32 @@ class ViewController{
             return;
         }
     }
+
+    
+    public function getBitacora(){
+        $view = new ViewModel();
+        // Llamando método para hacer la lectura de la bitacora
+        $result = Utf8Convert::utf8_convert($view::getBitacora());
+
+        if(empty($result)){
+
+            $json=array(
+                "status"=>404,
+                "detalle"=>"No hay."
+            );
+
+            echo json_encode($json, true);
+            return;
+        }else{
+            $json=array(
+                "status"=>200,
+                "detalle"=>$result
+            );
+
+            echo json_encode($json, true);
+            return;
+        }
+    }
+
+
 }

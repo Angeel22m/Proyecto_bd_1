@@ -316,11 +316,20 @@ if ($_SESSION['rol'] !== 'admin') {
                 </div>
               </div>
               <div class="mb-2 row text-secondary">
-                <label  class="col-form-label">Color</label>
-                <div>
-                  <input type="text" class="form-control" name="color">
-                </div>
-              </div>
+  <label class="col-form-label">Color</label>
+  <div>
+    <select class="form-control" name="color">
+      <option value="" disabled selected>Selecciona un color</option>
+      <option value="rojo">Rojo</option>
+      <option value="azul">Azul</option>
+      <option value="blanco">Blanco</option>
+      <option value="negro">Negro</option>
+      <option value="gris">Gris</option>
+    </select>
+  </div>
+</div>
+
+
               <div class="mb-2 row text-secondary">
                 <label  class="col-form-label">Numero motor</label>
                 <div>
@@ -679,11 +688,20 @@ if ($_SESSION['rol'] !== 'admin') {
                   </div>
                 </div>
                 <div class="mb-2 row text-secondary">
-                  <label  class="col-form-label">Color</label>
-                  <div>
-                    <input type="text" class="form-control" name="color">
-                  </div>
-                </div>
+  <label class="col-form-label">Color</label>
+  <div>
+    <select class="form-control" name="color">
+      <option value="" disabled selected>Selecciona un color</option>
+      <option value="rojo">Rojo</option>
+      <option value="azul">Azul</option>
+      <option value="blanco">Blanco</option>
+      <option value="negro">Negro</option>
+      <option value="gris">Gris</option>
+    </select>
+  </div>
+</div>
+
+
                 <div class="mb-2 row text-secondary">
                   <label  class="col-form-label">Transmisión</label>
                   <div>
@@ -883,6 +901,7 @@ if ($_SESSION['rol'] !== 'admin') {
       const apiPlanta = 'http://localhost/Proyecto_bd_1/BackEnd/planta';
       const apiProoveedores = 'http://localhost/Proyecto_bd_1/BackEnd/proveedor';
       const apiVenta = 'http://localhost/Proyecto_bd_1/BackEnd/venta';
+      const apiBitacora ='http://localhost/Proyecto_bd_1/BackEnd/bitacora';
 
       //las tablas
       const clientesTableBody = document.getElementById('clientesTableBody');
@@ -1047,6 +1066,27 @@ if ($_SESSION['rol'] !== 'admin') {
             console.error('Error al cargar las ventas:', error);
           }
         }
+
+        async function loadBitacora(){
+          try {
+            const response =await fetch(apiBitacora);
+            const bitacoras = await response.json();
+
+            BitacoraTableBody.innerHTML = '';
+            bitacoras.detalle.forEach(bitacora =>{
+              const row = document.createElement('tr');
+              row.innerHTML = `
+                <td>${bitacora.tabla_afectada}</td>
+                <td>${bitacora.usuario}</td>
+                <td>${bitacora.accion}</td>
+                <td>${bitacora.fecha}</td>
+                `;
+                BitacoraTableBody.appendChild(row);              
+            })
+          } catch (error) {
+            console.error('Error al cargar los prooveedores:', error);
+          }
+        }
         //falta modeloxplantas,ModeloxProoveedor, vehiculoxconcesionario
 
         
@@ -1057,6 +1097,7 @@ if ($_SESSION['rol'] !== 'admin') {
         loadPlantas();
         loadProovedores();
         loadVentas();
+        loadBitacora();
 
       
         //agregar a cliente
