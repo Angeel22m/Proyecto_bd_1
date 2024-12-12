@@ -312,7 +312,9 @@ if ($_SESSION['rol'] !== 'admin') {
               <div class="mb-2 row text-secondary">
                 <label  class="col-form-label">ID Modelo</label>
                 <div>
-                  <input type="text" class="form-control" name="idModelo">
+                  <select type="text" class="form-control" name="idModelo" id="inAgregarvehiculoModelo">
+                    <option value="">Seleccione el modelo</option>
+                  </select>
                 </div>
               </div>
               <div class="mb-2 row text-secondary">
@@ -435,19 +437,25 @@ if ($_SESSION['rol'] !== 'admin') {
               <div class="mb-2 row text-secondary">
                 <label  class="col-form-label">ID Concesionario</label>
                 <div>
-                  <input type="text" class="form-control" name="idConcesionario">
+                  <select type="text" class="form-control" name="idConcesionario" id="inAgregarVentaConcesionario">
+                    <option value="">Seleccione el concesionario</option>
+                  </select>
                 </div>
               </div>
               <div class="mb-2 row text-secondary">
                 <label  class="col-form-label">ID Cliente</label>
                 <div>
-                  <input type="text" class="form-control" name="idCliente">
+                  <select type="text" class="form-control" name="idCliente" id="inAgregarVentaCliente">
+                    <option value="">Seleccione el cliente</option>
+                  </select>
                 </div>
               </div>
               <div class="mb-2 row text-secondary">
                 <label  class="col-form-label">VIN</label>
                 <div>
-                  <input type="text" class="form-control" name="VIN">
+                  <select type="text" class="form-control" name="VIN" id="inAgregarVentaVehiculo">
+                    <option value="">Seleccione el vehiculo</option>
+                  </select>
                 </div>
               </div>
               <div class="mb-2 row text-secondary">
@@ -489,7 +497,9 @@ if ($_SESSION['rol'] !== 'admin') {
               <div class="mb-2 row text-secondary">
                   <label  class="col-form-label">ID</label>
                   <div>
-                    <input type="text" class="form-control" id="inEliminarCliente">
+                    <select type="text" class="form-control" id="inEliminarCliente">
+                      <option value="">Seleccione el cliente</option>
+                      </select>
                   </div>
                 </div>
                 <button type="button" class="btn btn-primary" id="btnEliminarCliente" >Borrar Cliente</button>
@@ -501,7 +511,9 @@ if ($_SESSION['rol'] !== 'admin') {
                 <div class="mb-2 row text-secondary">
                   <label  class="col-form-label">ID Concesionario</label>
                   <div>
-                    <input type="text" class="form-control" id="inEliminarConcesionario">
+                    <select type="text" class="form-control" id="inEliminarConcesionario">
+                      <option value="">Seleccione el concesionario</option>
+                    </select>
                   </div>
                 </div>
                 <button type="button" class="btn btn-primary" id="btnEliminarConcesionario" >Borrar Concesionario</button>
@@ -512,7 +524,9 @@ if ($_SESSION['rol'] !== 'admin') {
                 <div class="mb-2 row text-secondary">
                   <label  class="col-form-label">VIN</label>
                   <div>
-                    <input type="text" class="form-control" id="inEliminarVehiculo">
+                    <select type="text" class="form-control" id="inEliminarVehiculo">
+                      <option value="">Seleccione el Vehiculo</option>
+                    </select>
                   </div>
                 </div>
                 <button type="button" class="btn btn-primary" id="btnEliminarVehiculo" >Borrar Vehículo</button>
@@ -523,7 +537,9 @@ if ($_SESSION['rol'] !== 'admin') {
                 <div class="mb-2 row text-secondary">
                   <label  class="col-form-label">ID Modelo</label>
                   <div>
-                    <input type="text" class="form-control" id="inEliminarModelo">
+                    <select type="text" class="form-control" id="inEliminarModelo">
+                      <option value="">Seleccione el Modelo</option>
+                    </select>
                   </div>
                 </div>
 
@@ -535,7 +551,9 @@ if ($_SESSION['rol'] !== 'admin') {
                 <div class="mb-2 row text-secondary">
                   <label  class="col-form-label">ID Planta</label>
                   <div>
-                    <input type="text" class="form-control" id="inEliminarPlanta">
+                    <select type="text" class="form-control" id="inEliminarPlanta">
+                      <option value="">Seleccione la planta</option>
+                    </select>
                   </div>
                   
                 </div>
@@ -548,7 +566,9 @@ if ($_SESSION['rol'] !== 'admin') {
                 <div class="mb-2 row text-secondary">
                   <label  class="col-form-label">ID Prooveedor</label>
                   <div>
-                    <input type="text" class="form-control" id="inEliminarProoveedor">
+                    <select type="text" class="form-control" id="inEliminarProoveedor">
+                      <option value="">Seleccione el prooveedor</option>
+                    </select>
                   </div>
                   
                 </div>
@@ -561,7 +581,9 @@ if ($_SESSION['rol'] !== 'admin') {
                 <div class="mb-2 row text-secondary">
                   <label  class="col-form-label">ID Venta</label>
                   <div>
-                    <input type="text" class="form-control" id="inEliminarVenta">
+                    <select type="text" class="form-control" id="inEliminarVenta">
+                    <option value="">Seleccione la venta</option>
+                    </select>
                   </div>
                 </div>
                
@@ -595,7 +617,9 @@ if ($_SESSION['rol'] !== 'admin') {
               <div class="mb-2 row text-secondary">
                   <label  class="col-form-label">ID</label>
                   <div>
-                    <input type="text" class="form-control" id="inmodificarCliente">
+                    <select type="text" class="form-control" id="inmodificarCliente">
+                      <option value="">Seleccione el cliente</option>
+                    </select>
                   </div>
                 </div>
 
@@ -646,7 +670,9 @@ if ($_SESSION['rol'] !== 'admin') {
                 <div class="mb-2 row text-secondary">
                   <label  class="col-form-label">ID Concesionario</label>
                   <div>
-                    <input type="text" class="form-control" id="inmodificarConcesionario">
+                    <select type="text" class="form-control" id="inmodificarConcesionario">
+                      <option value="">Seleccione el concesionario</option>
+                    </select>
                   </div>
                 </div>
                 <form id="modificarConcesionario" >
@@ -677,16 +703,20 @@ if ($_SESSION['rol'] !== 'admin') {
                 <div class="mb-2 row text-secondary">
                   <label  class="col-form-label">VIN</label>
                   <div>
-                    <input type="text" class="form-control" id="inmodificarVehiculo">
+                    <select type="text" class="form-control" id="inmodificarVehiculo">
+                      <option value="">Seleccione el vehiculo</option>
+                    </select>
                   </div>
                 </div>
                 <form id="modificarVehiculo">
                 <div class="mb-2 row text-secondary">
-                  <label  class="col-form-label">ID Modelo</label>
-                  <div>
-                    <input type="text" class="form-control" name="idModelo">
-                  </div>
+                <label  class="col-form-label">ID Modelo</label>
+                <div>
+                  <select type="text" class="form-control" name="idModelo" id="inModificarvehiculoModelo">
+                    <option value="">Seleccione el modelo</option>
+                  </select>
                 </div>
+              </div>
                 <div class="mb-2 row text-secondary">
   <label class="col-form-label">Color</label>
   <div>
@@ -729,7 +759,9 @@ if ($_SESSION['rol'] !== 'admin') {
                 <div class="mb-2 row text-secondary">
                   <label  class="col-form-label">ID Modelo</label>
                   <div>
-                    <input type="text" class="form-control" id="inmodificarModelo">
+                    <select type="text" class="form-control" id="inmodificarModelo">
+                      <option value="">Seleccione el modelo</option>
+                    </select>
                   </div>
                 </div>
                 <form id="modificarModelo" >
@@ -770,7 +802,9 @@ if ($_SESSION['rol'] !== 'admin') {
                 <div class="mb-2 row text-secondary">
                   <label  class="col-form-label">ID Planta</label>
                   <div>
-                    <input type="text" class="form-control" id="inmodificarPlanta">
+                    <select type="text" class="form-control" id="inmodificarPlanta">
+                      <option value="">Seleccione la planta</option>
+                    </select>
                   </div>
                 </div>
 
@@ -796,7 +830,9 @@ if ($_SESSION['rol'] !== 'admin') {
                 <div class="mb-2 row text-secondary">
                   <label  class="col-form-label">ID Prooveedor</label>
                   <div>
-                    <input type="text" class="form-control" id="inmodificarProoveedor">
+                    <select type="text" class="form-control" id="inmodificarProoveedor">
+                      <option value="">seleccione el prooveedor</option>
+                    </select>
                   </div>
                 </div>
                 <form id="modificarProoveedor">
@@ -827,28 +863,36 @@ if ($_SESSION['rol'] !== 'admin') {
                 <div class="mb-2 row text-secondary">
                   <label  class="col-form-label">ID Venta</label>
                   <div>
-                    <input type="text" class="form-control" id="inmodificarVenta">
+                    <select type="text" class="form-control" id="inmodificarVenta">
+                      <option value="">Seleccione la venta</option>
+                    </select>
                   </div>
                 </div>
                 <form id="modificarVenta">
                 <div class="mb-2 row text-secondary">
-                  <label  class="col-form-label">ID Concesionario</label>
-                  <div>
-                    <input type="text" class="form-control" name="idConcesionario">
-                  </div>
+                <label  class="col-form-label">ID Concesionario</label>
+                <div>
+                  <select type="text" class="form-control" name="idConcesionario" id="inModificarVentaConcesionario">
+                    <option value="">Seleccione el concesionario</option>
+                  </select>
                 </div>
-                <div class="mb-2 row text-secondary">
-                  <label  class="col-form-label">ID Cliente</label>
-                  <div>
-                    <input type="text" class="form-control" name="idCliente">
-                  </div>
+              </div>
+              <div class="mb-2 row text-secondary">
+                <label  class="col-form-label">ID Cliente</label>
+                <div>
+                  <select type="text" class="form-control" name="idCliente" id="inModificarVentaCliente">
+                    <option value="">Seleccione el cliente</option>
+                  </select>
                 </div>
-                <div class="mb-2 row text-secondary">
-                  <label  class="col-form-label">VIN</label>
-                  <div>
-                    <input type="text" class="form-control" name="VIN">
-                  </div>
+              </div>
+              <div class="mb-2 row text-secondary">
+                <label  class="col-form-label">VIN</label>
+                <div>
+                  <select type="text" class="form-control" name="VIN" id="inModificarVentaVehiculo">
+                    <option value="">Seleccione el vehiculo</option>
+                  </select>
                 </div>
+              </div>
                 <div class="mb-2 row text-secondary">
                   <label  class="col-form-label">Precio</label>
                   <div>
@@ -922,6 +966,10 @@ if ($_SESSION['rol'] !== 'admin') {
         try{
         const response = await fetch(apiClientes);
         const clientes = await response.json();
+        const opcionesEliminar = document.getElementById('inEliminarCliente');
+        const opcionesModificar = document.getElementById('inmodificarCliente');
+        const opcionesAgregarVenta = document.getElementById('inAgregarVentaCliente');
+        const opcionesModificarVenta =document.getElementById('inModificarVentaCliente');
 
         clientesTableBody.innerHTML = '';
         clientes.detalle.forEach(cliente => {
@@ -933,6 +981,25 @@ if ($_SESSION['rol'] !== 'admin') {
                         <td>${cliente.sexo}</td>
                         <td>${cliente.ingresosAnuales}</td>`;
         clientesTableBody.appendChild(row);
+
+        const option1 = document.createElement('option');
+        option1.value = `${cliente.idCliente}`
+        option1.textContent = `cliente: ${cliente.idCliente}, ${cliente.nombre}`;
+        const option2 = document.createElement('option');
+        option2.value = `${cliente.idCliente}`
+        option2.textContent = `cliente: ${cliente.idCliente}, ${cliente.nombre}`;
+        const option3 = document.createElement('option');
+        option3.value = `${cliente.idCliente}`
+        option3.textContent = `cliente: ${cliente.idCliente}, ${cliente.nombre}`;
+        const option4 = document.createElement('option');
+        option4.value = `${cliente.idCliente}`
+        option4.textContent = `cliente: ${cliente.idCliente}, ${cliente.nombre}`;
+
+        opcionesEliminar.appendChild(option1);
+        opcionesModificar.appendChild(option2);
+        opcionesAgregarVenta.appendChild(option3);
+        opcionesModificarVenta.appendChild(option4);
+        
       })}catch (error){
         console.error('Error al cargar los clientes:', error);
       }
@@ -942,7 +1009,10 @@ if ($_SESSION['rol'] !== 'admin') {
             try {
                 const response = await fetch(apiConcesionarios);
                 const concesionarios = await response.json();
-
+                const opcionesEliminar = document.getElementById('inEliminarConcesionario');
+                const opcionesModificar = document.getElementById('inmodificarConcesionario');
+                const opcionesAgregarVenta = document.getElementById('inAgregarVentaConcesionario');
+                const opcionesModificarVenta =document.getElementById('inModificarVentaConcesionario');
                 
                 concesionarioTableBody.innerHTML = '';
                 concesionarios.detalle.forEach(concesionario => {
@@ -952,6 +1022,25 @@ if ($_SESSION['rol'] !== 'admin') {
                         <td>${concesionario.direccion}</td>
                         <td>${concesionario.noTelefono}</td>`;
                         concesionarioTableBody.appendChild(row);   
+
+
+                        const option1 = document.createElement('option');
+                        option1.value = `${concesionario.idConcesionario}`
+                        option1.textContent = `concesionario: ${concesionario.idConcesionario}, ${concesionario.nombre}`;
+                        const option2 = document.createElement('option');
+                        option2.value = `${concesionario.idConcesionario}`
+                        option2.textContent = `concesionario: ${concesionario.idConcesionario}, ${concesionario.nombre}`;
+                        const option3 = document.createElement('option');
+                        option3.value = `${concesionario.idConcesionario}`
+                        option3.textContent = `concesionario: ${concesionario.idConcesionario}, ${concesionario.nombre}`;
+                        const option4 = document.createElement('option');
+                        option4.value = `${concesionario.idConcesionario}`
+                        option4.textContent = `concesionario: ${concesionario.idConcesionario}, ${concesionario.nombre}`;
+
+                        opcionesEliminar.appendChild(option1);
+                        opcionesModificar.appendChild(option2);
+                        opcionesAgregarVenta.appendChild(option3);
+                        opcionesModificarVenta.appendChild(option4);
                 });
             } catch (error) {
                 console.error('Error al cargar los concesionarios:', error);
@@ -962,8 +1051,11 @@ if ($_SESSION['rol'] !== 'admin') {
             try {
                 const response = await fetch(apiVehiculos);
                 const vehiculos = await response.json();
+                const opcionesEliminar = document.getElementById('inEliminarVehiculo');
+                const opcionesModificar = document.getElementById('inmodificarVehiculo');
+                const opcionesAgregarVenta = document.getElementById('inAgregarVentaVehiculo');
+                const opcionesModificarVenta =document.getElementById('inModificarVentaVehiculo');
 
-                
                 vehiculosTableBody.innerHTML = '';
                 vehiculos.detalle.forEach(vehiculo => {
                     const row = document.createElement('tr');
@@ -976,6 +1068,25 @@ if ($_SESSION['rol'] !== 'admin') {
                         <td>${vehiculo.fechaFabricacion}</td>
                     `;
                     vehiculosTableBody.appendChild(row);
+
+                    const option1 = document.createElement('option');
+                    option1.value = `${vehiculo.VIN}`
+                        option1.textContent = `vehiculo: ${vehiculo.VIN}`;
+                        const option2 = document.createElement('option');
+                        option2.value = `${vehiculo.VIN}`
+                        option2.textContent = `vehiculo: ${vehiculo.VIN}`;
+                        const option3 = document.createElement('option');
+                        option3.value = `${vehiculo.VIN}`
+                        option3.textContent = `vehiculo: ${vehiculo.VIN}`;
+                        const option4 = document.createElement('option');
+                        option4.value = `${vehiculo.VIN}`
+                        option4.textContent = `vehiculo: ${vehiculo.VIN}`;
+
+                        opcionesEliminar.appendChild(option1);
+                        opcionesModificar.appendChild(option2);
+                        opcionesAgregarVenta.appendChild(option3);
+                        opcionesModificarVenta.appendChild(option4);
+
                 });
             } catch (error) {
                 console.error('Error al cargar los vehículos:', error);
@@ -986,6 +1097,10 @@ if ($_SESSION['rol'] !== 'admin') {
           try {
             const response =await fetch(apiModelos);
             const modelos = await response.json();
+            const opcionesEliminar =document.getElementById('inEliminarModelo');
+            const opcionesModificar =document.getElementById('inmodificarModelo');
+            const opcionesAgregarVehiculo = document.getElementById('inAgregarvehiculoModelo');
+            const opcionesModificarvehiculo = document.getElementById('inModificarvehiculoModelo')
 
             modelosTableBody.innerHTML = '';
             modelos.detalle.forEach(modelo =>{
@@ -996,7 +1111,25 @@ if ($_SESSION['rol'] !== 'admin') {
                 <td>${modelo.estiloCarroceria}</td>
                 <td>${modelo.marca}</td>
                 `;
-                modelosTableBody.appendChild(row);              
+                modelosTableBody.appendChild(row);  
+                
+                const option1 = document.createElement('option');
+                    option1.value = `${modelo.idModelo}`
+                        option1.textContent = `Modelo: ${modelo.idModelo}, ${modelo.nombre}`;
+                        const option2 = document.createElement('option');
+                        option2.value = `${modelo.idModelo}`
+                        option2.textContent = `Modelo: ${modelo.idModelo}, ${modelo.nombre}`;
+                        const option3 = document.createElement('option');
+                        option3.value = `${modelo.idModelo}`
+                        option3.textContent = `Modelo: ${modelo.idModelo}, ${modelo.nombre}`;
+                        const option4 = document.createElement('option');
+                        option4.value = `${modelo.idModelo}`
+                        option4.textContent = `Modelo: ${modelo.idModelo}, ${modelo.nombre}`;
+
+                        opcionesEliminar.appendChild(option1);
+                        opcionesModificar.appendChild(option2);
+                        opcionesAgregarVehiculo.appendChild(option3);
+                        opcionesModificarvehiculo.appendChild(option4);
             })
           } catch (error) {
             console.error('Error al cargar los modelos:', error);
@@ -1007,6 +1140,8 @@ if ($_SESSION['rol'] !== 'admin') {
           try {
             const response =await fetch(apiPlanta);
             const plantas = await response.json();
+            const opcionesEliminar =document.getElementById('inEliminarPlanta');
+            const opcionesModificar =document.getElementById('inmodificarPlanta');
 
             plantasTableBody.innerHTML = '';
             plantas.detalle.forEach(planta =>{
@@ -1016,7 +1151,19 @@ if ($_SESSION['rol'] !== 'admin') {
                 <td>${planta.nombre}</td>
                 <td>${planta.ubicacion}</td>
                 `;
-                plantasTableBody.appendChild(row);              
+                plantasTableBody.appendChild(row); 
+
+                const option1 = document.createElement('option');
+                option1.value = `${planta.idPlanta}`
+                        option1.textContent = `planta: ${planta.idPlanta}, ${planta.nombre}`;
+                        const option2 = document.createElement('option');
+                        option2.value = `${planta.idPlanta}`
+                        option2.textContent = `planta: ${planta.idPlanta}, ${planta.nombre}`;
+
+                        opcionesEliminar.appendChild(option1);
+                        opcionesModificar.appendChild(option2);
+                
+
             })
           } catch (error) {
             console.error('Error al cargar las plantas:', error);
@@ -1027,6 +1174,8 @@ if ($_SESSION['rol'] !== 'admin') {
           try {
             const response =await fetch(apiProoveedores);
             const proveedores = await response.json();
+            const opcionesEliminar =document.getElementById('inEliminarProoveedor');
+            const opcionesModificar =document.getElementById('inmodificarProoveedor');
 
             prooveedoresTableBody.innerHTML = '';
             proveedores.detalle.forEach(prooveedor =>{
@@ -1037,7 +1186,17 @@ if ($_SESSION['rol'] !== 'admin') {
                 <td>${prooveedor.direccion}</td>
                 <td>${prooveedor.noTelefono}</td>
                 `;
-                prooveedoresTableBody.appendChild(row);              
+                prooveedoresTableBody.appendChild(row); 
+                
+                const option1 = document.createElement('option');
+                option1.value = `${prooveedor.idProveedor}`
+                        option1.textContent = `prooveedor: ${prooveedor.idProveedor}, ${prooveedor.nombre}`;
+                        const option2 = document.createElement('option');
+                        option2.value = `${prooveedor.idProveedor}`
+                        option2.textContent = `prooveedor: ${prooveedor.idProveedor}, ${prooveedor.nombre}`;
+
+                        opcionesEliminar.appendChild(option1);
+                        opcionesModificar.appendChild(option2);
             })
           } catch (error) {
             console.error('Error al cargar los prooveedores:', error);
@@ -1048,6 +1207,8 @@ if ($_SESSION['rol'] !== 'admin') {
           try {
             const response = await fetch(apiVenta);
             const ventas = await response.json();
+            const opcionesEliminar =document.getElementById('inEliminarVenta');
+            const opcionesModificar =document.getElementById('inmodificarVenta');
 
             ventasTableBody.innerHTML = '';
             ventas.detalle.forEach(venta =>{
@@ -1060,12 +1221,23 @@ if ($_SESSION['rol'] !== 'admin') {
                 <td>${venta.VIN}</td>
                 <td>${venta.precio}</td>
                 `;
-                ventasTableBody.appendChild(row);              
+                ventasTableBody.appendChild(row); 
+                
+                const option1 = document.createElement('option');
+                option1.value = `${venta.idVenta}`
+                option1.textContent = `venta: ${venta.idVenta}`;
+                const option2 = document.createElement('option');
+                option2.value = `${venta.idVenta}`
+                option2.textContent = `venta: ${venta.idVenta}`;
+
+                opcionesEliminar.appendChild(option1);
+                opcionesModificar.appendChild(option2);
             })
           } catch (error) {
             console.error('Error al cargar las ventas:', error);
           }
         }
+<<<<<<< HEAD
 
         async function loadBitacora(){
           try {
@@ -1088,6 +1260,9 @@ if ($_SESSION['rol'] !== 'admin') {
           }
         }
         //falta modeloxplantas,ModeloxProoveedor, vehiculoxconcesionario
+=======
+        
+>>>>>>> 2c5118af6467a2c6002b220d27c6c47f38ab4117
 
         
         loadClientes();
@@ -1881,8 +2056,8 @@ async function handleModificarVenta(event) {
     }
 }
         
-document.getElementById('modificarCliente').addEventListener("submit",handleModificarCliente);
-//concesionarios
+        document.getElementById('modificarCliente').addEventListener("submit",handleModificarCliente);
+        //concesionarios
         document.getElementById('modificarVehiculo').addEventListener("submit",handleModificarVehiculo);
         document.getElementById('modificarModelo').addEventListener("submit",handleModificarModelo);
         document.getElementById('modificarPlanta').addEventListener("submit",handleModificarPlanta);
