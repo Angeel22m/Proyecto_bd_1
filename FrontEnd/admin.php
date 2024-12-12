@@ -257,7 +257,7 @@ if ($_SESSION['rol'] !== 'admin') {
                 <label  class="col-form-label">Sexo</label>
                 <div>
                   <select  class="form-control" name="sexo" required>
-                    <option value="">Seleccione el sexo</option>
+                    <option value="" disabled selected>Seleccione el sexo</option>
                     <option value="masculino">masculino</option>
                     <option value="femenino">femenino</option>
                     <option value="otro">otro</option>
@@ -313,7 +313,7 @@ if ($_SESSION['rol'] !== 'admin') {
                 <label  class="col-form-label">ID Modelo</label>
                 <div>
                   <select type="text" class="form-control" name="idModelo" id="inAgregarvehiculoModelo" required>
-                    <option value="">Seleccione el modelo</option>
+                    <option value="" disabled selected>Seleccione el modelo</option>
                   </select>
                 </div>
               </div>
@@ -321,7 +321,7 @@ if ($_SESSION['rol'] !== 'admin') {
   <label class="col-form-label">Color</label>
   <div>
     <select class="form-control" name="color" required>
-      <option value="" disabled selected>Selecciona un color</option>
+      <option value="" disabled selected >Selecciona un color</option>
       <option value="rojo">Rojo</option>
       <option value="azul">Azul</option>
       <option value="blanco">Blanco</option>
@@ -342,7 +342,7 @@ if ($_SESSION['rol'] !== 'admin') {
                 <label  class="col-form-label">Transmisión</label>
                 <div>
                   <select type="text" class="form-control" name="transmision" required>
-                    <option value="">Seleccione el tipo de Transmisión</option>
+                    <option value="" disabled selected>Seleccione el tipo de Transmisión</option>
                     <option value="manual">manual</option>
                     <option value="automatica">automatica</option>
                   </select>
@@ -371,7 +371,7 @@ if ($_SESSION['rol'] !== 'admin') {
             <label class="col-form-label">Estilo de carrocería</label>
             <div>
             <select class="form-control" name="estiloCarroceria" required>
-              <option value="">Seleccione un estilo</option>
+              <option value="" disabled selected>Seleccione un estilo</option>
               <option value="sedan">Sedan</option>
               <option value="hatchback">Hatchback</option>
               <option value="suv">SUV</option>
@@ -442,7 +442,7 @@ if ($_SESSION['rol'] !== 'admin') {
                 <label  class="col-form-label">ID Concesionario</label>
                 <div>
                   <select type="text" class="form-control" name="idConcesionario" id="inAgregarVentaConcesionario" required>
-                    <option value="">Seleccione el concesionario</option>
+                    <option value="" disabled selected>Seleccione el concesionario</option>
                   </select>
                 </div>
               </div>
@@ -450,7 +450,7 @@ if ($_SESSION['rol'] !== 'admin') {
                 <label  class="col-form-label">ID Cliente</label>
                 <div>
                   <select type="text" class="form-control" name="idCliente" id="inAgregarVentaCliente" required>
-                    <option value="">Seleccione el cliente</option>
+                    <option value="" disabled selected>Seleccione el cliente</option>
                   </select>
                 </div>
               </div>
@@ -458,7 +458,7 @@ if ($_SESSION['rol'] !== 'admin') {
                 <label  class="col-form-label">VIN</label>
                 <div>
                   <select type="text" class="form-control" name="VIN" id="inAgregarVentaVehiculo" required>
-                    <option value="">Seleccione el vehiculo</option>
+                    <option value="" disabled selected>Seleccione el vehiculo</option>
                   </select>
                 </div>
               </div>
@@ -501,7 +501,7 @@ if ($_SESSION['rol'] !== 'admin') {
                   <label  class="col-form-label">ID</label>
                   <div>
                     <select type="text" class="form-control" id="inEliminarCliente">
-                      <option value="">Seleccione el cliente</option>
+                      <option value="" disabled selected>Seleccione el cliente</option>
                       </select>
                   </div>
                 </div>
@@ -515,7 +515,7 @@ if ($_SESSION['rol'] !== 'admin') {
                   <label  class="col-form-label">ID Concesionario</label>
                   <div>
                     <select type="text" class="form-control" id="inEliminarConcesionario">
-                      <option value="">Seleccione el concesionario</option>
+                      <option value="" disabled selected>Seleccione el concesionario</option>
                     </select>
                   </div>
                 </div>
@@ -528,7 +528,7 @@ if ($_SESSION['rol'] !== 'admin') {
                   <label  class="col-form-label">VIN</label>
                   <div>
                     <select type="text" class="form-control" id="inEliminarVehiculo">
-                      <option value="">Seleccione el Vehiculo</option>
+                      <option value="" disabled selected>Seleccione el Vehiculo</option>
                     </select>
                   </div>
                 </div>
@@ -541,7 +541,7 @@ if ($_SESSION['rol'] !== 'admin') {
                   <label  class="col-form-label">ID Modelo</label>
                   <div>
                     <select type="text" class="form-control" id="inEliminarModelo">
-                      <option value="">Seleccione el Modelo</option>
+                      <option value="" disabled selected>Seleccione el Modelo</option>
                     </select>
                   </div>
                 </div>
@@ -555,7 +555,7 @@ if ($_SESSION['rol'] !== 'admin') {
                   <label  class="col-form-label">ID Planta</label>
                   <div>
                     <select type="text" class="form-control" id="inEliminarPlanta">
-                      <option value="">Seleccione la planta</option>
+                      <option value="" disabled selected>Seleccione la planta</option>
                     </select>
                   </div>
                   
@@ -570,7 +570,7 @@ if ($_SESSION['rol'] !== 'admin') {
                   <label  class="col-form-label">ID Prooveedor</label>
                   <div>
                     <select type="text" class="form-control" id="inEliminarProoveedor">
-                      <option value="">Seleccione el prooveedor</option>
+                      <option value="" disabled selected>Seleccione el prooveedor</option>
                     </select>
                   </div>
                   
@@ -585,7 +585,7 @@ if ($_SESSION['rol'] !== 'admin') {
                   <label  class="col-form-label">ID Venta</label>
                   <div>
                     <select type="text" class="form-control" id="inEliminarVenta">
-                    <option value="">Seleccione la venta</option>
+                    <option value="" disabled selected>Seleccione la venta</option>
                     </select>
                   </div>
                 </div>
@@ -622,7 +622,7 @@ if ($_SESSION['rol'] !== 'admin') {
                   <label  class="col-form-label">ID</label>
                   <div>
                     <select type="text" class="form-control" id="inmodificarCliente" required>
-                      <option value="">Seleccione el cliente</option>
+                      <option value="" disabled selected>Seleccione el cliente</option>
                     </select>
                   </div>
                 </div>
@@ -649,7 +649,7 @@ if ($_SESSION['rol'] !== 'admin') {
                 <label  class="col-form-label">Sexo</label>
                 <div>
                   <select  class="form-control" name="sexo">
-                    <option value="">Seleccione el sexo</option>
+                    <option value="" disabled selected>Seleccione el sexo</option>
                     <option value="masculino">masculino</option>
                     <option value="femenino">femenino</option>
                     <option value="otro">otro</option>
@@ -675,7 +675,7 @@ if ($_SESSION['rol'] !== 'admin') {
                   <label  class="col-form-label">ID Concesionario</label>
                   <div>
                     <select type="text" class="form-control" id="inmodificarConcesionario" required>
-                      <option value="">Seleccione el concesionario</option>
+                      <option value="" disabled selected>Seleccione el concesionario</option>
                     </select>
                   </div>
                 </div>
@@ -707,7 +707,7 @@ if ($_SESSION['rol'] !== 'admin') {
                   <label  class="col-form-label">VIN</label>
                   <div>
                     <select type="text" class="form-control" id="inmodificarVehiculo" required>
-                      <option value="">Seleccione el vehiculo</option>
+                      <option value="" disabled selected>Seleccione el vehiculo</option>
                     </select>
                   </div>
                 </div>                  
@@ -715,7 +715,7 @@ if ($_SESSION['rol'] !== 'admin') {
                 <label  class="col-form-label">ID Modelo</label>
                 <div>
                   <select type="text" class="form-control" name="idModelo" id="inModificarvehiculoModelo">
-                    <option value="">Seleccione el modelo</option>
+                    <option value="" disabled selected>Seleccione el modelo</option>
                   </select>
                 </div>
               </div>
@@ -738,7 +738,7 @@ if ($_SESSION['rol'] !== 'admin') {
                   <label  class="col-form-label">Transmisión</label>
                   <div>
                     <select type="text" class="form-control" name="transmision">
-                      <option value="">Seleccione el tipo de transmisión</option>
+                      <option value="" disabled selected>Seleccione el tipo de transmisión</option>
                       <option value="manual">manual</option>
                       <option value="automatica">automatica</option>
                     </select>
@@ -767,7 +767,7 @@ if ($_SESSION['rol'] !== 'admin') {
                   <label  class="col-form-label">ID Modelo</label>
                   <div>
                     <select type="text" class="form-control" id="inmodificarModelo" required>
-                      <option value="">Seleccione el modelo</option>
+                      <option value="" disabled selected>Seleccione el modelo</option>
                     </select>
                   </div>
                 </div>
@@ -781,7 +781,7 @@ if ($_SESSION['rol'] !== 'admin') {
             <label class="col-form-label">Estilo de carrocería</label>
             <div>
             <select class="form-control" name="estiloCarroceria" >
-              <option value="">Seleccione un estilo</option>
+              <option value="" disabled selected>Seleccione un estilo</option>
               <option value="sedan">Sedan</option>
               <option value="hatchback">Hatchback</option>
               <option value="suv">SUV</option>
@@ -811,7 +811,7 @@ if ($_SESSION['rol'] !== 'admin') {
                   <label  class="col-form-label">ID Planta</label>
                   <div>
                     <select type="text" class="form-control" id="inmodificarPlanta" required>
-                      <option value="">Seleccione la planta</option>
+                      <option value="" disabled selected>Seleccione la planta</option>
                     </select>
                   </div>
                 </div>
@@ -838,7 +838,7 @@ if ($_SESSION['rol'] !== 'admin') {
                   <label  class="col-form-label">ID Prooveedor</label>
                   <div>
                     <select type="text" class="form-control" id="inmodificarProoveedor" required>
-                      <option value="">seleccione el prooveedor</option>
+                      <option value="" disabled selected>seleccione el prooveedor</option>
                     </select>
                   </div>
                 </div>
@@ -871,7 +871,7 @@ if ($_SESSION['rol'] !== 'admin') {
                   <label  class="col-form-label">ID Venta</label>
                   <div>
                     <select type="text" class="form-control" id="inmodificarVenta" required>
-                      <option value="">Seleccione la venta</option>
+                      <option value="" disabled selected>Seleccione la venta</option>
                     </select>
                   </div>
                 </div>
@@ -879,7 +879,7 @@ if ($_SESSION['rol'] !== 'admin') {
                 <label  class="col-form-label">ID Concesionario</label>
                 <div>
                   <select type="text" class="form-control" name="idConcesionario" id="inModificarVentaConcesionario">
-                    <option value="">Seleccione el concesionario</option>
+                    <option value="" disabled selected>Seleccione el concesionario</option>
                   </select>
                 </div>
               </div>
@@ -887,7 +887,7 @@ if ($_SESSION['rol'] !== 'admin') {
                 <label  class="col-form-label">ID Cliente</label>
                 <div>
                   <select type="text" class="form-control" name="idCliente" id="inModificarVentaCliente">
-                    <option value="">Seleccione el cliente</option>
+                    <option value="" disabled selected>Seleccione el cliente</option>
                   </select>
                 </div>
               </div>
@@ -895,7 +895,7 @@ if ($_SESSION['rol'] !== 'admin') {
                 <label  class="col-form-label">VIN</label>
                 <div>
                   <select type="text" class="form-control" name="VIN" id="inModificarVentaVehiculo">
-                    <option value="">Seleccione el vehiculo</option>
+                    <option value="" disabled selected>Seleccione el vehiculo</option>
                   </select>
                 </div>
               </div>
