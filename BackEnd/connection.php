@@ -13,7 +13,7 @@ class Connection {
             exit;
         }
 
-        $host = '3.16.137.112';
+        $host = 'database-1.cbaawie4sxdu.us-east-1.rds.amazonaws.com';
         $usuario = $_SESSION['usuario'];
         $contrasena = $_SESSION['password'];
         $baseDeDatos = 'compania';
