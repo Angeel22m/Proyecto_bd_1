@@ -12,14 +12,14 @@ if ($_SESSION['rol'] !== 'admin' && $_SESSION['rol'] !== 'marketing') {
     echo "No tienes permiso para acceder a esta página.";
     exit;
 }
-?>
-<!DOCTYPE html>
+?><!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet">
     <title>Reportes - Ventas</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 <body>
 <div class="container my-4">
@@ -31,100 +31,105 @@ if ($_SESSION['rol'] !== 'admin' && $_SESSION['rol'] !== 'marketing') {
     <!-- Título -->
     <h1 class="text-center text-primary mb-4">Informes</h1>
 
-    <!-- Selector de tipo de informe -->
-    <div class="mb-3">
-        <label for="reportTypeSelect" class="form-label">Selecciona un Informe</label>
-        <select class="form-select" id="reportTypeSelect">
-            <option value="" selected disabled>Selecciona un informe...</option>
-            <option value="ventas">Informes de Ventas</option>
-            <option value="historial-busquedas">Historial de busquedas</option>
-            <option value="mejores-marcas-unidades">Mejores Marcas por Unidades Vendidas</option>
-            <option value="mejores-marcas-dolares">Mejores Marcas por Total en Dólares</option>
-            <option value="tendencias-ventas">Tendencias de Ventas</option>
-            <option value="tiempo-inventario">Tiempo Promedio de Inventario</option>
-            <option value="convertibles">Ventas de Convertibles</option>
-            
-        </select>
+    <!-- Botón para ir al historial -->
+    <div class="d-flex justify-content-end mb-4">
+        <a href="http://localhost/Proyecto_bd_1/FrontEnd/historialBusquedas.php" class="btn btn-secondary">Ver Tendencia de Busquedas</a>
     </div>
 
-    <!-- Contenedor de resultados -->
-    <div id="reportContainer" class="my-4">
-        <h2 class="text-center text-primary">Resultados</h2>
-        <table class="table table-bordered">
-            <thead id="tableHeader">
-                <!-- Encabezados dinámicos -->
-            </thead>
-            <tbody id="tableBody">
-                <!-- Datos dinámicos -->
-            </tbody>
-        </table>
+    <!-- Contenedor para gráficos -->
+    <div class="my-4">
+        <canvas id="chartGenero" width="400" height="200"></canvas>
+    </div>
+    <div class="my-4">
+        <canvas id="chartAnio" width="400" height="200"></canvas>
+    </div>
+    <div class="my-4">
+        <canvas id="chartMarca" width="400" height="200"></canvas>
+    </div>
+    <div class="my-4">
+        <canvas id="chartMejoresMarcas" width="400" height="200"></canvas>
     </div>
 </div>
 
 <script>
-    // URLs base para las APIs
-    const apiEndpoints = {
-        ventas: 'http://localhost/Proyecto_bd_1/BackEnd/viewInformeVentas',
-        "mejores-marcas-unidades": 'http://localhost/Proyecto_bd_1/BackEnd/viewMUV',
-        "mejores-marcas-dolares": 'http://localhost/Proyecto_bd_1/BackEnd/viewMTD',
-        "tendencias-ventas": 'http://localhost/Proyecto_bd_1/BackEnd/viewTV',
-        "tiempo-inventario": 'http://localhost/Proyecto_bd_1/BackEnd/viewTI',
-        convertibles: 'http://localhost/Proyecto_bd_1/BackEnd/viewConvertibles',
-        "historial-busquedas":'http://localhost/Proyecto_bd_1/BackEnd/historial',
-    };
+    const apiEndpoint = 'http://localhost/Proyecto_bd_1/BackEnd/viewTV';
 
-    // Elementos del DOM
-    const reportTypeSelect = document.getElementById('reportTypeSelect');
-    const tableHeader = document.getElementById('tableHeader');
-    const tableBody = document.getElementById('tableBody');
-
-    // Función para cargar datos dinámicos según el tipo de informe
-    async function loadReport(reportType) {
+    async function loadReport() {
         try {
-            const response = await fetch(apiEndpoints[reportType]);
+            const response = await fetch(apiEndpoint);
             const data = await response.json();
+            const details = data.detalle;
 
-            // Limpia los encabezados y el cuerpo de la tabla
-            tableHeader.innerHTML = '';
-            tableBody.innerHTML = '';
+            const generoData = {};
+            const anioData = {};
+            const marcaData = {};
+            const mejoresMarcasData = {};
 
-            // Accede a "detalle" si existe
-            const details = data.detalle || data;
+            details.forEach(item => {
+                const totalIngresos = parseFloat(item.TotalIngresos);
+                const totalVentas = parseInt(item.TotalVentas);
 
-            // Generar encabezados dinámicos
-            if (details.length > 0) {               
-                const headers = Object.keys(details[0]);
-                const headerRow = document.createElement('tr');
-                headers.forEach((header) => {
-                    const th = document.createElement('th');
-                    th.textContent = header;
-                    headerRow.appendChild(th);
-                });
-                tableHeader.appendChild(headerRow);
-            }
+                // Agrupar por género
+                generoData[item.Genero] = (generoData[item.Genero] || 0) + totalIngresos;
 
-            // Generar filas dinámicas
-            details.forEach((item) => {
-                const row = document.createElement('tr');
-                Object.values(item).forEach((value) => {
-                    const td = document.createElement('td');
-                    td.textContent = value;
-                    row.appendChild(td);
-                });
-                tableBody.appendChild(row);
+                // Agrupar por año
+                anioData[item.Año] = (anioData[item.Año] || 0) + totalIngresos;
+
+                // Agrupar por marca (ingresos)
+                marcaData[item.Marca] = (marcaData[item.Marca] || 0) + totalIngresos;
+
+                // Agrupar por marca (unidades vendidas)
+                mejoresMarcasData[item.Marca] = (mejoresMarcasData[item.Marca] || 0) + totalVentas;
             });
+
+            // Crear gráficos
+            createChart('chartGenero', 'Ingresos Totales por Género', generoData);
+            createChart('chartAnio', 'Ingresos Totales por Año', anioData);
+            createChart('chartMarca', 'Ingresos Totales por Marca', marcaData);
+            createChart('chartMejoresMarcas', 'Mejores Marcas por Unidades Vendidas', mejoresMarcasData);
         } catch (error) {
             console.error('Error al cargar el informe:', error);
         }
     }
 
-    // Evento al seleccionar un tipo de informe
-    reportTypeSelect.addEventListener('change', () => {
-        const reportType = reportTypeSelect.value;
-        if (reportType) {
-            loadReport(reportType);
-        }
-    });
+    function createChart(canvasId, title, data) {
+        const ctx = document.getElementById(canvasId).getContext('2d');
+        const labels = Object.keys(data);
+        const values = Object.values(data);
+
+        new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: labels,
+                datasets: [{
+                    label: title,
+                    data: values,
+                    backgroundColor: 'rgba(54, 162, 235, 0.5)',
+                    borderColor: 'rgba(54, 162, 235, 1)',
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                plugins: {
+                    legend: {
+                        display: false
+                    },
+                    title: {
+                        display: true,
+                        text: title
+                    }
+                },
+                scales: {
+                    y: {
+                        beginAtZero: true
+                    }
+                }
+            }
+        });
+    }
+
+    // Cargar los reportes al cargar la página
+    loadReport();
 </script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 </body>
