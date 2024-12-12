@@ -238,25 +238,25 @@ if ($_SESSION['rol'] !== 'admin') {
               <div class="mb-2 row text-secondary">
                 <label  class="col-form-label">Nombre</label>
                 <div>
-                  <input type="text" class="form-control" name="nombre">
+                  <input type="text" class="form-control" name="nombre" required>
                 </div>
               </div>
               <div class="mb-2 row text-secondary">
                 <label  class="col-form-label">Direccion</label>
                 <div>
-                  <input type="text" class="form-control" name="direccion">
+                  <input type="text" class="form-control" name="direccion" required>
                 </div>
               </div>
               <div class="mb-2 row text-secondary">
                 <label  class="col-form-label">Número telefónico</label>
                 <div>
-                  <input type="text" class="form-control" name = "noTelefono">
+                  <input type="text" class="form-control" name = "noTelefono" required>
                 </div>
               </div>
               <div class="mb-2 row text-secondary">
                 <label  class="col-form-label">Sexo</label>
                 <div>
-                  <select  class="form-control" name="sexo">
+                  <select  class="form-control" name="sexo" required>
                     <option value="">Seleccione el sexo</option>
                     <option value="masculino">masculino</option>
                     <option value="femenino">femenino</option>
@@ -267,7 +267,7 @@ if ($_SESSION['rol'] !== 'admin') {
               <div class="mb-2 row text-secondary">
                 <label  class="col-form-label">Ingresos anuales</label>
                 <div>
-                  <input type="text" class="form-control" name="ingresosAnuales">
+                  <input type="text" class="form-control" name="ingresosAnuales" required>
                 </div>
               </div>
               <button type="submit" class="btn btn-primary">Agregar Cliente</button>
@@ -281,19 +281,19 @@ if ($_SESSION['rol'] !== 'admin') {
               <div class="mb-2 row text-secondary">
                 <label  class="col-form-label">Nombre</label>
                 <div>
-                  <input type="text" class="form-control" name="nombre">
+                  <input type="text" class="form-control" name="nombre" required>
                 </div>
               </div>
               <div class="mb-2 row text-secondary">
                 <label  class="col-form-label">Direccion</label>
                 <div>
-                  <input type="text" class="form-control" name="direccion">
+                  <input type="text" class="form-control" name="direccion" required>
                 </div>
               </div>
               <div class="mb-2 row text-secondary">
                 <label  class="col-form-label">Número telefónico</label>
                 <div>
-                  <input type="text" class="form-control" name="noTelefono">
+                  <input type="text" class="form-control" name="noTelefono" required>
                 </div>
               </div>
               <button type="submit" class="btn btn-primary">Agregar Concesionario</button>
@@ -306,13 +306,13 @@ if ($_SESSION['rol'] !== 'admin') {
               <div class="mb-2 row text-secondary">
                 <label  class="col-form-label">VIN</label>
                 <div>
-                  <input type="text" class="form-control" name="VIN">
+                  <input type="text" class="form-control" name="VIN" required>
                 </div>
               </div>
               <div class="mb-2 row text-secondary">
                 <label  class="col-form-label">ID Modelo</label>
                 <div>
-                  <select type="text" class="form-control" name="idModelo" id="inAgregarvehiculoModelo">
+                  <select type="text" class="form-control" name="idModelo" id="inAgregarvehiculoModelo" required>
                     <option value="">Seleccione el modelo</option>
                   </select>
                 </div>
@@ -320,7 +320,7 @@ if ($_SESSION['rol'] !== 'admin') {
               <div class="mb-2 row text-secondary">
   <label class="col-form-label">Color</label>
   <div>
-    <select class="form-control" name="color">
+    <select class="form-control" name="color" required>
       <option value="" disabled selected>Selecciona un color</option>
       <option value="rojo">Rojo</option>
       <option value="azul">Azul</option>
@@ -335,19 +335,23 @@ if ($_SESSION['rol'] !== 'admin') {
               <div class="mb-2 row text-secondary">
                 <label  class="col-form-label">Numero motor</label>
                 <div>
-                  <input type="text" class="form-control" name="noMotor">
+                  <input type="text" class="form-control" name="noMotor" required>
                 </div>
               </div>
               <div class="mb-2 row text-secondary">
                 <label  class="col-form-label">Transmisión</label>
                 <div>
-                  <input type="text" class="form-control" name="transmision">
+                  <select type="text" class="form-control" name="transmision" required>
+                    <option value="">Seleccione el tipo de Transmisión</option>
+                    <option value="manual">manual</option>
+                    <option value="automatica">automatica</option>
+                  </select>
                 </div>
               </div>
               <div class="mb-2 row text-secondary">
                 <label  class="col-form-label">Fecha de fabricacion</label>
                 <div>
-                  <input type="date" class="form-control" name="fechaFabricacion">
+                  <input type="date" class="form-control" name="fechaFabricacion" required>
                 </div>
               </div>
               <button type="submit" class="btn btn-primary">Agregar Vehículo</button>
@@ -394,13 +398,13 @@ if ($_SESSION['rol'] !== 'admin') {
                 <div class="mb-2 row text-secondary">
                   <label  class="col-form-label">Nombre</label>
                   <div>
-                    <input type="text" class="form-control" name="nombre">
+                    <input type="text" class="form-control" name="nombre" required>
                   </div>
                 </div>
                 <div class="mb-2 row text-secondary">
                   <label  class="col-form-label">Ubicación</label>
                   <div>
-                    <input type="text" class="form-control" name="ubicacion">
+                    <input type="text" class="form-control" name="ubicacion" required>
                   </div>
                 </div>
                 <button type="submit" class="btn btn-primary">modificar planta</button>
@@ -412,19 +416,19 @@ if ($_SESSION['rol'] !== 'admin') {
               <div class="mb-2 row text-secondary">
                 <label  class="col-form-label">Nombre</label>
                 <div>
-                  <input type="text" class="form-control" name="nombre">
+                  <input type="text" class="form-control" name="nombre" required>
                 </div>
               </div>
               <div class="mb-2 row text-secondary">
                 <label  class="col-form-label">Direccion</label>
                 <div>
-                  <input type="text" class="form-control" name="direccion">
+                  <input type="text" class="form-control" name="direccion" required>
                 </div>
               </div>
               <div class="mb-2 row text-secondary">
                 <label  class="col-form-label">Numero telefónico</label>
                 <div>
-                  <input type="text" class="form-control" name="noTelefono">
+                  <input type="text" class="form-control" name="noTelefono" required>
                 </div>
               </div>
               <button type="submit" class="btn btn-primary">Agregar Prooveedor</button>
@@ -437,7 +441,7 @@ if ($_SESSION['rol'] !== 'admin') {
               <div class="mb-2 row text-secondary">
                 <label  class="col-form-label">ID Concesionario</label>
                 <div>
-                  <select type="text" class="form-control" name="idConcesionario" id="inAgregarVentaConcesionario">
+                  <select type="text" class="form-control" name="idConcesionario" id="inAgregarVentaConcesionario" required>
                     <option value="">Seleccione el concesionario</option>
                   </select>
                 </div>
@@ -445,7 +449,7 @@ if ($_SESSION['rol'] !== 'admin') {
               <div class="mb-2 row text-secondary">
                 <label  class="col-form-label">ID Cliente</label>
                 <div>
-                  <select type="text" class="form-control" name="idCliente" id="inAgregarVentaCliente">
+                  <select type="text" class="form-control" name="idCliente" id="inAgregarVentaCliente" required>
                     <option value="">Seleccione el cliente</option>
                   </select>
                 </div>
@@ -453,7 +457,7 @@ if ($_SESSION['rol'] !== 'admin') {
               <div class="mb-2 row text-secondary">
                 <label  class="col-form-label">VIN</label>
                 <div>
-                  <select type="text" class="form-control" name="VIN" id="inAgregarVentaVehiculo">
+                  <select type="text" class="form-control" name="VIN" id="inAgregarVentaVehiculo" required>
                     <option value="">Seleccione el vehiculo</option>
                   </select>
                 </div>
@@ -461,7 +465,7 @@ if ($_SESSION['rol'] !== 'admin') {
               <div class="mb-2 row text-secondary">
                 <label  class="col-form-label">Precio</label>
                 <div>
-                  <input type="text" class="form-control" name="precio">
+                  <input type="text" class="form-control" name="precio" required>
                 </div>
               </div>
               <button type="submit" class="btn btn-primary">Agregar venta</button>
@@ -493,7 +497,6 @@ if ($_SESSION['rol'] !== 'admin') {
           <div class="modal-body">
 
             <div id="Clientes" class="table-mode active">
-
               <div class="mb-2 row text-secondary">
                   <label  class="col-form-label">ID</label>
                   <div>
@@ -614,16 +617,16 @@ if ($_SESSION['rol'] !== 'admin') {
 
             <div id="Clientes" class="table-mode active">
 
-              <div class="mb-2 row text-secondary">
+                <form id="modificarCliente">
+                <div class="mb-2 row text-secondary">
                   <label  class="col-form-label">ID</label>
                   <div>
-                    <select type="text" class="form-control" id="inmodificarCliente">
+                    <select type="text" class="form-control" id="inmodificarCliente" required>
                       <option value="">Seleccione el cliente</option>
                     </select>
                   </div>
                 </div>
 
-                <form id="modificarCliente">
                 <div class="mb-2 row text-secondary">
                 <label  class="col-form-label">Nombre</label>
                 <div>
@@ -667,15 +670,15 @@ if ($_SESSION['rol'] !== 'admin') {
         
               <div id="Concesionarios" class="table-mode">
   
+                <form id="modificarConcesionario" >
                 <div class="mb-2 row text-secondary">
                   <label  class="col-form-label">ID Concesionario</label>
                   <div>
-                    <select type="text" class="form-control" id="inmodificarConcesionario">
+                    <select type="text" class="form-control" id="inmodificarConcesionario" required>
                       <option value="">Seleccione el concesionario</option>
                     </select>
                   </div>
                 </div>
-                <form id="modificarConcesionario" >
                 <div class="mb-2 row text-secondary">
                   <label  class="col-form-label">Nombre</label>
                   <div>
@@ -699,16 +702,15 @@ if ($_SESSION['rol'] !== 'admin') {
               </div>
         
               <div id="Vehículos" class="table-mode">
-          
+                <form id="modificarVehiculo">
                 <div class="mb-2 row text-secondary">
                   <label  class="col-form-label">VIN</label>
                   <div>
-                    <select type="text" class="form-control" id="inmodificarVehiculo">
+                    <select type="text" class="form-control" id="inmodificarVehiculo" required>
                       <option value="">Seleccione el vehiculo</option>
                     </select>
                   </div>
-                </div>
-                <form id="modificarVehiculo">
+                </div>                  
                 <div class="mb-2 row text-secondary">
                 <label  class="col-form-label">ID Modelo</label>
                 <div>
@@ -735,7 +737,11 @@ if ($_SESSION['rol'] !== 'admin') {
                 <div class="mb-2 row text-secondary">
                   <label  class="col-form-label">Transmisión</label>
                   <div>
-                    <input type="text" class="form-control" name="transmision">
+                    <select type="text" class="form-control" name="transmision">
+                      <option value="">Seleccione el tipo de transmisión</option>
+                      <option value="manual">manual</option>
+                      <option value="automatica">automatica</option>
+                    </select>
                   </div>
                 </div>
                 <div class="mb-2 row text-secondary">
@@ -756,15 +762,15 @@ if ($_SESSION['rol'] !== 'admin') {
         
               <div id="Modelos" class="table-mode">
   
+                <form id="modificarModelo" >
                 <div class="mb-2 row text-secondary">
                   <label  class="col-form-label">ID Modelo</label>
                   <div>
-                    <select type="text" class="form-control" id="inmodificarModelo">
+                    <select type="text" class="form-control" id="inmodificarModelo" required>
                       <option value="">Seleccione el modelo</option>
                     </select>
                   </div>
                 </div>
-                <form id="modificarModelo" >
                 <div class="mb-2 row text-secondary">
             <label class="col-form-label">Nombre</label>
             <div>
@@ -799,16 +805,16 @@ if ($_SESSION['rol'] !== 'admin') {
         
               <div id="Plantas" class="table-mode">
           
+
+                <form id="modificarPlanta">
                 <div class="mb-2 row text-secondary">
                   <label  class="col-form-label">ID Planta</label>
                   <div>
-                    <select type="text" class="form-control" id="inmodificarPlanta">
+                    <select type="text" class="form-control" id="inmodificarPlanta" required>
                       <option value="">Seleccione la planta</option>
                     </select>
                   </div>
                 </div>
-
-                <form id="modificarPlanta">
                 <div class="mb-2 row text-secondary">
                   <label  class="col-form-label">Nombre</label>
                   <div>
@@ -827,15 +833,15 @@ if ($_SESSION['rol'] !== 'admin') {
         
               <div id="Prooveedores" class="table-mode">
                 
+                <form id="modificarProoveedor">
                 <div class="mb-2 row text-secondary">
                   <label  class="col-form-label">ID Prooveedor</label>
                   <div>
-                    <select type="text" class="form-control" id="inmodificarProoveedor">
+                    <select type="text" class="form-control" id="inmodificarProoveedor" required>
                       <option value="">seleccione el prooveedor</option>
                     </select>
                   </div>
                 </div>
-                <form id="modificarProoveedor">
                 <div class="mb-2 row text-secondary">
                   <label  class="col-form-label">Nombre</label>
                   <div>
@@ -860,15 +866,15 @@ if ($_SESSION['rol'] !== 'admin') {
         
               <div id="Ventas" class="table-mode">
                 
+                <form id="modificarVenta">
                 <div class="mb-2 row text-secondary">
                   <label  class="col-form-label">ID Venta</label>
                   <div>
-                    <select type="text" class="form-control" id="inmodificarVenta">
+                    <select type="text" class="form-control" id="inmodificarVenta" required>
                       <option value="">Seleccione la venta</option>
                     </select>
                   </div>
                 </div>
-                <form id="modificarVenta">
                 <div class="mb-2 row text-secondary">
                 <label  class="col-form-label">ID Concesionario</label>
                 <div>
@@ -955,9 +961,7 @@ if ($_SESSION['rol'] !== 'admin') {
       const plantasTableBody = document.getElementById('plantasTableBody');
       const prooveedoresTableBody = document.getElementById('prooveedoresTableBody');
       const ventasTableBody = document.getElementById('ventasTableBody');
-      const vehiculosxconcesionariosTableBody = document.getElementById('vehiculosxconcesionariosTableBody');
-      const modelosxplantasTableBody = document.getElementById('modelosxplantasTableBody');
-      const modelosxprooveedoresTableBody =document.getElementById('modelosxprooveedoresTableBody');
+      const bitacoraTableBody = document.getElementById('BitacoraTableBody');
 
 
 
@@ -1255,10 +1259,10 @@ if ($_SESSION['rol'] !== 'admin') {
                 BitacoraTableBody.appendChild(row);              
             })
           } catch (error) {
-            console.error('Error al cargar los prooveedores:', error);
+            console.error('Error al cargar la bitacora:', error);
           }
         }
-        //falta modeloxplantas,ModeloxProoveedor, vehiculoxconcesionario
+
 
         
         loadClientes();
@@ -1289,6 +1293,7 @@ if ($_SESSION['rol'] !== 'admin') {
                     case 200:
                         alert("cliente creado exitosamente"); 
                         loadClientes();
+                        loadBitacora();
                         break;
                     case 401:
                         alert("Credenciales inválidas. Por favor, verifica");
@@ -1366,6 +1371,7 @@ if ($_SESSION['rol'] !== 'admin') {
                     case 200:
                         alert("vehiculo agregado exitosamente"); 
                         loadVehiculos();
+                        loadBitacora();
                         break;
                     case 401:
                         alert("Credenciales inválidas. Por favor, verifica");
@@ -1403,6 +1409,7 @@ if ($_SESSION['rol'] !== 'admin') {
                     case 200:
                         alert("Modelo agregado exitosamente"); 
                         loadModelos();
+                        loadBitacora();
                         break;
                     case 401:
                         alert("Credenciales inválidas. Por favor, verifica");
@@ -1440,6 +1447,7 @@ if ($_SESSION['rol'] !== 'admin') {
                     case 200:
                         alert("Planta agregada exitosamente"); 
                         loadPlantas();
+                        loadBitacora();
                         break;
                     case 401:
                         alert("Credenciales inválidas. Por favor, verifica");
@@ -1477,6 +1485,7 @@ if ($_SESSION['rol'] !== 'admin') {
                     case 200:
                         alert("Prooveedor Agregado exitosamente"); 
                         loadProovedores();
+                        loadBitacora();
                         break;
                     case 401:
                         alert("Credenciales inválidas. Por favor, verifica");
@@ -1514,6 +1523,7 @@ if ($_SESSION['rol'] !== 'admin') {
                     case 200:
                         alert("venta Agregado exitosamente"); 
                         loadVentas();
+                        loadBitacora();
                         break;
                     case 401:
                         alert("Credenciales inválidas. Por favor, verifica");
@@ -1556,7 +1566,8 @@ if ($_SESSION['rol'] !== 'admin') {
         switch (data.status) {
         case 200:
             alert("cliente eliminado");
-            loadClientes(); 
+            loadClientes();
+            loadBitacora();
             break;
         default:
             alert("no se pudo eliminar.");
@@ -1586,7 +1597,8 @@ if ($_SESSION['rol'] !== 'admin') {
         switch (data.status) {
         case 200:
             alert("Vehiculo eliminado");
-            loadClientes(); 
+            loadClientes();
+            loadBitacora();
             break;
         default:
             alert("no se pudo eliminar.");
@@ -1617,7 +1629,8 @@ if ($_SESSION['rol'] !== 'admin') {
         switch (data.status) {
         case 200:
             alert("Modelo eliminado");
-            loadModelos(); 
+            loadModelos();
+            loadBitacora();
             break;
         default:
             alert("no se pudo eliminar.");
@@ -1648,7 +1661,8 @@ if ($_SESSION['rol'] !== 'admin') {
         switch (data.status) {
         case 200:
             alert("planta eliminada");
-            loadPlantas(); 
+            loadPlantas();
+            loadBitacora();
             break;
         default:
             alert("no se pudo eliminar.");
@@ -1678,7 +1692,8 @@ if ($_SESSION['rol'] !== 'admin') {
         switch (data.status) {
         case 200:
             alert("prooveedor eliminada");
-            loadProovedores(); 
+            loadProovedores();
+            loadBitacora();
             break;
         default:
             alert("no se pudo eliminar.");
@@ -1708,7 +1723,8 @@ if ($_SESSION['rol'] !== 'admin') {
         switch (data.status) {
         case 200:
             alert("venta eliminada");
-            loadVentas(); 
+            loadVentas();
+            loadBitacora();
             break;
         default:
             alert("no se pudo eliminar.");
@@ -1764,6 +1780,7 @@ if ($_SESSION['rol'] !== 'admin') {
             case 200:
                 alert("Cliente actualizado exitosamente.");
                 loadClientes();
+                loadBitacora();
                 break;
             case 401:
                 alert("Credenciales inválidas. Por favor, verifica.");
@@ -1820,6 +1837,7 @@ async function handleModificarVehiculo(event) {
             case 200:
                 alert("Vehiculo actualizado exitosamente.");
                 loadVehiculos();
+                loadBitacora();
                 break;
             case 401:
                 alert("Credenciales inválidas. Por favor, verifica.");
@@ -1873,6 +1891,7 @@ async function handleModificarModelo(event) {
             case 200:
                 alert("modelo actualizado exitosamente.");
                 loadModelos();
+                loadBitacora();
                 break;
             case 401:
                 alert("Credenciales inválidas. Por favor, verifica.");
@@ -1926,6 +1945,7 @@ async function handleModificarPlanta(event) {
             case 200:
                 alert("planta actualizada exitosamente.");
                 loadPlantas();
+                loadBitacora();
                 break;
             case 401:
                 alert("Credenciales inválidas. Por favor, verifica.");
@@ -1979,6 +1999,7 @@ async function handleModificarProoveedor(event) {
             case 200:
                 alert("prooveedor actualizado exitosamente.");
                 loadProovedores();
+                loadBitacora();
                 break;
             case 401:
                 alert("Credenciales inválidas. Por favor, verifica.");
@@ -2032,6 +2053,7 @@ async function handleModificarVenta(event) {
             case 200:
                 alert("venta actualizada exitosamente.");
                 loadVentas();
+                loadBitacora();
                 break;
             case 401:
                 alert("Credenciales inválidas. Por favor, verifica.");
