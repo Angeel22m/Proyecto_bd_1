@@ -32,25 +32,6 @@ if ($_SESSION['rol'] !== 'admin' && $_SESSION['rol'] !== 'marketing') {
     <!-- Título -->
     <h1 class="text-center text-secondary mb-4">Historial de Búsquedas</h1>
 
-    <!-- Contenedor para el historial en tabla -->
-    <div class="mb-4">
-        <table class="table table-striped">
-            <thead>
-                <tr>
-                    <th>#</th>
-                    <th>Color</th>
-                    <th>Transmisión</th>
-                    <th>Estilo de Carrocería</th>
-                    <th>Marca</th>
-                    <th>Fecha de Búsqueda</th>
-                </tr>
-            </thead>
-            <tbody id="historialTable">
-                <!-- Contenido generado dinámicamente -->
-            </tbody>
-        </table>
-    </div>
-
     <!-- Contenedor para gráficos (en una cuadrícula de 2 columnas) -->
     <div class="row">
         <div class="col-6 my-4">
@@ -82,21 +63,7 @@ if ($_SESSION['rol'] !== 'admin' && $_SESSION['rol'] !== 'marketing') {
             const marcaData = {};
             const estiloCarroceriaData = {};  // Nuevo objeto para los estilos de carrocería
 
-            const historialTable = document.getElementById('historialTable');
-
             historial.forEach(item => {
-                // Agregar fila a la tabla
-                const row = document.createElement('tr');
-                row.innerHTML = `
-                    <td>${item.idBusqueda}</td>
-                    <td>${item.color || 'N/A'}</td>
-                    <td>${item.transmision || 'N/A'}</td>
-                    <td>${item.estiloCarroceria || 'N/A'}</td>
-                    <td>${item.marca || 'N/A'}</td>
-                    <td>${item.fechaBusqueda}</td>
-                `;
-                historialTable.appendChild(row);
-
                 // Contar datos para los gráficos
                 colorData[item.color] = (colorData[item.color] || 0) + 1;
                 if (item.transmision) {
@@ -183,4 +150,5 @@ if ($_SESSION['rol'] !== 'admin' && $_SESSION['rol'] !== 'marketing') {
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
+
 
